@@ -1,0 +1,56 @@
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 1050px;
+}
+
+.login-page__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.login-page__form {
+    min-width: 300px;
+}
+
+.login-page h2 {
+    font-family: "Open Sans";
+    font-size: 50px;
+    font-weight: 700;
+    color: var(--blue);
+    margin-bottom: 10px;
+    line-height: 1.2;
+}
+
+
+.login-page__description p {
+    font-size: 18px;
+}
+
+@media screen and (max-width: 700px) {
+    .sign-in-animation {
+        display: none;
+    }
+
+    .login-page__wrapper {
+        justify-content: center;
+        margin-top: 50px;
+    }
+
+    .login-page h2 {
+        font-size: 30px;
+    }
+
+    .login-page p {
+        font-size: 14px;
+    }
+}

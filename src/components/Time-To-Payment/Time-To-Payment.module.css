@@ -1,0 +1,39 @@
+.time-to-payment  {
+    grid-area: e;
+    background: white;
+    border-radius: 5px;
+    color: var(--blue);
+    padding: 0 10px;
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.time-to-payment p {
+    font-weight: 600;
+    font-family: "Open Sans";
+}
+
+.wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.wrapper svg {
+    max-width: 170px !important;
+}
+
+@media screen and (max-width: 1700px) {
+    .time-to-payment {
+        font-size: 22px;
+    }
+
+    .wrapper {
+        justify-content: space-around;
+    }
+
+    .wrapper svg {
+        max-width: 120px !important;
+    }
+}

@@ -1,0 +1,17 @@
+.deposit h3 {
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.deposit h3 span {
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--blue);
+  margin-right: 10px;
+}
+
+.choose-tariff-plan {
+  margin-bottom: 60px;
+}

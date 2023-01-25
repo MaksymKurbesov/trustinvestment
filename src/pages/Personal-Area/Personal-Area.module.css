@@ -1,0 +1,152 @@
+.my-account {
+  display: grid;
+  grid-template-areas:
+    "b b"
+    "c d"
+    "e d";
+  grid-template-columns: 50% 1fr;
+  grid-template-rows: 213px 155px 180px;
+  row-gap: 50px;
+  column-gap: 20px;
+  margin-bottom: 30px;
+  font-family: Fira Mono;
+}
+
+.my-account-layout {
+  min-height: 100vh;
+}
+
+.header {
+  color: white;
+}
+
+.logotype {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-statistic {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(75px, 162px));
+  grid-template-rows: 155px;
+  font-size: 20px;
+  gap: 20px;
+  grid-area: c;
+}
+
+.user-statistic__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--blue);
+  color: white;
+  padding: 20px 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.user-statistic__item img {
+  margin-bottom: 10px;
+}
+
+.user-statistic p {
+  margin-top: auto;
+  margin-bottom: 5px;
+  font-size: 14px;
+  font-family: Fira Mono;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.user-statistic span {
+  font-family: Fira Mono;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.my-account footer {
+  text-align: center;
+  padding: 24px 200px 24px 50px !important;
+}
+
+@media screen and (max-width: 1700px) {
+  .my-account {
+    grid-template-areas:
+      "b b"
+      "c c"
+      "e e"
+      "d d";
+  }
+
+  .user-statistic {
+    grid-template-columns: repeat(4, minmax(75px, 1fr));
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .my-account {
+    grid-template-rows: initial;
+  }
+
+  .user-statistic {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .user-statistic p {
+    margin-bottom: 0;
+  }
+
+  .user-statistic__item {
+    align-items: center;
+    flex-direction: row;
+    text-align: left;
+  }
+
+  .user-statistic__item img {
+    margin-bottom: 0;
+    margin-right: 15px;
+  }
+}
+
+@media screen and (max-width: 560px) {
+  .my-account {
+    grid-template-columns: 1fr;
+    column-gap: 0;
+  }
+
+  .user-statistic p {
+    font-size: 12px;
+  }
+
+  .user-statistic__item {
+    padding: 9px;
+  }
+
+  .user-statistic__item img {
+    width: 35px;
+    margin-right: 8px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .platform-name {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .user-statistic {
+    gap: 5px;
+  }
+
+  .user-statistic p {
+    font-size: 10px;
+  }
+
+  .user-statistic__item img {
+    width: 30px;
+    margin-right: 4px;
+  }
+}

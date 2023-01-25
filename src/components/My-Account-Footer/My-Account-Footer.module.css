@@ -1,0 +1,5 @@
+.footer {
+    /*background: rgba(245, 245, 245, 0.7) !important;*/
+    background: var(--dark-blue) !important;
+    color: white !important;
+}

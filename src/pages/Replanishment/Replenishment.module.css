@@ -1,0 +1,38 @@
+.replenishment table {
+  margin-bottom: 40px;
+}
+
+.information {
+  font-size: 18px;
+  max-width: 500px;
+}
+
+.button-back {
+  margin-right: 35px;
+}
+
+.input {
+  max-width: 500px;
+}
+
+.replenishment button {
+  margin-top: 50px;
+}
+
+.replenishment p {
+  margin-bottom: 40px;
+}
+
+.replenishment table th,
+td {
+  padding: 15px;
+}
+
+.replenishment td:first-child {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.replenishment td {
+  font-size: 14px;
+}

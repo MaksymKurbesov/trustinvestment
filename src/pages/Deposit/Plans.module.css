@@ -1,0 +1,40 @@
+.plan-card {
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+.plan-card span {
+  color: var(--blue);
+  font-weight: 600;
+  font-size: 22px;
+}
+
+.plan-card-info {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 2px solid var(--alpha-blue);
+}
+
+.plan-card:hover {
+  box-shadow: 0px 0px 55px 5px rgba(22, 119, 255, 0.9);
+}
+
+.active {
+  box-shadow: 0px 0px 55px 5px rgba(22, 119, 255, 0.9);
+}
+
+@media screen and (max-width: 1000px) {
+  .plan-card span {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .plan-card-info {
+    font-size: 12px;
+  }
+
+  .plan-card-info span {
+    font-size: 18px;
+  }
+}

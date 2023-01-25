@@ -1,0 +1,28 @@
+.enter-amount {
+    width: 150px;
+}
+
+.withdraw-info {
+    max-width: 800px;
+    line-height: 1.6;
+    font-size: 15px;
+    background: var(--blue);
+    color: rgba(255, 255, 255, 0.9);
+    padding: 25px;
+    padding-left: 105px;
+    border-radius: 10px;
+    margin-bottom: 50px;
+    position: relative;
+}
+
+
+.withdraw-info:before {
+    content: '!';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 40px;
+    color: white;
+    font-size: 100px;
+    font-weight: 600;
+}

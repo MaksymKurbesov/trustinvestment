@@ -1,0 +1,22 @@
+.enter-amount {
+    max-width: 430px;
+    margin-bottom: 30px;
+}
+
+.enter-amount input {
+    width: 95%;
+}
+
+.enter-amount h3 {
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.enter-amount h3 span {
+    font-size: 40px;
+    font-weight: 600;
+    color: var(--blue);
+    margin-right: 10px;
+}

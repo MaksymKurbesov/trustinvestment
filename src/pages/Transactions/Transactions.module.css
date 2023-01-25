@@ -1,0 +1,55 @@
+.transactions-table {
+  border-spacing: 2px;
+  width: 100%;
+}
+
+.transactions-table thead {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.transactions-table tbody {
+  font-weight: 500;
+}
+
+.transactions-table thead td {
+  position: relative;
+}
+
+.testID {
+  font-size: 10px;
+}
+
+.transactions-table thead td:not(:last-child)::before {
+  content: "";
+  width: 1px;
+  height: 30px;
+  background: var(--alpha-blue);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0;
+}
+
+.transactions-table th,
+.transactions-table td {
+  padding: 30px;
+}
+
+.transactions-table tbody tr {
+  position: relative;
+}
+
+.transactions-table tbody tr::after {
+  content: "";
+  width: 100%;
+  height: 1px;
+  background: var(--alpha-blue);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.transactions-table thead td {
+  font-family: Open Sans;
+}

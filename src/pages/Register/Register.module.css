@@ -1,0 +1,63 @@
+.register-page {
+  min-height: 100vh;
+  padding-top: 100px;
+}
+
+.register-page-container {
+  max-width: 1050px;
+  padding: 0 20px;
+}
+
+.register-page h2 {
+  color: var(--blue);
+  font-family: "Open Sans";
+  font-size: 50px;
+}
+
+.register-page p {
+  margin-bottom: 30px;
+}
+
+.register-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-form form {
+  flex-basis: 420px;
+}
+
+.signUpAnimation {
+  max-width: 600px;
+}
+
+@media screen and (max-width: 1100px) {
+  .signUpAnimation {
+    max-width: 400px;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .register-page p {
+    margin-bottom: 70px;
+  }
+
+  .signUpAnimation {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 580px) {
+  .register-page {
+    padding: 100px 0;
+  }
+
+  .register-page h2 {
+    font-size: 40px;
+  }
+
+  .register-page p {
+    font-size: 12px;
+  }
+}

@@ -1,0 +1,85 @@
+.hero-banner-wrapper {
+    min-height: 1000px;
+    background: url("../../assets/images/hero-banner copy.jpg") center / cover no-repeat;
+    color: white;
+    padding: 75px;
+    margin-bottom: 100px;
+}
+
+.texts {
+    position: relative;
+    top: 100px;
+    left: 100px;
+}
+
+.texts h1{
+    font-weight: 600;
+    font-size: 9.5vw;
+    margin-bottom: 140px;
+    line-height: 1;
+}
+
+.texts p {
+    font-size: 18px;
+    max-width: 550px;
+}
+
+
+.hero-banner-wrapper img {
+    object-fit: cover;
+}
+
+@media screen and (max-width: 1250px) {
+    .hero-banner-wrapper {
+        min-height: 600px;
+    }
+
+    .texts {
+        top: 0;
+        left: 0;
+    }
+
+    .texts h1 {
+        /*font-size: 90px;*/
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .hero-banner-wrapper {
+        min-height: initial;
+        padding: 45px;
+    }
+
+    .texts h1 {
+        /*font-size: 65px;*/
+        margin-bottom: 75px;
+    }
+
+    .texts p {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .hero-banner-wrapper {
+        padding: 25px;
+        margin-bottom: 50px;
+    }
+
+
+    .texts h1 {
+        /*font-size: 45px;*/
+        margin-bottom: 50px;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .texts h1 {
+        /*font-size: 40px;*/
+        margin-bottom: 30px;
+    }
+
+    .texts p {
+        font-size: 12px;
+    }
+}
