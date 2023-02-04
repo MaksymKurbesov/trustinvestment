@@ -1,70 +1,74 @@
 import React from "react";
-import { Select } from "antd";
+import { Select, Form } from "antd";
 import styles from "./Payment-Methods.module.css";
+import {
+  BITCOIN,
+  BNB,
+  ETHEREUM,
+  PERFECT_MONEY,
+  POLKADOT,
+  QIWI,
+  SOLANA,
+  TRC20_TETHER,
+} from "../../utils/consts";
 
-const onChange = (value) => {
-  console.log(`selected ${value}`);
-};
-
-const onSearch = (value) => {
-  console.log("search:", value);
+const createPaymentMethodsOptions = (wallets) => {
+  const paymentList = [];
+  wallets.forEach((wallet) => {
+    paymentList.push({
+      value: `${wallet} ${wallet.slice(0, 5)}`,
+      label: wallet,
+    });
+  });
 };
 
 const PAYMENT_METHODS = [
   {
-    value: "Perfect Money",
+    value: PERFECT_MONEY,
     label: "Perfect Money",
   },
   {
-    value: "Visa / Master Card",
-    label: "Visa / Master Card",
-  },
-  {
-    value: "TRC20 Tether",
+    value: TRC20_TETHER,
     label: "TRC20 Tether",
   },
   {
-    value: "Bitcoin",
+    value: BITCOIN,
     label: "Bitcoin",
   },
   {
-    value: "Ethereum",
+    value: ETHEREUM,
     label: "Ethereum",
   },
   {
-    value: "Litecoin",
-    label: "Litecoin",
+    value: SOLANA,
+    label: "Solana",
   },
   {
-    value: "Payeer",
-    label: "Payeer",
+    value: POLKADOT,
+    label: "PolkaDOT",
   },
   {
-    value: "Yoo Money",
-    label: "Yoo Money",
-  },
-  {
-    value: "Qiwi Wallet",
-    label: "Qiwi Wallet",
+    value: BNB,
+    label: "BNB",
   },
 ];
 
 const PaymentMethods = ({ paymentMethodHandler }) => {
   return (
-    <Select
-      showSearch
-      defaultValue="Perfect Money"
-      optionFilterProp="children"
-      onChange={(value) => {
-        paymentMethodHandler(value);
-      }}
-      onSearch={onSearch}
-      filterOption={(input, option) =>
-        (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-      }
-      className={styles["payment-select"]}
-      options={PAYMENT_METHODS}
-    />
+    <Form.Item name={"payment-method"}>
+      <Select
+        showSearch
+        optionFilterProp="children"
+        onChange={(value) => {
+          paymentMethodHandler(value);
+        }}
+        filterOption={(input, option) =>
+          (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+        }
+        className={`${styles["payment-select"]} payment-select`}
+        options={PAYMENT_METHODS}
+      />
+    </Form.Item>
   );
 };
 

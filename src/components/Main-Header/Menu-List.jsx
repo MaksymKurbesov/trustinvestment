@@ -1,9 +1,10 @@
 import { useWindowSize } from "../../hooks/useWindowSize";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Menu } from "antd";
 import styles from "./Main-Header.module.css";
 import { MenuOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import AuthContext from "../Auth-Provider/AuthContext";
 
 const menuList = [
   {
@@ -11,33 +12,35 @@ const menuList = [
     link: "/",
   },
   {
-    title: "Инвестиции",
-    link: "investments",
-  },
-  {
     title: "Партнерская программа",
-    link: "partners",
+    link: "/partners",
   },
   {
     title: "О нас",
-    link: "about-us",
+    link: "/about-us",
+  },
+  {
+    title: "FAQ",
+    link: "/faq",
   },
   {
     title: "Контакты",
-    link: "contacts",
+    link: "/contacts",
   },
 ];
 
-const MenuList = ({ userIsSigned }) => {
+const MenuList = () => {
   const windowSize = useWindowSize();
   const [currentMenuList, setCurrentMenuList] = useState([]);
+  const location = useLocation();
+  const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
     if (windowSize.width > 800) {
       setCurrentMenuList(menuList);
     }
 
-    if (windowSize.width < 800 && userIsSigned) {
+    if (windowSize.width < 800 && currentUser) {
       const menuListWithCabinet = [
         ...menuList,
         {
@@ -49,7 +52,7 @@ const MenuList = ({ userIsSigned }) => {
       setCurrentMenuList(menuListWithCabinet);
     }
 
-    if (windowSize.width < 800 && !userIsSigned) {
+    if (windowSize.width < 800 && !currentUser) {
       const menuListWithSignup = [
         ...menuList,
         {
@@ -64,13 +67,13 @@ const MenuList = ({ userIsSigned }) => {
 
       setCurrentMenuList(menuListWithSignup);
     }
-  }, [windowSize.width, userIsSigned]);
+  }, [windowSize.width, currentUser]);
 
   return (
     <>
       {windowSize.width > 800 ? (
         <div className={`${styles["user-icon-wrapper"]} menuListRoot`}>
-          {userIsSigned ? (
+          {currentUser ? (
             <Link to={"/my-account"}>Кабинет</Link>
           ) : (
             <>
@@ -91,6 +94,8 @@ const MenuList = ({ userIsSigned }) => {
               {menuItem.title}
             </Link>
           ),
+          className:
+            location.pathname === menuItem.link ? "active-main-header" : "",
         }))}
         className={styles["menu"]}
         overflowedIndicator={<MenuOutlined />}

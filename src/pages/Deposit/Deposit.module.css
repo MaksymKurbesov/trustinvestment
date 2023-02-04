@@ -15,3 +15,24 @@
 .choose-tariff-plan {
   margin-bottom: 60px;
 }
+
+.modal-content {
+  padding: 50px;
+  font-size: 18px;
+}
+
+.title-modal {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.modal-content p {
+  border-bottom: 2px solid var(--alpha-blue);
+  margin-bottom: 10px;
+  display: flex;
+}
+
+.modal-content p span {
+  font-weight: 600;
+  margin-left: auto;
+}

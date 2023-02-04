@@ -1,9 +1,14 @@
 import { Badge, Table, Tag, Tooltip } from "antd";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { CaretDownOutlined } from "@ant-design/icons";
-import { secondsToStringDays, sortByDate } from "../../utils/helpers";
+import {
+  normalizeDate,
+  secondsToStringDays,
+  sortByDate,
+} from "../../utils/helpers";
 import { STATUS_MAPLIST } from "../../utils/consts";
 import styles from "./Transactions.module.css";
+import { useEffect } from "react";
 
 const onChange = (pagination, filters, sorter, extra) => {
   console.log("params", pagination, filters, sorter, extra);
@@ -88,34 +93,31 @@ const TransactionsTable = ({ transactions }) => {
 
   if (!transactions) return;
 
-  const transactionsList = [];
-
-  transactions.docs.forEach((doc) => {
+  const transactionsList = transactions.docs.map((doc) => {
     const data = doc.data();
 
     if (!data.date) return;
 
-    console.log(data);
-
-    transactionsList.push({
+    return {
       ...data,
       key: doc.id,
       id: doc.id.slice(0, 5),
       tax: "0%",
-      date: data.date.seconds ? data.date.seconds : "",
-    });
-
-    transactionsList.sort(sortByDate);
+      date: data.date.seconds,
+    };
   });
+
+  transactionsList.sort(sortByDate);
 
   return (
     <Table
       tableLayout={"fixed"}
       columns={columns}
-      dataSource={transactionsList}
+      dataSource={normalizeDate(transactionsList)}
       onChange={onChange}
       size={windowSize.width < 1300 ? "small" : ""}
       className={"transactionsListRoot"}
+      mobileBreakpoint={768}
     />
   );
 };

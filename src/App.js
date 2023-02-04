@@ -8,7 +8,7 @@ import { HomeLayout } from "./components/Layouts/Home-Layout";
 import { Login } from "./pages/Login/Login";
 import { Register } from "./pages/Register/Register";
 import { MyAccountLayout } from "./components/My-Account-Layout/My-Account-Layout";
-import { Investments } from "./pages/Investments/Investments";
+import { Faq } from "./pages/Faq/Faq";
 import { PartnersProgram } from "./pages/Partners-Program/Partners-Program";
 import { AboutUs } from "./pages/About-Us/About-Us";
 import { Contacts } from "./pages/Contacts/Contacts";
@@ -28,7 +28,7 @@ function App() {
           <Route index element={<Index />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/investments" element={<Investments />} />
+          <Route path="/faq" element={<Faq />} />
           <Route path="/partners" element={<PartnersProgram />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contacts" element={<Contacts />} />

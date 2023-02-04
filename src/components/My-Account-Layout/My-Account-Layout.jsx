@@ -1,111 +1,85 @@
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
+import { getAuth, signOut } from "firebase/auth";
+import {
+  Link,
+  NavLink,
+  Outlet,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import styles from "./My-Account-Layout.module.css";
 import { Layout, Menu } from "antd";
 import MyAccountHeader from "../My-Account-Header/My-Account-Header";
-
-import {
-  BarsOutlined,
-  CreditCardOutlined,
-  DollarCircleOutlined,
-  HomeOutlined,
-  ImportOutlined,
-  SettingOutlined,
-  UsergroupAddOutlined,
-} from "@ant-design/icons";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import Logo from "../../assets/images/logo.png";
-import { useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
+import { useContext, useEffect, useState } from "react";
+import { MENU_LIST } from "../../pages/Personal-Area/MENU_LIST";
+import { calculateUserBalance } from "../../utils/helpers";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+
+import AuthContext from "../Auth-Provider/AuthContext";
 
 const { Content, Sider } = Layout;
-
-const MENU_LIST = [
-  {
-    title: "Кабинет",
-    link: "/my-account",
-    icon: <HomeOutlined />,
-  },
-  {
-    title: "Сделать депозит",
-    link: "/my-account/deposit",
-    icon: <CreditCardOutlined />,
-  },
-  {
-    title: "Вывод cредств",
-    link: "/my-account/withdraw",
-    icon: <DollarCircleOutlined />,
-  },
-  {
-    title: "Транзакции",
-    link: "/my-account/transactions",
-    icon: <BarsOutlined />,
-  },
-  {
-    title: "Партнёрам",
-    link: "/my-account/partners",
-    icon: <UsergroupAddOutlined />,
-  },
-  {
-    title: "Настройки",
-    link: "/my-account/settings",
-    icon: <SettingOutlined />,
-  },
-  {
-    title: "Выход",
-    link: "/logout",
-    icon: <ImportOutlined />,
-  },
-];
 
 const MyAccountLayout = () => {
   const navigate = useNavigate();
   const auth = getAuth();
   const windowSize = useWindowSize();
-  const [currentUser, setCurrentUser] = useState();
+  const { currentUser } = useContext(AuthContext);
+  const location = useLocation();
+  const [collapsed, setCollapsed] = useState(false);
 
   const sideMenuList = MENU_LIST.map((item, index) => ({
     key: String(index + 1),
     label: <NavLink to={item.link}>{item.title}</NavLink>,
     icon: item.icon,
+    title: "",
+    className: location.pathname === item.link ? styles["active"] : "",
   }));
 
-  const signOutHandler = () => {
-    signOut(auth).then(() => {
-      navigate("/");
-    });
+  const signOutHandler = async () => {
+    await signOut(auth);
   };
 
-  useEffect(() => {
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        setCurrentUser(user);
-      }
-    });
-  }, []);
+  if (!currentUser) {
+    return null;
+  }
 
   return (
     <div className={styles["my-account"]}>
-      <Layout className={styles["my-account-layout"]}>
+      <Layout className={styles["my-account-layout"]} hasSider>
         <Sider
           className={styles["left-sider"]}
           breakpoint="xl"
-          collapsible={windowSize.width < 1200 && windowSize.width > 560}
+          collapsible
+          collapsed={collapsed}
+          onCollapse={() => {
+            setCollapsed((prev) => !prev);
+          }}
+          collapsedWidth={windowSize.width < 560 ? 0 : 80}
+          trigger={
+            <div className={styles["menu-icon"]}>
+              {!collapsed ? <LeftOutlined /> : <RightOutlined />}
+            </div>
+          }
         >
           {windowSize.width > 560 ? (
-            <Link to={"/"} className={styles["logotype"]}>
-              <img src={Logo} width={170} alt={""} />
+            <Link
+              to={"/"}
+              className={styles["logotype"]}
+              style={{ paddingLeft: collapsed ? 90 : 0 }}
+            >
+              <img src={Logo} width={140} alt={""} />
             </Link>
           ) : (
             ""
           )}
           <Menu
-            disabledOverflow={false}
             theme="dark"
             defaultSelectedKeys={["1"]}
-            mode={windowSize.width < 561 ? "horizontal" : "inline"}
+            selectedKeys={[location.pathname]}
             items={sideMenuList}
             onClick={(e) => {
+              setCollapsed(true);
               if (e.key === "7") {
                 signOutHandler();
               }
@@ -113,14 +87,18 @@ const MyAccountLayout = () => {
           />
         </Sider>
         <Layout className="site-layout">
-          <MyAccountHeader username={currentUser ? currentUser.email : ""} />
+          <MyAccountHeader
+            username={currentUser ? currentUser.nickname : ""}
+            balance={calculateUserBalance(currentUser)}
+            siderCollapsed={collapsed}
+          />
           <Content className={styles["my-account-wrapper"]}>
-            <Outlet />
+            <Outlet context={[currentUser]} />
           </Content>
         </Layout>
-        <Sider className={styles["right-sider"]}>
-          <p>Последние операции</p>
-        </Sider>
+        {/*<Sider className={styles["right-sider"]}>*/}
+        {/*  <p>Последние операции</p>*/}
+        {/*</Sider>*/}
       </Layout>
     </div>
   );

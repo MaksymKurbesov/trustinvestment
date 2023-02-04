@@ -1,0 +1,166 @@
+.contacts {
+  display: grid;
+  padding: 75px;
+  padding-bottom: 0;
+  grid-template-columns: 70% 30%;
+  column-gap: 50px;
+}
+
+.contacts h2 {
+  font-size: clamp(40px, 5vw, 60px);
+  font-weight: 500;
+  margin-bottom: 100px;
+}
+
+.content-wrapper {
+  display: grid;
+  grid-template-areas:
+    "info form"
+    "map-info map";
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  row-gap: 100px;
+}
+
+.left-row {
+  padding-bottom: 75px;
+}
+
+.form-information {
+  grid-area: info;
+  max-width: 400px;
+}
+
+.form-information span {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.form-information span:before {
+  content: "→";
+  position: absolute;
+  top: 45%;
+  transform: translateY(-54%);
+  left: 210px;
+  font-size: 30px;
+}
+
+.contact-form {
+  grid-area: form;
+}
+
+.submit-button {
+  margin: 25px 0;
+}
+
+.where-are-we {
+  grid-area: map-info;
+}
+
+.where-are-we h3 {
+  font-size: clamp(20px, 5vw, 34px);
+  font-weight: 500;
+  margin-bottom: 35px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.where-are-we h3 img {
+  margin-right: 15px;
+}
+
+.where-are-we p {
+  line-height: 1.4;
+}
+
+.where-are-we p:nth-child(2) {
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.map {
+  grid-area: map;
+}
+
+.right-row {
+  margin: 0 auto;
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+  padding-left: 15px;
+}
+
+.right-row > div {
+  margin-bottom: 35px;
+}
+
+.right-row > div h3 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-weight: 500;
+  position: relative;
+}
+
+.right-row > div h3::before {
+  content: "";
+  width: 3px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: -18px;
+  background: var(--blue);
+}
+
+.right-row > div p {
+  margin-bottom: 7px;
+}
+
+@media screen and (max-width: 1385px) {
+  .contacts {
+    grid-template-columns: 60% 40%;
+    padding: 50px 30px 0 30px;
+  }
+
+  .content-wrapper {
+    grid-template-areas:
+      "info"
+      "form"
+      "map-info"
+      "map";
+    grid-template-columns: 1fr;
+    row-gap: 50px;
+  }
+
+  .contact-form {
+    margin: 0 auto;
+    max-width: 70%;
+    margin-bottom: 50px;
+  }
+
+  .right-row {
+    margin: initial;
+  }
+}
+
+@media screen and (max-width: 950px) {
+  .contacts {
+    grid-template-columns: 1fr;
+    padding: 100px 50px 0 50px;
+  }
+
+  .contacts h2 {
+    margin-bottom: 50px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .contact-form {
+    max-width: 90%;
+  }
+
+  .contacts {
+    grid-template-columns: 1fr;
+    padding: 50px 25px 0 25px;
+  }
+}

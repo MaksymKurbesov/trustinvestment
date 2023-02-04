@@ -2,18 +2,27 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Button, Form, Input, Modal, Result } from "antd";
 import styles from "./Replenishment.module.css";
 import { useContext, useEffect, useState } from "react";
-import { doc, getDoc, addDoc, collection } from "firebase/firestore";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { addDoc, collection } from "firebase/firestore";
 import { FirebaseContext } from "../../index";
-import { secondsToStringDays } from "../../utils/helpers";
+import { getRandomArbitrary } from "../../utils/helpers";
+import { ConfirmedWindow } from "../../components/ConfirmedWindow/ConfirmedWindow";
+import { useForm } from "@formspree/react";
+import { WALLETS } from "../../utils/consts";
+import AuthContext from "../../components/Auth-Provider/AuthContext";
 
 const Replenishment = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [transactionID, setTransactionID] = useState(null);
+  const { currentUser } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState(null);
   const { firestore } = useContext(FirebaseContext);
-  const auth = getAuth();
+  const [state, handleSubmit] = useForm("xvongjlo");
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    setTransactionID(getRandomArbitrary);
+  }, []);
 
   const data = location.state;
 
@@ -24,35 +33,38 @@ const Replenishment = () => {
     setIsModalOpen(false);
   };
 
-  useEffect(() => {
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const snapshot = await getDoc(doc(firestore, "users", user.email));
-        setCurrentUser(snapshot.data());
-      }
-    });
-  }, []);
+  console.log(data.paymentMethod);
 
   const onFinish = (value) => {
-    showModal();
-    const sendData = async () => {
-      await addDoc(collection(firestore, "transactions"), {
-        account_id: currentUser.uid,
-        amount: 5000,
-        status: "Ожидание",
-        type: "Пополнение",
-        date: new Date(),
-      });
-    };
-    sendData();
+    form.validateFields().then((values) => {
+      showModal();
+      const sendData = async () => {
+        await addDoc(collection(firestore, "transactions"), {
+          account_id: currentUser.uid,
+          amount: data.amount,
+          status: "Ожидание",
+          type: "Пополнение",
+          date: new Date(),
+          email: currentUser.email,
+          paymentMethod: data.paymentMethod,
+          executor: data.paymentMethod,
+        });
+      };
+      sendData();
 
-    console.log(value);
+      handleSubmit({
+        ...values,
+        email: currentUser.email,
+        amount: data.amount,
+        tariffPlan: data.tariffPlan,
+      });
+    });
   };
 
   return (
     <div className={`${styles["replenishment"]} replenishmentRoot`}>
       <h2 className={"my-account-title"}>Пополнение</h2>
-      <table>
+      <table className={styles["bill"]}>
         <thead>
           <tr>
             <td>План</td>
@@ -68,7 +80,17 @@ const Replenishment = () => {
           </tr>
           <tr>
             <td>Кошелёк для оплаты</td>
-            <td>U123456789</td>
+            <td>
+              {WALLETS[data.paymentMethod]}
+              <Button
+                onClick={() => {
+                  navigator.clipboard.writeText(WALLETS[data.paymentMethod]);
+                }}
+                className={styles["copy-button"]}
+              >
+                Копировать
+              </Button>
+            </td>
           </tr>
           <tr>
             <td>Дата</td>
@@ -80,7 +102,7 @@ const Replenishment = () => {
         Данные платежа произведенного вручную через {data.paymentMethod} и
         реквизиты плательщика
       </p>
-      <Form onFinish={onFinish}>
+      <Form form={form}>
         <Form.Item
           name={"transaction-id"}
           rules={[
@@ -100,7 +122,7 @@ const Replenishment = () => {
             className={styles["input"]}
             addonBefore={"Примечание"}
             disabled
-            value={"invoice #43283, username"}
+            value={`invoice #${transactionID}, ${currentUser.nickname}`}
           />
         </Form.Item>
         <Form.Item>
@@ -112,41 +134,17 @@ const Replenishment = () => {
           >
             Назад
           </Button>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" key={"submit"} onClick={onFinish}>
             Подтвердить
           </Button>
         </Form.Item>
       </Form>
-      <Modal open={isModalOpen} onOk={handleOk}>
-        <Result
-          status="success"
-          title="Транзакция прошла успешно!"
-          subTitle={
-            <p>
-              Номер транзакции: 00051 <br /> Обработка операции обычно занимает
-              3-5 минут, ожидайте пожалуйста.
-            </p>
-          }
-          extra={[
-            <Button
-              onClick={() => {
-                navigate("/my-account");
-              }}
-              key="my-account"
-              type="primary"
-            >
-              На главную
-            </Button>,
-            <Button
-              onClick={() => {
-                navigate("/my-account/transactions");
-              }}
-              key="transactions"
-            >
-              К транзакциям
-            </Button>,
-          ]}
-        />
+      <Modal
+        open={isModalOpen}
+        onOk={handleOk}
+        className={"replenishment-modal"}
+      >
+        <ConfirmedWindow transactionID={transactionID} />
       </Modal>
     </div>
   );

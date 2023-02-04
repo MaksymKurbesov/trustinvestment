@@ -1,7 +1,11 @@
 .deposits-status {
   grid-area: d;
-  margin-right: -20px;
+  /*margin-right: -20px;*/
   font-family: Fira Mono;
+}
+
+.progress {
+  text-align: center;
 }
 
 @media screen and (max-width: 1700px) {

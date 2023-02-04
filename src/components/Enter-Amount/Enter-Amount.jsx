@@ -1,5 +1,5 @@
 import styles from "./Enter-Amount.module.css";
-import { Input } from "antd";
+import { Input, Form } from "antd";
 
 const EnterAmount = ({ stepNumber, amount, amountHandler }) => {
   return (
@@ -7,13 +7,23 @@ const EnterAmount = ({ stepNumber, amount, amountHandler }) => {
       <h3>
         <span>{stepNumber}</span> Введите сумму
       </h3>
-      <Input
-        placeholder={0}
-        onChange={(e) => {
-          if (!Number(e.target.value)) return;
-          amountHandler(e.target.value);
-        }}
-      />
+      <Form.Item
+        name={"amount"}
+        rules={[
+          {
+            required: true,
+            message: "Введите пожалуйста сумму",
+          },
+        ]}
+      >
+        <Input
+          placeholder={0}
+          onChange={(e) => {
+            if (!Number(e.target.value)) return;
+            amountHandler(e.target.value);
+          }}
+        />
+      </Form.Item>
     </div>
   );
 };

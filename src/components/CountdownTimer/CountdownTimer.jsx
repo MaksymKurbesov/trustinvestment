@@ -1,5 +1,6 @@
 import { useCountdown } from "../../hooks/useCountdown";
 import styles from "./CountdownTimer.module.css";
+import { useEffect } from "react";
 
 function declensionNum(num, words) {
   return words[
@@ -9,8 +10,17 @@ function declensionNum(num, words) {
   ];
 }
 
-const CountdownTimer = ({ targetDate }) => {
+const CountdownTimer = ({ targetDate, resetHandler }) => {
   const [days, hours, minutes, seconds] = useCountdown(targetDate);
+  const countdownIsEnded =
+    days === 0 && hours === 0 && minutes === 0 && seconds === 1;
+
+  useEffect(() => {
+    if (countdownIsEnded) {
+      resetHandler();
+    }
+  }, [seconds]);
+
   const formattedDays = declensionNum(days, ["день", "дня", "дней"]);
   const formattedHours = declensionNum(hours, ["час", "часа", "часов"]);
   const formattedMinutes = declensionNum(minutes, [
@@ -26,17 +36,25 @@ const CountdownTimer = ({ targetDate }) => {
 
   return (
     <div className={styles["countdown-wrapper"]}>
-      <p>Следующее начисление через</p>
-      <div className={styles["countdown"]}>
-        <div className={styles["days"]}>{`${days} ${formattedDays}`}</div>
-        <div className={styles["hours"]}>{`${hours} ${formattedHours}`}</div>
-        <div
-          className={styles["minutes"]}
-        >{`${minutes} ${formattedMinutes}`}</div>
-        <div
-          className={styles["seconds"]}
-        >{`${seconds} ${formattedSeconds}`}</div>
-      </div>
+      {targetDate === 0 ? (
+        "Сделайте первый вклад"
+      ) : (
+        <>
+          <p>Следующее начисление через</p>
+          <div className={styles["countdown"]}>
+            <div className={styles["days"]}>{`${days} ${formattedDays}`}</div>
+            <div
+              className={styles["hours"]}
+            >{`${hours} ${formattedHours}`}</div>
+            <div
+              className={styles["minutes"]}
+            >{`${minutes} ${formattedMinutes}`}</div>
+            <div
+              className={styles["seconds"]}
+            >{`${seconds} ${formattedSeconds}`}</div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

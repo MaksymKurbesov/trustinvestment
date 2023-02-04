@@ -11,7 +11,6 @@
   border-radius: 30px;
   position: relative;
   margin-right: 20px;
-  margin-bottom: 30px;
   height: 100%;
 }
 
@@ -67,6 +66,32 @@
   font-family: Fira Mono;
 }
 
+.custom-arrows {
+  text-align: right;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.custom-arrows button:first-child {
+  margin-right: 10px;
+}
+
+.custom-arrows button {
+  background: var(--blue);
+  border: none;
+  padding: 15px;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  /*text-align: right;*/
+}
+
+@media screen and (max-width: 1700px) {
+  .custom-arrows {
+    margin-bottom: 0;
+  }
+}
+
 @media screen and (max-width: 1500px) {
   .platform-statistic p {
     font-size: 12px;
@@ -105,5 +130,10 @@
 
   .platform-statistic span {
     font-size: 18px;
+  }
+
+  .custom-arrows {
+    margin-top: 30px;
+    text-align: center;
   }
 }

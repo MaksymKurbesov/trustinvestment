@@ -1,25 +1,25 @@
 .affilate-program {
-    margin-bottom: 100px;
+  margin-bottom: 100px;
 }
 
 .affilate-program__wrapper {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .affilate-program p {
-    max-width: 50%;
-    font-size: 16px;
-    line-height: 1.6;
+  max-width: 50%;
+  font-size: 16px;
+  line-height: 1.6;
 }
 
 @media screen and (max-width: 1000px) {
-    .affilate-program p{
-        font-size: 14px;
-        max-width: 100%;
-    }
+  .affilate-program p {
+    font-size: 14px;
+    max-width: 100%;
+  }
 
-    .affilate-program__wrapper {
-        flex-direction: column-reverse;
-    }
+  .affilate-program__wrapper {
+    flex-direction: column-reverse;
+  }
 }

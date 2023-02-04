@@ -1,5 +1,5 @@
 import { Button, Checkbox, Col, Form, Input, Row, Select } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import styles from "./Register-Form.module.css";
 const { Option } = Select;
 
@@ -34,11 +34,15 @@ const tailFormItemLayout = {
   },
 };
 const RegisterForm = ({ handleClick }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // console.log(searchParams)
+
   const [form] = Form.useForm();
   const onFinish = (values) => {
     handleClick(values);
-    console.log("Received values of form: ", values);
   };
+
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
       <Select
@@ -56,6 +60,7 @@ const RegisterForm = ({ handleClick }) => {
       {...formItemLayout}
       initialValues={{
         prefix: "7",
+        referredBy: searchParams.get("ref"),
       }}
       form={form}
       name="register"
@@ -124,6 +129,9 @@ const RegisterForm = ({ handleClick }) => {
             width: "100%",
           }}
         />
+      </Form.Item>
+      <Form.Item name="referredBy" label="Ник реферала">
+        <Input />
       </Form.Item>
 
       <Form.Item

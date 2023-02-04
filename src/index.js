@@ -6,6 +6,8 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { ScrollToTop } from "./components/Scroll-To-Top/Scroll-To-Top";
+import { AuthProvider } from "./components/Auth-Provider/Auth-Provider";
 
 const firebaseApp = initializeApp({
   apiKey: "AIzaSyBRYVcyjt0EBhRzmd5SKdvoSeA6j6941PY",
@@ -18,8 +20,6 @@ const firebaseApp = initializeApp({
 
 AOS.init();
 
-export const TransactionsContext = createContext(null);
-
 const firestore = getFirestore(firebaseApp);
 
 export const FirebaseContext = createContext(null);
@@ -27,19 +27,17 @@ export const FirebaseContext = createContext(null);
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
-    {/*<TransactionsContext.Provider*/}
-    {/*  value={{*/}
-    {/*    // transactionID,*/}
-    {/*  }}*/}
-    {/*>*/}
-    <FirebaseContext.Provider
-      value={{
-        firebaseApp,
-        firestore,
-      }}
-    >
-      <App />
-    </FirebaseContext.Provider>
-    {/*</TransactionsContext.Provider>*/}
+    <ScrollToTop>
+      <FirebaseContext.Provider
+        value={{
+          firebaseApp,
+          firestore,
+        }}
+      >
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </FirebaseContext.Provider>
+    </ScrollToTop>
   </BrowserRouter>
 );

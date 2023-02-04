@@ -22,9 +22,30 @@ export const STATUS_MAPLIST = {
   },
 };
 
-export const PERFECT_MONEY = "Perfect Money";
-export const BITCOIN = "Bitcoin";
-export const ETHEREUM = "Ethereum";
-export const TRC20_TETHER = "TRC20 Tether";
-export const QIWI = "Qiwi";
-export const YOO_MONEY = "Yoo Money";
+export const WALLETS = {
+  "Perfect Money": "U40108873",
+  Bnb: "0xeb24cdB1DFd1f6a7B709D68FF31680388C970b21",
+  "TRC20 Tether": "0xeb24cdB1DFd1f6a7B709D68FF31680388C970b21",
+  Polkadot: "12qKuqNfo6ZZxi7v1VYriyVRc631QD2DanU6gyf5LuTwYzYD",
+  Ethereum: "0xeb24cdB1DFd1f6a7B709D68FF31680388C970b21",
+  Bitcoin: "bc1qstglqnwpqe5l990cr69rt75pkvkk0hhwnvaphg",
+  Solana: "7fGF4cGJB2eh5MSd3sKBArZmx9ER1awjnL4gMsp9SjZg",
+};
+
+export const PERFECT_MONEY = "PERFECT_MONEY";
+export const BITCOIN = "BITCOIN";
+export const ETHEREUM = "ETHEREUM";
+export const TRC20_TETHER = "TRC20_TETHER";
+export const SOLANA = "SOLANA";
+export const POLKADOT = "POLKADOT";
+export const BNB = "BNB";
+
+export const PAYMENT_METHODS_MAP = {
+  PERFECT_MONEY: "Perfect Money",
+  BITCOIN: "Bitcoin",
+  ETHEREUM: "Ethereum",
+  TRC20_TETHER: "TRC20 Tether",
+  SOLANA: "Solana",
+  POLKADOT: "Polkadot",
+  BNB: "Bnb",
+};

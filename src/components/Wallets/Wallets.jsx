@@ -1,6 +1,8 @@
 import styles from "./Wallet.module.css";
 import Slider from "react-slick";
 import { ICONS } from "../../pages/Personal-Area/ICONS";
+import { useRef } from "react";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 
 const sliderSettings = {
   speed: 500,
@@ -9,7 +11,6 @@ const sliderSettings = {
   slidesToScroll: 1,
   arrows: false,
   adaptiveHeight: true,
-
   responsive: [
     {
       breakpoint: 1700,
@@ -37,9 +38,11 @@ const sliderSettings = {
 };
 
 const Wallets = ({ paymentMethods }) => {
+  const sliderRef = useRef();
+
   return (
     <div className={styles["slider-wrapper"]}>
-      <Slider {...sliderSettings}>
+      <Slider ref={sliderRef} {...sliderSettings}>
         {paymentMethods.map((platform, i) => {
           return (
             <div className={styles["platform-balance"]} key={i}>
@@ -69,6 +72,14 @@ const Wallets = ({ paymentMethods }) => {
           );
         })}
       </Slider>
+      <div className={styles["custom-arrows"]}>
+        <button onClick={() => sliderRef.current.slickPrev()}>
+          <LeftOutlined />
+        </button>
+        <button onClick={() => sliderRef.current.slickNext()}>
+          <RightOutlined />
+        </button>
+      </div>
     </div>
   );
 };

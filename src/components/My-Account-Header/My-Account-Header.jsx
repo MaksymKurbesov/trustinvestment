@@ -7,21 +7,21 @@ import { useWindowSize } from "../../hooks/useWindowSize";
 
 const { Header: AntHeader } = Layout;
 
-const MyAccountHeader = ({ username }) => {
+const MyAccountHeader = ({ username, balance, siderCollapsed }) => {
   const windowSize = useWindowSize();
 
   return (
     <AntHeader className={styles["header"]}>
       {windowSize.width < 560 ? (
         <Link to={"/"} className={styles["logotype"]}>
-          <img src={Logo} width={170} alt={""} />
+          <img src={Logo} width={140} alt={""} />
         </Link>
       ) : (
         ""
       )}
       <div className={styles["user-info"]}>
         <p className={styles["user-info__name"]}>{username}</p>
-        <p className={styles["user-info__balance"]}>Баланс: 0$</p>
+        <p className={styles["user-info__balance"]}>Баланс: {balance}$</p>
       </div>
     </AntHeader>
   );

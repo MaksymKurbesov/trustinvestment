@@ -10,9 +10,14 @@ const AffilateProgram = () => {
   return (
     <section className={styles["affilate-program"]}>
       <div className={"container"}>
-        <h2 className={"section-title"}>Партнерская программа</h2>
+        <h2
+          data-aos="fade-down"
+          className={`${styles["affilate-title"]} section-title`}
+        >
+          Партнерская программа
+        </h2>
         <div className={styles["affilate-program__wrapper"]}>
-          <p className={styles["program-description"]}>
+          <p className={styles["program-description"]} data-aos="fade-left">
             Компания Trust Investments разработала специальную многоуровневую
             партнерскую программу. Участником данной программы может стать
             абсолютно любой Человек, прошедший регистрацию на нашем
@@ -25,7 +30,7 @@ const AffilateProgram = () => {
             программа многоуровневая и вознаграждение вы будете получать также с
             тех, кого пригласили приглашенные вами участники. 8%-4%-2%-1%
           </p>
-          {PartnerAnimation}
+          <span data-aos="fade-right">{PartnerAnimation}</span>
         </div>
       </div>
     </section>

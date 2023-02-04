@@ -3,32 +3,24 @@ import InvestmentIcon from "assets/images/user-statistic/Investment.png";
 import EarnedIcon from "assets/images/user-statistic/Earned.png";
 import WithdrawnIcon from "assets/images/user-statistic/Withdrawn.png";
 import ReferalsIcon from "assets/images/user-statistic/Referals.png";
-import { useContext, useEffect, useState } from "react";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
-import { FirebaseContext } from "../../index";
 import { DepositsStatus } from "components/Deposits-Status/Deposits-Status";
 import { TimeToPayment } from "components/Time-To-Payment/Time-To-Payment";
 import { Wallets } from "components/Wallets/Wallets";
-import { Skeleton } from "antd";
+import { useContext, useEffect, useState } from "react";
+import AuthContext from "../../components/Auth-Provider/AuthContext";
 
 const PersonalArea = () => {
-  const [currentUser, setCurrentUser] = useState(null);
-  const navigate = useNavigate();
-  const auth = getAuth();
-  const { firestore } = useContext(FirebaseContext);
+  const { currentUser } = useContext(AuthContext);
+  const [startDate, setStartDate] = useState(0);
+  const [charges, setCharges] = useState(0);
 
   useEffect(() => {
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const snapshot = await getDoc(doc(firestore, "users", user.email));
-        setCurrentUser(snapshot.data());
-      } else {
-        navigate("/login");
-      }
-    });
-  }, []);
+    if (currentUser && currentUser.deposits.active.length > 0) {
+      const activeDeposits = currentUser.deposits.active;
+      setStartDate(activeDeposits[activeDeposits.length - 1].date);
+      setCharges(activeDeposits[activeDeposits.length - 1].charges);
+    }
+  }, [currentUser]);
 
   if (!currentUser) {
     return null;
@@ -41,28 +33,28 @@ const PersonalArea = () => {
         <Wallets paymentMethods={currentUser.paymentMethods} />
         <div className={styles["user-statistic"]}>
           <div className={styles["user-statistic__item"]}>
-            <img src={InvestmentIcon} width={50} />
+            <img src={InvestmentIcon} width={50} alt={"Иконка"} />
             <div className={styles["info"]}>
               <p>Инвестировано:</p>
               <span>{currentUser.invested} USD</span>
             </div>
           </div>
           <div className={styles["user-statistic__item"]}>
-            <img src={EarnedIcon} width={50} />
+            <img src={EarnedIcon} width={50} alt={"Иконка"} />
             <div className={styles["info"]}>
               <p>Заработано:</p>
               <span>{currentUser.earned} USD</span>
             </div>
           </div>
           <div className={styles["user-statistic__item"]}>
-            <img src={WithdrawnIcon} width={50} />
+            <img src={WithdrawnIcon} width={50} alt={"Иконка"} />
             <div className={styles["info"]}>
               <p>Выведено:</p>
               <span>{currentUser.withdrawn} USD</span>
             </div>
           </div>
           <div className={styles["user-statistic__item"]}>
-            <img src={ReferalsIcon} width={50} />
+            <img src={ReferalsIcon} width={50} alt={"Иконка"} />
             <div className={styles["info"]}>
               <p>Реферальных:</p>
               <span>{currentUser.referals} USD</span>
@@ -70,7 +62,11 @@ const PersonalArea = () => {
           </div>
         </div>
         <DepositsStatus />
-        <TimeToPayment />
+        <TimeToPayment
+          charges={charges + 1}
+          startDate={startDate}
+          isCommonPlan={true}
+        />
       </div>
     </div>
   );

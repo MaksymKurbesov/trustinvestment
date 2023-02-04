@@ -1,6 +1,15 @@
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { Form } from "components/Login-Form/Login-Form";
-import { setDoc, doc } from "firebase/firestore";
+import {
+  setDoc,
+  doc,
+  collection,
+  where,
+  query,
+  getDocs,
+  updateDoc,
+  arrayUnion,
+} from "firebase/firestore";
 import { useContext, useEffect } from "react";
 import { FirebaseContext } from "../../index";
 import { useNavigate } from "react-router-dom";
@@ -12,16 +21,27 @@ import useLottie from "lottie-react";
 const setUserCustomFields = (uid, customFields) => {
   return {
     uid,
-    email: customFields.email,
+    email: customFields.email.toLowerCase(),
     nickname: customFields.nickname,
     phoneNumber: customFields.phone,
+    referredBy: customFields.referredBy,
+    referredTo: [],
     earned: 0,
     referals: 0,
     withdrawn: 0,
-    partners: 0,
+    invested: 0,
     deposits: {
       active: [],
       inactive: [],
+    },
+    wallets: {
+      PERFECT_MONEY: "",
+      TRC20_TETHER: "",
+      BITCOIN: "",
+      ETHEREUM: "",
+      SOLANA: "",
+      POLKADOT: "",
+      BNB: "",
     },
     paymentMethods: [
       {
@@ -72,31 +92,43 @@ const Register = () => {
     className: styles["signUpAnimation"],
   });
 
-  ////////////////////// dev tools //////////////////////
-
-  useEffect(() => {
-    function adjustViewHeight() {
-      document.querySelector(".devtools").style.height =
-        window.outerHeight - window.innerHeight - 70;
-    }
-
-    window.onresize = adjustViewHeight;
-
-    adjustViewHeight();
-  }, []);
-
   const handleRegister = async (user) => {
     // console.log(user);
     const auth = getAuth();
+    const usersRef = collection(firestore, "users");
+    const nicknameAlreadyExist = false;
+    const referredByRef = query(
+      usersRef,
+      where("nickname", "==", user.referredBy)
+    );
+    const existedUserRef = query(
+      usersRef,
+      where("nickname", "==", user.nickname)
+    );
+
+    // const queryTest = getDocs(existedUserRef);
+    // queryTest.then((snapshot) => {
+    //   console.log(snapshot.exists());
+    // });
+
     await createUserWithEmailAndPassword(auth, user.email, user.password).then(
-      (userCredential) => {
+      async (userCredential) => {
         // Signed in
         const signedUpUser = userCredential.user;
-        console.log(signedUpUser);
         setDoc(
           doc(firestore, "users", signedUpUser.email),
           setUserCustomFields(signedUpUser.uid, user)
         );
+
+        const querySnapsot = await getDocs(referredByRef);
+        querySnapsot.forEach((doc) => {
+          updateDoc(doc.ref, {
+            referredTo: {
+              1: arrayUnion(user.nickname),
+            },
+          });
+        });
+
         navigate("/login");
       }
     );
