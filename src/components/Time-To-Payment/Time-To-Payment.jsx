@@ -21,12 +21,16 @@ const TimeToPayment = ({ startDate, isCommonPlan, charges }) => {
   const resetTimer = () => {
     const activeDeposits = currentUser.deposits.active;
     const activeDepositsLastItem = activeDeposits[activeDeposits.length - 1];
+    let earned = currentUser.earned;
+    const receivedForDay = activeDepositsLastItem.willReceived / activeDepositsLastItem.days;
+
     activeDepositsLastItem.charges += 1;
-    activeDepositsLastItem.received +=
-      activeDepositsLastItem.willReceived / activeDepositsLastItem.days;
+    activeDepositsLastItem.received += receivedForDay;
+    earned += receivedForDay;
 
     updateDoc(doc(firestore, "users", currentUser.email), {
       "deposits.active": [...activeDeposits],
+      earned: earned,
     });
   };
 
@@ -43,10 +47,7 @@ const TimeToPayment = ({ startDate, isCommonPlan, charges }) => {
     <div className={styles["time-to-payment"]}>
       <div className={styles["wrapper"]}>
         {WaitAnimation}
-        <CountdownTimer
-          targetDate={startDate !== 0 ? startTimer() : 0}
-          resetHandler={resetTimer}
-        />
+        <CountdownTimer targetDate={startDate !== 0 ? startTimer() : 0} resetHandler={resetTimer} />
       </div>
     </div>
   );

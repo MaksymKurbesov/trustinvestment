@@ -4,24 +4,12 @@ import { Plans } from "./Plans";
 import { EnterAmount } from "components/Enter-Amount/Enter-Amount";
 import { ChoosePaymentMethod } from "components/Choose-Payment-Method/Choose-Payment-Method";
 import { AdditionalInformation } from "components/Additional-Information/Additional-Information";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
-import {
-  getPaymentMethod,
-  getRandomArbitrary,
-  hideDigitsInWallet,
-  secondsToStringDays,
-} from "utils/helpers";
+import { getPaymentMethod, getRandomArbitrary, hideDigitsInWallet, secondsToStringDays } from "utils/helpers";
 import Lottie from "lottie-react";
 import withdrawnAnimation from "../../assets/lottie-animations/withdrawn-animation2.json";
-import {
-  addDoc,
-  collection,
-  updateDoc,
-  doc,
-  getDoc,
-  arrayUnion,
-} from "firebase/firestore";
+import { addDoc, collection, updateDoc, doc, getDoc, arrayUnion, increment } from "firebase/firestore";
 import { FirebaseContext } from "../../index";
 import { ConfirmedWindow } from "../../components/ConfirmedWindow/ConfirmedWindow";
 import AuthContext from "../../components/Auth-Provider/AuthContext";
@@ -37,17 +25,12 @@ const Deposit = () => {
   const { firestore } = useContext(FirebaseContext);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isConfirmedModalOpen, setIsConfirmedModalOpen] = useState(false);
-  const [transactionID, setTransactionID] = useState(getRandomArbitrary());
 
   const [enoughMoneyError, setEnoughMoneyError] = useState(false);
 
-  const totalIncome = tariffPlan
-    ? ((amount / 100) * tariffPlan.percent * tariffPlan.days).toFixed(2)
-    : 0;
+  const totalIncome = tariffPlan ? ((amount / 100) * tariffPlan.percent * tariffPlan.days).toFixed(2) : 0;
 
-  const inDayIncome = tariffPlan
-    ? ((amount / 100) * tariffPlan.percent).toFixed(2)
-    : 0;
+  const inDayIncome = tariffPlan ? ((amount / 100) * tariffPlan.percent).toFixed(2) : 0;
 
   const handleConfirmOk = () => {
     setIsConfirmModalOpen(false);
@@ -55,24 +38,20 @@ const Deposit = () => {
 
     if (payFrom === "balance") {
       const sendData = async () => {
-        const userRef = await getDoc(
-          doc(collection(firestore, "users"), currentUser.email)
-        );
+        const userRef = await getDoc(doc(collection(firestore, "users"), currentUser.email));
 
         const userData = userRef.data();
         const userPaymentMethods = userData.paymentMethods;
-        const userPaymentMethod = userPaymentMethods.find(
-          (item) => item.name === PAYMENT_METHODS_MAP[paymentMethod]
-        );
-        let invested = userData.invested;
+        const userPaymentMethod = userPaymentMethods.find((item) => item.name === PAYMENT_METHODS_MAP[paymentMethod]);
 
-        console.log(userData);
-        userPaymentMethod.available -= Number(amount);
-        invested += Number(amount);
+        // userPaymentMethod.available -= Number(amount);
 
         updateDoc(doc(firestore, "users", currentUser.email), {
-          paymentMethods: userPaymentMethods,
-          invested: invested,
+          // paymentMethods: userPaymentMethods,
+          available: increment(-Number(amount)),
+          // paymentMethods
+          invested: increment(amount),
+          // invested: invested,
         });
       };
       sendData();
@@ -85,7 +64,7 @@ const Deposit = () => {
           progress: 0,
           days: tariffPlan.days,
           amount: amount,
-          willReceived: totalIncome,
+          willReceived: parseInt(totalIncome),
           date: new Date(),
           charges: 0,
           received: 0,
@@ -113,11 +92,7 @@ const Deposit = () => {
 
   const showConfirmModal = async () => {
     const enoughMoney =
-      amount <=
-      getPaymentMethod(
-        currentUser.paymentMethods,
-        PAYMENT_METHODS_MAP[paymentMethod]
-      ).available;
+      amount <= getPaymentMethod(currentUser.paymentMethods, PAYMENT_METHODS_MAP[paymentMethod]).available;
 
     if (enoughMoney) {
       setIsConfirmModalOpen(true);
@@ -194,11 +169,7 @@ const Deposit = () => {
             />
           </div>
           <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              disabled={!tariffPlan || amount <= 0}
-            >
+            <Button type="primary" htmlType="submit" disabled={!tariffPlan || amount <= 0}>
               Сделать депозит
             </Button>
           </Form.Item>
@@ -214,10 +185,7 @@ const Deposit = () => {
         title={<p className={styles["title-modal"]}>Сделать депозит</p>}
       >
         <div className={styles["modal-content"]}>
-          <Lottie
-            animationData={withdrawnAnimation}
-            className={styles["withdraw-animation"]}
-          />
+          <Lottie animationData={withdrawnAnimation} className={styles["withdraw-animation"]} />
           <p>
             Сумма: <span>{amount} USD</span>
           </p>
@@ -229,13 +197,10 @@ const Deposit = () => {
           </p>
           <p>
             Кошелёк:
-            <span>
-              {hideDigitsInWallet(currentUser.wallets[paymentMethod])}
-            </span>
+            <span>{hideDigitsInWallet(currentUser.wallets[paymentMethod])}</span>
           </p>
           <p>
-            Дата:{" "}
-            <span>{secondsToStringDays(Math.floor(Date.now() / 1000))}</span>
+            Дата: <span>{secondsToStringDays(Math.floor(Date.now() / 1000))}</span>
           </p>
         </div>
       </Modal>
@@ -247,7 +212,7 @@ const Deposit = () => {
         title={<p className={styles["title-modal"]}>Подтверждение вывода</p>}
         footer={null}
       >
-        <ConfirmedWindow transactionID={transactionID} />
+        <ConfirmedWindow transactionID={getRandomArbitrary()} />
       </Modal>
     </div>
   );

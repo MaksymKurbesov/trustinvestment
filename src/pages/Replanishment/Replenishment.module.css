@@ -5,6 +5,22 @@
 .information {
   font-size: 18px;
   max-width: 500px;
+  background: var(--blue);
+  padding: 20px;
+  padding-left: 70px;
+  color: white;
+  border-radius: 15px;
+  position: relative;
+}
+
+.information::before {
+  content: "!";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 10px;
+  font-size: 85px;
+  font-weight: 600;
 }
 
 .button-back {
@@ -14,9 +30,8 @@
 .input {
   max-width: 500px;
 }
-
-.replenishment button {
-  margin-top: 50px;
+.copy-button {
+  margin-left: 30px;
 }
 
 .replenishment p {

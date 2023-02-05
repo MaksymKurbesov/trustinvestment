@@ -26,15 +26,16 @@ const columns = [
         <div className={styles["progress"]}>
           <Progress
             percent={((record.charges * 100) / record.days).toFixed(1)}
-            showInfo={window.innerWidth > 560}
+            showInfo={window.innerWidth > 800}
           />
           <p>
-            Начислений {record.charges} / {record.days}
+            {window.innerWidth < 800 ? "" : "Начислений"} {record.charges} /{" "}
+            {record.days}
           </p>
         </div>
       );
     },
-    width: "25%",
+    width: window.innerWidth < 800 ? "17%" : "25%",
   },
   {
     title: "Сумма вклада",
@@ -68,6 +69,7 @@ const columns = [
         </>
       );
     },
+    width: window.innerWidth < 800 ? "25%" : "20%",
   },
 ];
 
@@ -114,9 +116,10 @@ const ActiveDeposits = () => {
         defaultPageSize: 5,
         pageSize: 5,
       }}
-      size={windowSize.width < 560 ? "small" : "middle"}
+      // size={windowSize.width < 560 ? "small" : "middle"}
       locale={{ emptyText: <Empty description={"Нет данных"} /> }}
-      scroll={{ x: 1100 }}
+      size={windowSize.width < 800 ? "small" : "middle"}
+      scroll={{ x: windowSize.width < 800 ? 700 : 900 }}
     />
   );
 };

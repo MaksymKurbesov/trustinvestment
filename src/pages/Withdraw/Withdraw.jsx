@@ -6,18 +6,13 @@ import { AdditionalInformation } from "../../components/Additional-Information/A
 import { useContext, useState } from "react";
 import Lottie from "lottie-react";
 import withdrawnAnimation from "assets/lottie-animations/withdrawn-animation2.json";
-import { useOutletContext } from "react-router-dom";
-import {
-  getRandomArbitrary,
-  hideDigitsInWallet,
-  secondsToStringDays,
-} from "../../utils/helpers";
+import { getRandomArbitrary, hideDigitsInWallet, secondsToStringDays } from "../../utils/helpers";
 import { ConfirmedWindow } from "../../components/ConfirmedWindow/ConfirmedWindow";
 import { useForm } from "@formspree/react";
 import { addDoc, collection } from "firebase/firestore";
 import { FirebaseContext } from "../../index";
 import AuthContext from "../../components/Auth-Provider/AuthContext";
-import { PERFECT_MONEY } from "../../utils/consts";
+import { PAYMENT_METHODS_MAP, PERFECT_MONEY } from "../../utils/consts";
 
 const Withdraw = () => {
   const { currentUser } = useContext(AuthContext);
@@ -26,7 +21,6 @@ const Withdraw = () => {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isConfirmedModalOpen, setIsConfirmedModalOpen] = useState(false);
   const [state, handleSubmit] = useForm("mdovaazr");
-  const [transactionID, setTransactionID] = useState(getRandomArbitrary());
   const [form] = Form.useForm();
   const { firestore } = useContext(FirebaseContext);
 
@@ -57,6 +51,8 @@ const Withdraw = () => {
         status: "Ожидание",
         type: "Вывод",
         date: new Date(),
+        email: currentUser.email,
+        executor: PAYMENT_METHODS_MAP[paymentMethod],
       });
     };
     sendData();
@@ -72,8 +68,6 @@ const Withdraw = () => {
     });
   };
 
-  console.log(currentUser.wallets[paymentMethod]);
-
   if (!currentUser) {
     return null;
   }
@@ -82,24 +76,18 @@ const Withdraw = () => {
     <div className={styles["withdraw"]}>
       <h2 className={"my-account-title"}>Вывод средств</h2>
       <p className={styles["withdraw-info"]}>
-        Перед тем, как вывести средства на свой кошелек, убедитесь, что на
-        странице «Настройки» вами были введены реквизиты для вывода на
-        интересующую вас платежную систему. Обратите внимание что Trust
-        Investment не предоставляет услуги обмена, поэтому вывод возможен только
-        на ту платежную систему, с которой заводились средства на депозит.
+        Перед тем, как вывести средства на свой кошелек, убедитесь, что на странице «Настройки» вами были введены
+        реквизиты для вывода на интересующую вас платежную систему. Обратите внимание что Trust Investment не
+        предоставляет услуги обмена, поэтому вывод возможен только на ту платежную систему, с которой заводились
+        средства на депозит.
       </p>
       <Form
         form={form}
-        // onFinish={onFinish}
-        // onSubmitCapture={handleSubmit}
         initialValues={{
           "payment-method": "Perfect Money",
         }}
       >
-        <ChoosePaymentMethod
-          stepNumber={"01"}
-          paymentMethodHandler={setPaymentMethod}
-        />
+        <ChoosePaymentMethod stepNumber={"01"} paymentMethodHandler={setPaymentMethod} />
         <EnterAmount stepNumber={"02"} amountHandler={setAmount} />
 
         <AdditionalInformation
@@ -108,23 +96,21 @@ const Withdraw = () => {
           infoLabel2={"Будет выведено с учетом комиссии"}
           infoValue2={amount}
         />
+        {}
 
         <Tooltip
           title={"Укажите кошелёк для вывода средств в настройках аккаунта"}
+          open={currentUser.wallets[paymentMethod] === undefined || currentUser.wallets[paymentMethod] === ""}
         >
           <Button
             key={"submit"}
             onClick={onFinish}
-            disabled={
-              currentUser.wallets[paymentMethod] === undefined ||
-              currentUser.wallets[paymentMethod] === ""
-            }
+            disabled={currentUser.wallets[paymentMethod] === undefined || currentUser.wallets[paymentMethod] === ""}
           >
             Вывести средства
           </Button>
         </Tooltip>
       </Form>
-      {/*<ConfirmingWindow />*/}
       <Modal
         open={isConfirmModalOpen}
         onOk={handleConfirmOk}
@@ -134,10 +120,7 @@ const Withdraw = () => {
         title={<p className={styles["title-modal"]}>Вывод средств</p>}
       >
         <div className={styles["modal-content"]}>
-          <Lottie
-            animationData={withdrawnAnimation}
-            className={styles["withdraw-animation"]}
-          />
+          <Lottie animationData={withdrawnAnimation} className={styles["withdraw-animation"]} />
           <p>
             Сумма: <span>{amount} USD</span>
           </p>
@@ -148,14 +131,10 @@ const Withdraw = () => {
             Платёжная система: <span>{paymentMethod}</span>
           </p>
           <p>
-            Кошелёк:{" "}
-            <span>
-              {hideDigitsInWallet(currentUser.wallets[paymentMethod])}
-            </span>
+            Кошелёк: <span>{hideDigitsInWallet(currentUser.wallets[paymentMethod])}</span>
           </p>
           <p>
-            Дата:{" "}
-            <span>{secondsToStringDays(Math.floor(Date.now() / 1000))}</span>
+            Дата: <span>{secondsToStringDays(Math.floor(Date.now() / 1000))}</span>
           </p>
         </div>
       </Modal>
@@ -167,7 +146,7 @@ const Withdraw = () => {
         title={<p className={styles["title-modal"]}>Подтверждение вывода</p>}
         footer={null}
       >
-        <ConfirmedWindow transactionID={transactionID} />
+        <ConfirmedWindow transactionID={getRandomArbitrary()} />
       </Modal>
     </div>
   );

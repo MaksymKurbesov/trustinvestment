@@ -1,38 +1,32 @@
 import styles from "./Transactions.module.css";
-import React, { useContext } from "react";
-import { collection, query, where } from "firebase/firestore";
+import React, { useContext, useEffect, useState } from "react";
+import { collection, query, where, orderBy, getDocs } from "firebase/firestore";
 import { FirebaseContext } from "../../index";
-import { useCollection } from "react-firebase-hooks/firestore";
 import { TransactionsTable } from "./TransactionsTable";
-import { MobileTransactions } from "./Mobile-Transactions";
-import { useWindowSize } from "../../hooks/useWindowSize";
-import { useOutletContext } from "react-router-dom";
+import AuthContext from "../../components/Auth-Provider/AuthContext";
+import { useCollection } from "react-firebase-hooks/firestore";
 
 const Transactions = () => {
-  const [currentUser] = useOutletContext();
+  const { currentUser } = useContext(AuthContext);
   const { firestore } = useContext(FirebaseContext);
 
   const q = query(
     collection(firestore, "transactions"),
     where("account_id", "==", currentUser.uid)
+    // where("status", "==", "Выполнено"),
+    // where("type", "==", "Пополнение")
   );
 
   const [transactions, loading, error] = useCollection(q);
 
-  const windowSize = useWindowSize();
-
-  // unstringifyDate(secondsToStringDays(Math.floor(Date.now() / 1000)));
+  console.log(transactions);
 
   if (loading) return;
 
   return (
     <div>
       <h3 className={"my-account-title"}>Ваши транзакции</h3>
-      {windowSize.width < 500 ? (
-        <MobileTransactions transactions={transactions} />
-      ) : (
-        <TransactionsTable transactions={transactions} />
-      )}
+      <TransactionsTable transactions={transactions} />
     </div>
   );
 };

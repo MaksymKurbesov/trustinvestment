@@ -1,14 +1,9 @@
-import { Badge, Table, Tag, Tooltip } from "antd";
+import { Table, Tag, Tooltip } from "antd";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { CaretDownOutlined } from "@ant-design/icons";
-import {
-  normalizeDate,
-  secondsToStringDays,
-  sortByDate,
-} from "../../utils/helpers";
+import { normalizeDate, sortByDate } from "../../utils/helpers";
 import { STATUS_MAPLIST } from "../../utils/consts";
 import styles from "./Transactions.module.css";
-import { useEffect } from "react";
 
 const onChange = (pagination, filters, sorter, extra) => {
   console.log("params", pagination, filters, sorter, extra);
@@ -16,14 +11,13 @@ const onChange = (pagination, filters, sorter, extra) => {
 
 const TransactionsTable = ({ transactions }) => {
   const windowSize = useWindowSize();
-  const isMobile = windowSize.width < 850;
 
   const columns = [
     {
       title: "ID",
       dataIndex: "id",
       key: "id",
-      width: windowSize.width < 575 ? 40 : 55,
+      width: 65,
       className: styles["testID"],
       align: "center",
       filterIcon: <CaretDownOutlined />,
@@ -37,18 +31,13 @@ const TransactionsTable = ({ transactions }) => {
 
         return (
           <Tooltip title={text}>
-            {isMobile ? (
-              <Badge status={tag.color} />
-            ) : (
-              <Tag color={tag.color} icon={tag.icon}>
-                {text}
-              </Tag>
-            )}
+            <Tag color={tag.color} icon={tag.icon}>
+              {text}
+            </Tag>
           </Tooltip>
         );
       },
       align: "center",
-      width: isMobile ? 66 : "initial",
     },
     {
       title: "Тип",
@@ -61,37 +50,30 @@ const TransactionsTable = ({ transactions }) => {
       dataIndex: "amount",
       key: "amount",
       render: (text) => `${text} USD`,
-      width: windowSize.width < 650 ? 87 : "initial",
-      align: windowSize.width < 650 ? "center" : "initial",
+      align: "center",
     },
     {
       title: "Комиссия",
       dataIndex: "tax",
       key: "tax",
-      // align: "center",
-      width: windowSize.width < 1350 ? 80 : 100,
+      width: 100,
       align: "center",
     },
     {
       title: "Дата",
       dataIndex: "date",
       key: "date",
-      width: windowSize.width < 821 ? 79 : "initial",
       align: "center",
-      // filtered: true,
-      // defaultFilteredValue: "date",
     },
     {
       title: "Исполнитель",
       dataIndex: "executor",
       key: "executor",
-      width: windowSize.width < 1350 ? 110 : "initial",
-      responsive: ["md"],
-      // align: "center",
+      align: "center",
     },
   ];
 
-  if (!transactions) return;
+  if (!transactions.docs) return;
 
   const transactionsList = transactions.docs.map((doc) => {
     const data = doc.data();
@@ -115,9 +97,10 @@ const TransactionsTable = ({ transactions }) => {
       columns={columns}
       dataSource={normalizeDate(transactionsList)}
       onChange={onChange}
-      size={windowSize.width < 1300 ? "small" : ""}
+      size={windowSize.width < 600 ? "small" : ""}
       className={"transactionsListRoot"}
-      mobileBreakpoint={768}
+      // mobileBreakpoint={768}
+      scroll={{ x: windowSize.width < 600 ? 800 : 1200 }}
     />
   );
 };

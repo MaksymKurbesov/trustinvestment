@@ -1,16 +1,11 @@
 import styles from "./Partners.module.css";
 import { Button, Input, notification, Table } from "antd";
-import {
-  CheckCircleFilled,
-  HeartFilled,
-  SmileFilled,
-  SmileOutlined,
-  ThunderboltFilled,
-} from "@ant-design/icons";
+import { CheckCircleFilled, HeartFilled, SmileFilled, SmileOutlined, ThunderboltFilled } from "@ant-design/icons";
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../../components/Auth-Provider/AuthContext";
 import { FirebaseContext } from "../../index";
 import { collection, getDocs, query, where } from "firebase/firestore";
+import { LevelCollapse } from "./LevelCollapse";
 
 const columns = [
   {
@@ -35,38 +30,64 @@ const columns = [
   },
 ];
 
+const getNumberOfReferrals = (referrals) => {
+  return Object.values(referrals).reduce((accum, val) => {
+    return accum + val.length;
+  }, 0);
+};
+
+const getActiveReferrals = (referrals) => {
+  return Object.values(referrals).reduce((accum, value) => {
+    const activeReferrals = value.filter((item) => item.invested > 0).length;
+    return accum + activeReferrals;
+  }, 0);
+};
+
+const getPurchasedPlans = (user) => {
+  return user.deposits.active.length + user.deposits.inactive.length;
+};
+
 const Partners = () => {
   const { currentUser } = useContext(AuthContext);
-  const [referralsList, setReferralsList] = useState([]);
+  const [referralsList, setReferralsList] = useState({
+    1: [],
+    2: [],
+    3: [],
+    4: [],
+    5: [],
+  });
   const { firestore } = useContext(FirebaseContext);
 
-  const getReferrals = () => {
-    console.log(currentUser.referredTo);
+  console.log(referralsList);
 
-    currentUser.referredTo["1"].map(async (user, index) => {
-      const q = query(
-        collection(firestore, "users"),
-        where("nickname", "==", user)
-      );
+  const getReferrals = (referrals) => {
+    for (const [level, userNicknames] of Object.entries(referrals)) {
+      userNicknames.forEach(async (userNickname) => {
+        const q = query(collection(firestore, "users"), where("nickname", "==", userNickname));
 
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((item) => {
-        setReferralsList([...referralsList, { key: index, ...item.data() }]);
+        console.log(level, "level");
+        await getDocs(q).then((snap) => {
+          snap.docs.map((item, index) => {
+            setReferralsList((prevState) => ({
+              ...prevState,
+              [level]: [
+                ...prevState[level],
+                {
+                  ...item.data(),
+                  numberOfReferrals: getNumberOfReferrals(item.data().referredTo),
+                  key: item.data().uid,
+                },
+              ],
+            }));
+          });
+        });
       });
-    });
+    }
   };
 
-  // const getReferrals = () => {
-  //   for (const [key, value] of Object.entries(currentUser.referredTo)) {
-  //     console.log(`${key} ${value}`);
-  //   }
-  // };
-
   useEffect(() => {
-    getReferrals();
+    getReferrals(currentUser.referredTo);
   }, []);
-
-  console.log(referralsList);
 
   const [api, contextHolder] = notification.useNotification();
   const openNotification = () => {
@@ -102,9 +123,7 @@ const Partners = () => {
           <Button
             onClick={() => {
               openNotification();
-              navigator.clipboard.writeText(
-                `https://dubaitrustinvestment.net/register?ref=${currentUser.nickname}`
-              );
+              navigator.clipboard.writeText(`https://dubaitrustinvestment.net/register?ref=${currentUser.nickname}`);
             }}
           >
             Копировать
@@ -119,11 +138,11 @@ const Partners = () => {
           <SmileFilled className={styles["icon"]} />
           <div>
             <p>Всего рефералов:</p>
-            <span>0</span>
+            <span>{getNumberOfReferrals(currentUser.referredTo)}</span>
           </div>
           <div>
             <p>Активных:</p>
-            <span>0</span>
+            <span>{getActiveReferrals(referralsList)}</span>
           </div>
         </div>
         <div className={styles["your-sponsor-mobile"]}>
@@ -134,72 +153,11 @@ const Partners = () => {
           <ThunderboltFilled className={styles["icon"]} />
           <div className={styles["deposits-bought-info"]}>
             <p>Куплено пакетов:</p>
-            <span>0</span>
+            <span>{getPurchasedPlans(currentUser)}</span>
           </div>
         </div>
-        <div className={styles["levels"]}>
-          <ul className={styles["levels-list"]}>
-            <li>
-              <span>1 уровень</span>
-              <p>
-                Рефералов: <span>0</span>
-              </p>
-              <p>
-                Активных: <span>0</span>
-              </p>
-              <p>
-                Всего инвестировано: <span>0 USD</span>
-              </p>
-            </li>
-            <li>
-              <span>2 уровень</span>
-              <p>
-                Рефералов: <span>0</span>
-              </p>
-              <p>
-                Активных: <span>0</span>
-              </p>
-              <p>
-                Всего инвестировано: <span>0 USD</span>
-              </p>
-            </li>
-            <li>
-              <span>3 уровень</span>
-              <p>
-                Рефералов: <span>0</span>
-              </p>
-              <p>
-                Активных: <span>0</span>
-              </p>
-              <p>
-                Всего инвестировано: <span>0 USD</span>
-              </p>
-            </li>
-            <li>
-              <span>4 уровень</span>
-              <p>
-                Рефералов: <span>0</span>
-              </p>
-              <p>
-                Активных: <span>0</span>
-              </p>
-              <p>
-                Всего инвестировано: <span>0 USD</span>
-              </p>
-            </li>
-            <li>
-              <span>5 уровень</span>
-              <p>
-                Рефералов: <span>0</span>
-              </p>
-              <p>
-                Активных: <span>0</span>
-              </p>
-              <p>
-                Всего инвестировано: <span>0 USD</span>
-              </p>
-            </li>
-          </ul>
+        <div className={`${styles["levels"]} levelsRoot`}>
+          <LevelCollapse referralsList={referralsList} />
         </div>
         <div className={styles["partner-percentage"]}>
           <HeartFilled className={styles["icon"]} />
@@ -207,12 +165,7 @@ const Partners = () => {
           <span className={styles["percentage"]}>7%-4%-3%-2%-1%</span>
         </div>
 
-        <Table
-          scroll={{ x: 1100 }}
-          dataSource={referralsList}
-          columns={columns}
-          className={styles["your-referrals"]}
-        />
+        <Table scroll={{ x: 1100 }} dataSource={[]} columns={columns} className={styles["your-referrals"]} />
       </div>
       <>{contextHolder}</>
     </div>

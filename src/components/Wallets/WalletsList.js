@@ -1,0 +1,51 @@
+export const WALLETS_LIST = [
+  {
+    name: "Perfect Money",
+    available: 0,
+    deposited: 0,
+    withdrawn: 0,
+    referals: 0,
+  },
+  {
+    name: "TRC20 Tether",
+    available: 0,
+    deposited: 0,
+    withdrawn: 0,
+    referals: 0,
+  },
+  {
+    name: "Bitcoin",
+    available: 0,
+    deposited: 0,
+    withdrawn: 0,
+    referals: 0,
+  },
+  {
+    name: "Ethereum",
+    available: 0,
+    deposited: 0,
+    withdrawn: 0,
+    referals: 0,
+  },
+  {
+    name: "Solana",
+    available: 0,
+    deposited: 0,
+    withdrawn: 0,
+    referals: 0,
+  },
+  {
+    name: "Polkadot",
+    available: 0,
+    deposited: 0,
+    withdrawn: 0,
+    referals: 0,
+  },
+  {
+    name: "BNB",
+    available: 0,
+    deposited: 0,
+    withdrawn: 0,
+    referals: 0,
+  },
+];

@@ -5,7 +5,7 @@ import WithdrawnIcon from "assets/images/user-statistic/Withdrawn.png";
 import ReferalsIcon from "assets/images/user-statistic/Referals.png";
 import { DepositsStatus } from "components/Deposits-Status/Deposits-Status";
 import { TimeToPayment } from "components/Time-To-Payment/Time-To-Payment";
-import { Wallets } from "components/Wallets/Wallets";
+import { UserWallets } from "components/Wallets/UserWallets";
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../../components/Auth-Provider/AuthContext";
 
@@ -30,7 +30,7 @@ const PersonalArea = () => {
     <div className={`${styles["my-account-page"]} accountRoot`}>
       <h2 className={"my-account-title"}>Личный кабинет</h2>
       <div className={styles["my-account"]}>
-        <Wallets paymentMethods={currentUser.paymentMethods} />
+        <UserWallets paymentMethods={currentUser.paymentMethods} />
         <div className={styles["user-statistic"]}>
           <div className={styles["user-statistic__item"]}>
             <img src={InvestmentIcon} width={50} alt={"Иконка"} />
@@ -62,11 +62,7 @@ const PersonalArea = () => {
           </div>
         </div>
         <DepositsStatus />
-        <TimeToPayment
-          charges={charges + 1}
-          startDate={startDate}
-          isCommonPlan={true}
-        />
+        <TimeToPayment charges={charges + 1} startDate={startDate} isCommonPlan={true} />
       </div>
     </div>
   );

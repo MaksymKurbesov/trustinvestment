@@ -1,8 +1,12 @@
-import styles from "./Wallet.module.css";
+import styles from "./UserWallets.module.css";
 import Slider from "react-slick";
 import { ICONS } from "../../pages/Personal-Area/ICONS";
-import { useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { FirebaseContext } from "../../index";
+import { collection, query, where, runTransaction } from "firebase/firestore";
+import { useCollection, useCollectionOnce } from "react-firebase-hooks/firestore";
+import AuthContext from "../Auth-Provider/AuthContext";
 
 const sliderSettings = {
   speed: 500,
@@ -37,8 +41,39 @@ const sliderSettings = {
   ],
 };
 
-const Wallets = ({ paymentMethods }) => {
+const getTotalDeposited = (transactions) => {
+  return transactions.reduce((accum, value) => {
+    return accum + parseInt(value.amount);
+  }, 0);
+};
+
+const UserWallets = ({ paymentMethods }) => {
+  const { currentUser } = useContext(AuthContext);
   const sliderRef = useRef();
+  const { firestore } = useContext(FirebaseContext);
+
+  const [transactions, setTransactions] = useState([]);
+
+  const q = query(
+    collection(firestore, "transactions"),
+    where("account_id", "==", currentUser.uid),
+    where("status", "==", "Выполнено"),
+    where("type", "==", "Пополнение")
+  );
+
+  const [transactionsRef, loading, error] = useCollection(q);
+
+  useEffect(() => {
+    if (!transactionsRef) return;
+
+    const transactionsArray = [];
+    transactionsRef.docs.map((transaction) => {
+      transactionsArray.push(transaction.data());
+      setTransactions(transactionsArray);
+    });
+  }, [loading]);
+
+  console.log(transactions);
 
   return (
     <div className={styles["slider-wrapper"]}>
@@ -57,7 +92,7 @@ const Wallets = ({ paymentMethods }) => {
                 </li>
                 <li>
                   <p>Пополнено</p>
-                  <span>{platform.deposited} USD</span>
+                  <span>{getTotalDeposited(transactions.filter((item) => item.executor === platform.name))} USD</span>
                 </li>
                 <li>
                   <p>Выведено</p>
@@ -84,4 +119,4 @@ const Wallets = ({ paymentMethods }) => {
   );
 };
 
-export { Wallets };
+export { UserWallets };

@@ -1,17 +1,37 @@
+.settings-page {
+  padding-bottom: 50px;
+}
+
 .settings-page h3 {
   margin-bottom: 30px;
   font-size: 20px;
   font-weight: 600;
 }
 
-.avatar {
-  width: 300px;
-  height: 300px;
-  background: var(--blue);
-  border-radius: 50%;
-  margin-bottom: 30px;
+.user-avatar {
+  grid-column: auto / span 2;
+  cursor: pointer;
 }
 
-.wallets-title {
-  margin-top: 60px;
+.form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.personal-info-wrapper {
+  margin-right: 35px;
+}
+
+.submit-settings {
+  max-width: 200px;
+}
+
+@media screen and (max-width: 550px) {
+  .form {
+    display: block;
+  }
+
+  .personal-info-wrapper {
+    margin-bottom: 75px;
+  }
 }

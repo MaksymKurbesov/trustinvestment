@@ -28,6 +28,8 @@ body {
   background-color: #e7e7e7;
   color: var(--black);
   counter-reset: section;
+
+  /*height: 100%;*/
 }
 
 a {
@@ -63,6 +65,12 @@ ol {
 .index-layout {
   padding: 50px;
   min-height: 380px;
+  background-image: url("./../src/assets/images/TEST.png"),
+    url("./../src/assets/images/TEST.png");
+  background-repeat: no-repeat, no-repeat;
+  background-position: -600px 350px, right -400px top 1570px;
+  background-size: 1500px;
+  overflow: hidden;
 }
 
 .container {
@@ -82,8 +90,12 @@ h3 {
   text-transform: uppercase;
 }
 
-.accountRoot .slick-slide {
+.slick-slide > div {
   margin-right: 20px !important;
+}
+
+.accountRoot .slick-slide {
+  /*margin-right: 20px !important;*/
   height: 90%;
   padding-top: 10px;
 }
@@ -98,10 +110,10 @@ h3 {
   display: grid !important;
   grid-template-columns: repeat(5, 1fr);
   gap: 5px;
-  bottom: -10px;
+  bottom: -32px;
   left: 50%;
   transform: translateX(-50%);
-  width: 80%;
+  width: 50%;
 }
 
 .accountRoot .slick-dots li button:before {
@@ -131,7 +143,7 @@ h3 {
   display: grid;
   grid-template-columns: 0 1fr 1fr repeat(2, 1fr);
   grid-template-rows: 1fr;
-  gap: 10px;
+  column-gap: 10px;
 }
 
 .plans-listRoot .ant-list-item {
@@ -171,7 +183,7 @@ h3 {
   text-align: initial;
 }
 
-.ant-modal-footer {
+.replenishment-modal .ant-modal-footer {
   display: none;
 }
 
@@ -193,6 +205,21 @@ h3 {
 
 #normal_login .anticon {
   color: rgba(0, 0, 0, 0.25);
+}
+
+.ant-menu-dark:not(.ant-menu-horizontal)
+  .ant-menu-item:not(.ant-menu-item-selected):hover {
+  background-color: var(--alpha-blue);
+}
+
+.ant-menu-dark.ant-menu-horizontal > .ant-menu-item-selected {
+  border-bottom: none !important;
+  color: rgba(255, 255, 255, 0.65) !important;
+}
+
+.ant-menu-dark.ant-menu-horizontal > .active-main-header {
+  border-bottom: 5px solid var(--blue) !important;
+  color: rgba(255, 255, 255, 1) !important;
 }
 
 .ant-menu-dark.ant-menu-horizontal > .ant-menu-item-selected {
@@ -221,6 +248,18 @@ h3 {
   border: none !important;
 }
 
+.ant-layout .ant-layout-sider-zero-width-trigger {
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  inset-inline-end: -30px;
+}
+
+.ant-switch-inner {
+  background: #4096ff;
+}
+
 #components-form-demo-normal-login .login-form {
   max-width: 300px;
 }
@@ -238,27 +277,37 @@ h3 {
   color: white;
 }
 
+.payment-select .anticon {
+  color: rgba(0, 0, 0, 0.4);
+}
+
 .anticon-ellipsis {
   color: white;
 }
 
-@media screen and (max-width: 1350px) {
-  .ant-table-wrapper .ant-table-thead > tr > th {
-    padding: 16px 13px !important;
-    font-size: 12px;
-  }
+.depositRoot .ant-table-cell {
+  text-align: center !important;
 }
 
-@media screen and (max-width: 1250px) {
-  /*.my-account-title {*/
-  /*  font-size: 40px;*/
-  /*}*/
-
-  .ant-table-wrapper .ant-table-thead > tr > th {
-    padding: 11px !important;
-  }
+.depositRoot .ant-table-cell:nth-child(2) {
+  padding-right: 25px !important;
 }
 
+.levelsRoot .ant-collapse-item:not(:last-child) {
+  margin-bottom: 24px !important;
+}
+
+.levelsRoot .ant-collapse-item:last-child {
+  margin-bottom: 0 !important;
+}
+
+.levelsRoot .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+  align-items: center !important;
+}
+
+.levelsRoot .ant-collapse-item .ant-collapse-arrow {
+  color: white !important;
+}
 @media screen and (max-width: 1000px) {
   .plans-listRoot .ant-card-body {
     padding: 15px;
@@ -280,35 +329,13 @@ h3 {
     margin-right: -10px !important;
   }
 
-  /*.my-account-title {*/
-  /*  font-size: 30px;*/
-  /*}*/
-
-  .depositRoot .ant-table.ant-table-small {
-    font-size: 12px !important;
-  }
-
   .contact-usRoot form {
     width: 100%;
   }
 }
 
 @media screen and (max-width: 600px) {
-  .transactionsListRoot .ant-table.ant-table-small {
-    font-size: 12px;
-  }
-
-  .ant-table-wrapper .ant-table-thead > tr > th {
-    padding: 6px 2px !important;
-  }
-
-  .ant-table-tbody > tr > td {
-    padding: 6px 2px !important;
+  .ant-layout-header {
+    padding-inline: 20px !important;
   }
 }
-
-/*@media screen and (max-width: 400px) {*/
-/*  .plansRoot .slick-slide {*/
-/*    width: 255px !important;*/
-/*  }*/
-/*}*/

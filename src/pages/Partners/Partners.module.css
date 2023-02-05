@@ -6,15 +6,10 @@
     "levels levels percentage"
     "ref-list ref-list ref-list";
   grid-template-columns: repeat(6, minmax(0, 1fr));
-  grid-template-rows: repeat(4, fit-content(100%));
+  grid-template-rows: repeat(4, fit-content(100px));
   gap: 70px;
   color: white;
   text-align: left;
-}
-
-.referral-wrapper p {
-  font-weight: 400;
-  font-size: 14px;
 }
 
 .referral-wrapper span {
@@ -136,28 +131,6 @@ span.icon {
   padding: 0;
 }
 
-.levels-list li p {
-  font-size: 14px;
-}
-
-.levels-list li {
-  display: flex;
-  justify-content: space-between;
-  background: var(--blue);
-  border-radius: 15px;
-  padding: 10px 20px;
-  align-items: center;
-}
-
-.levels-list li:not(:last-child) {
-  margin-bottom: 10px;
-}
-
-.levels-list li span {
-  font-size: 18px;
-  display: block;
-}
-
 .partner-percentage {
   grid-area: percentage;
   grid-column: auto / span 2;
@@ -179,6 +152,39 @@ span.icon {
   grid-column: auto / span 6;
 }
 
+.level-wrapper {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+}
+
+.levels-list {
+  background: #e7e7e7;
+  color: white;
+}
+
+.level-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  padding-right: 25px;
+}
+
+.level-header p:first-child {
+  font-weight: 600;
+}
+
+.level-header p span {
+  font-size: 18px;
+}
+
+.level-header p:not(:last-child) {
+  margin-right: 5px;
+}
+
 @media screen and (max-width: 1500px) {
   .referral-wrapper {
     gap: 45px;
@@ -191,17 +197,12 @@ span.icon {
   .status,
   .registered-clients,
   .deposits-bought,
-  .your-referrals,
   .partner-percentage {
     padding: 15px 10px 15px 37px;
   }
 
   .referral-info {
     padding: 20px;
-  }
-
-  .levels-list li p {
-    font-size: 12px;
   }
 
   .partner-percentage {
@@ -233,7 +234,6 @@ span.icon {
   .status,
   .registered-clients,
   .deposits-bought,
-  .your-referrals,
   .partner-percentage,
   .your-sponsor-mobile {
     padding: 15px;
@@ -296,10 +296,6 @@ span.icon {
     grid-column: auto / span 6;
     text-align: center;
   }
-
-  .levels-list li span {
-    font-size: 14px;
-  }
 }
 
 @media screen and (max-width: 450px) {
@@ -314,27 +310,5 @@ span.icon {
 
   .registered-clients div p {
     display: inline;
-  }
-
-  .levels-list li {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    justify-content: center;
-    text-align: center;
-    row-gap: 10px;
-    padding: 20px;
-  }
-
-  .levels-list li span {
-    grid-column: auto / span 2;
-    font-size: 20px;
-  }
-
-  .levels-list li p:last-child {
-    grid-column: auto / span 2;
-  }
-
-  .levels-list li p {
-    font-size: 14px;
   }
 }
