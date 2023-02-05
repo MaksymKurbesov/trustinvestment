@@ -1,15 +1,8 @@
 import styles from "./Choose-Payment-Method.module.css";
 import { PaymentMethods } from "../Payment-Methods/Payment-Methods";
 import { Switch } from "antd";
-import { useState } from "react";
 
-const ChoosePaymentMethod = ({
-  paymentMethodHandler,
-  stepNumber,
-  toggleButton,
-  setPayFrom,
-  status,
-}) => {
+const ChoosePaymentMethod = ({ paymentMethodHandler, stepNumber, toggleButton, setPayFrom, status }) => {
   const onChange = () => {
     setPayFrom((prevState) => (prevState === "balance" ? "card" : "balance"));
   };

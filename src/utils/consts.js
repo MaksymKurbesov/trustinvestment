@@ -1,8 +1,4 @@
-import {
-  CheckCircleOutlined,
-  CloseCircleOutlined,
-  SyncOutlined,
-} from "@ant-design/icons";
+import { CheckCircleOutlined, CloseCircleOutlined, SyncOutlined } from "@ant-design/icons";
 
 export const LOGIN_ROUTE = "/login";
 export const ACCOUNT_ROUTE = "/my-account";
@@ -32,13 +28,29 @@ export const WALLETS = {
   Solana: "7fGF4cGJB2eh5MSd3sKBArZmx9ER1awjnL4gMsp9SjZg",
 };
 
-export const PERFECT_MONEY = "PERFECT_MONEY";
-export const BITCOIN = "BITCOIN";
-export const ETHEREUM = "ETHEREUM";
-export const TRC20_TETHER = "TRC20_TETHER";
-export const SOLANA = "SOLANA";
-export const POLKADOT = "POLKADOT";
-export const BNB = "BNB";
+// export const PERFECT_MONEY = "PERFECT_MONEY";
+// export const BITCOIN = "BITCOIN";
+// export const ETHEREUM = "ETHEREUM";
+// export const TRC20_TETHER = "TRC20_TETHER";
+// export const SOLANA = "SOLANA";
+// export const POLKADOT = "POLKADOT";
+// export const BNB = "BNB";
+
+export const PERCENTAGE_BY_LVL = {
+  1: 7,
+  2: 4,
+  3: 3,
+  4: 2,
+  5: 1,
+};
+
+export const PERFECT_MONEY = "Perfect Money";
+export const BITCOIN = "Bitcoin";
+export const ETHEREUM = "Ethereum";
+export const TRC20_TETHER = "TRC20 Tether";
+export const SOLANA = "Solana";
+export const POLKADOT = "Polkadot";
+export const BNB = "Bnb";
 
 export const PAYMENT_METHODS_MAP = {
   PERFECT_MONEY: "Perfect Money",

@@ -12,7 +12,7 @@ import { useForm } from "@formspree/react";
 import { addDoc, collection } from "firebase/firestore";
 import { FirebaseContext } from "../../index";
 import AuthContext from "../../components/Auth-Provider/AuthContext";
-import { PAYMENT_METHODS_MAP, PERFECT_MONEY } from "../../utils/consts";
+import { PERFECT_MONEY } from "../../utils/consts";
 
 const Withdraw = () => {
   const { currentUser } = useContext(AuthContext);
@@ -52,7 +52,7 @@ const Withdraw = () => {
         type: "Вывод",
         date: new Date(),
         email: currentUser.email,
-        executor: PAYMENT_METHODS_MAP[paymentMethod],
+        executor: paymentMethod,
       });
     };
     sendData();
@@ -100,12 +100,18 @@ const Withdraw = () => {
 
         <Tooltip
           title={"Укажите кошелёк для вывода средств в настройках аккаунта"}
-          open={currentUser.wallets[paymentMethod] === undefined || currentUser.wallets[paymentMethod] === ""}
+          open={
+            currentUser.paymentMethods[paymentMethod].number === undefined ||
+            currentUser.paymentMethods[paymentMethod].number === ""
+          }
         >
           <Button
             key={"submit"}
             onClick={onFinish}
-            disabled={currentUser.wallets[paymentMethod] === undefined || currentUser.wallets[paymentMethod] === ""}
+            disabled={
+              currentUser.paymentMethods[paymentMethod].number === undefined ||
+              currentUser.paymentMethods[paymentMethod].number === ""
+            }
           >
             Вывести средства
           </Button>
@@ -131,7 +137,7 @@ const Withdraw = () => {
             Платёжная система: <span>{paymentMethod}</span>
           </p>
           <p>
-            Кошелёк: <span>{hideDigitsInWallet(currentUser.wallets[paymentMethod])}</span>
+            Кошелёк: <span>{hideDigitsInWallet(currentUser.paymentMethods[paymentMethod].number)}</span>
           </p>
           <p>
             Дата: <span>{secondsToStringDays(Math.floor(Date.now() / 1000))}</span>

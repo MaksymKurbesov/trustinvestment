@@ -4,7 +4,7 @@ import { ICONS } from "../../pages/Personal-Area/ICONS";
 import { useContext, useEffect, useRef, useState } from "react";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { FirebaseContext } from "../../index";
-import { collection, query, where, runTransaction } from "firebase/firestore";
+import { collection, query, where, runTransaction, onSnapshot, updateDoc, doc, increment } from "firebase/firestore";
 import { useCollection, useCollectionOnce } from "react-firebase-hooks/firestore";
 import AuthContext from "../Auth-Provider/AuthContext";
 
@@ -41,66 +41,85 @@ const sliderSettings = {
   ],
 };
 
-const getTotalDeposited = (transactions) => {
-  return transactions.reduce((accum, value) => {
-    return accum + parseInt(value.amount);
-  }, 0);
+const getTotalDeposited = (transactions, platform) => {
+  const total = transactions
+    .filter((item) => item.executor === platform)
+    .reduce((accum, value) => {
+      return accum + parseInt(value.amount);
+    }, 0);
+
+  return total;
+};
+
+const getAvailable = (transactions, platform) => {
+  return transactions
+    .filter((item) => item.executor === platform)
+    .reduce((accum, value) => {
+      return accum + parseInt(value.amount);
+    }, 0);
 };
 
 const UserWallets = ({ paymentMethods }) => {
   const { currentUser } = useContext(AuthContext);
   const sliderRef = useRef();
   const { firestore } = useContext(FirebaseContext);
-
   const [transactions, setTransactions] = useState([]);
-
   const q = query(
     collection(firestore, "transactions"),
     where("account_id", "==", currentUser.uid),
-    where("status", "==", "Выполнено"),
     where("type", "==", "Пополнение")
   );
 
   const [transactionsRef, loading, error] = useCollection(q);
 
+  console.log(transactionsRef, "transactionsRef");
+
+  const sortedByAvailable = Object.entries(paymentMethods).sort((a, b) => b[1].available - a[1].available);
+
   useEffect(() => {
     if (!transactionsRef) return;
 
-    const transactionsArray = [];
     transactionsRef.docs.map((transaction) => {
-      transactionsArray.push(transaction.data());
-      setTransactions(transactionsArray);
+      setTransactions((prevState) => [...prevState, transaction.data()]);
     });
   }, [loading]);
-
-  console.log(transactions);
 
   return (
     <div className={styles["slider-wrapper"]}>
       <Slider ref={sliderRef} {...sliderSettings}>
-        {paymentMethods.map((platform, i) => {
+        {sortedByAvailable.map((platform, i) => {
+          // const totalAvailable =
+          //   getTotalDeposited(transactions, platform[0]) -
+          //   currentUser.invested +
+          //   currentUser.earned -
+          //   currentUser.withdrawn;
+          const totalAvailable = 0;
+          const totalDeposited = 0;
+          // const totalDeposited = getTotalDeposited(transactions, platform[0]);
+
           return (
             <div className={styles["platform-balance"]} key={i}>
               <div className={styles["title"]}>
-                <p className={styles["platform-name"]}>{platform.name}</p>
-                <img src={ICONS[i]} width={35} />
+                <p className={styles["platform-name"]}>{platform[0]}</p>
+                <img src={ICONS[platform[0]]} width={35} />
               </div>
               <ul className={styles["platform-statistic"]}>
                 <li>
                   <p>Доступно</p>
-                  <span>{platform.available} USD</span>
+                  {/*<span>{totalAvailable < 0 ? 0 : totalAvailable} USD</span>*/}
+                  <span>{platform[1].available} USD</span>
                 </li>
                 <li>
                   <p>Пополнено</p>
-                  <span>{getTotalDeposited(transactions.filter((item) => item.executor === platform.name))} USD</span>
+                  <span>{platform[1].deposited} USD</span>
                 </li>
                 <li>
                   <p>Выведено</p>
-                  <span>{platform.withdrawn} USD</span>
+                  <span>{platform[1].withdrawn} USD</span>
                 </li>
                 <li>
                   <p>Реферальные</p>
-                  <span>{platform.referals} USD</span>
+                  <span>{platform[1].referrals} USD</span>
                 </li>
               </ul>
             </div>

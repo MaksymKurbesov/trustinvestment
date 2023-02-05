@@ -82,15 +82,13 @@ const LevelCollapse = ({ referralsList }) => {
     // console.log(key);
   };
 
-  console.log(Object.values(referralsList), "referralsList");
-
   return (
     <Collapse onChange={onChange} bordered={false} className={styles["levels-list"]}>
       <Panel
         style={panelStyle}
         header={Header({
           level: 1,
-          referrals: currentUser.referredTo["1"]?.length,
+          referrals: currentUser.referredTo["1"]?.length ? currentUser.referredTo["1"].length : 0,
           activeReferrals: getActiveReferrals(referralsList["1"]),
           totalInvested: getTotalInvested(referralsList["1"]),
         })}
@@ -104,7 +102,7 @@ const LevelCollapse = ({ referralsList }) => {
         style={panelStyle}
         header={Header({
           level: 2,
-          referrals: currentUser.referredTo["2"]?.length,
+          referrals: currentUser.referredTo["2"]?.length ? currentUser.referredTo["2"].length : 0,
           activeReferrals: getActiveReferrals(referralsList["2"]),
           totalInvested: getTotalInvested(referralsList["2"]),
         })}
@@ -118,7 +116,7 @@ const LevelCollapse = ({ referralsList }) => {
         style={panelStyle}
         header={Header({
           level: 3,
-          referrals: currentUser.referredTo["3"]?.length,
+          referrals: currentUser.referredTo["3"]?.length ? currentUser.referredTo["3"].length : 0,
           activeReferrals: getActiveReferrals(referralsList["3"]),
           totalInvested: getTotalInvested(referralsList["3"]),
         })}
@@ -132,7 +130,7 @@ const LevelCollapse = ({ referralsList }) => {
         style={panelStyle}
         header={Header({
           level: 4,
-          referrals: currentUser.referredTo["4"]?.length,
+          referrals: currentUser.referredTo["4"]?.length ? currentUser.referredTo["4"].length : 0,
           activeReferrals: getActiveReferrals(referralsList["4"]),
           totalInvested: getTotalInvested(referralsList["4"]),
         })}

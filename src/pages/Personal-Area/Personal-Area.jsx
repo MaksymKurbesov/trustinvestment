@@ -36,33 +36,33 @@ const PersonalArea = () => {
             <img src={InvestmentIcon} width={50} alt={"Иконка"} />
             <div className={styles["info"]}>
               <p>Инвестировано:</p>
-              <span>{currentUser.invested} USD</span>
+              <span>{currentUser.invested.toFixed(1)} USD</span>
             </div>
           </div>
           <div className={styles["user-statistic__item"]}>
             <img src={EarnedIcon} width={50} alt={"Иконка"} />
             <div className={styles["info"]}>
               <p>Заработано:</p>
-              <span>{currentUser.earned} USD</span>
+              <span>{currentUser.earned.toFixed(1)} USD</span>
             </div>
           </div>
           <div className={styles["user-statistic__item"]}>
             <img src={WithdrawnIcon} width={50} alt={"Иконка"} />
             <div className={styles["info"]}>
               <p>Выведено:</p>
-              <span>{currentUser.withdrawn} USD</span>
+              <span>{currentUser.withdrawn.toFixed(1)} USD</span>
             </div>
           </div>
           <div className={styles["user-statistic__item"]}>
             <img src={ReferalsIcon} width={50} alt={"Иконка"} />
             <div className={styles["info"]}>
               <p>Реферальных:</p>
-              <span>{currentUser.referals} USD</span>
+              <span>{currentUser.referals.toFixed(1)} USD</span>
             </div>
           </div>
         </div>
         <DepositsStatus />
-        <TimeToPayment charges={charges + 1} startDate={startDate} isCommonPlan={true} />
+        <TimeToPayment charges={charges + 1} startDate={startDate} />
       </div>
     </div>
   );

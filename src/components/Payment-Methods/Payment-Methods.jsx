@@ -1,26 +1,7 @@
 import React from "react";
 import { Select, Form } from "antd";
 import styles from "./Payment-Methods.module.css";
-import {
-  BITCOIN,
-  BNB,
-  ETHEREUM,
-  PERFECT_MONEY,
-  POLKADOT,
-  QIWI,
-  SOLANA,
-  TRC20_TETHER,
-} from "../../utils/consts";
-
-const createPaymentMethodsOptions = (wallets) => {
-  const paymentList = [];
-  wallets.forEach((wallet) => {
-    paymentList.push({
-      value: `${wallet} ${wallet.slice(0, 5)}`,
-      label: wallet,
-    });
-  });
-};
+import { BITCOIN, BNB, ETHEREUM, PERFECT_MONEY, POLKADOT, SOLANA, TRC20_TETHER } from "../../utils/consts";
 
 const PAYMENT_METHODS = [
   {
@@ -60,11 +41,9 @@ const PaymentMethods = ({ paymentMethodHandler }) => {
         showSearch
         optionFilterProp="children"
         onChange={(value) => {
-          paymentMethodHandler(value);
+          paymentMethodHandler(Number(value));
         }}
-        filterOption={(input, option) =>
-          (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-        }
+        filterOption={(input, option) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase())}
         className={`${styles["payment-select"]} payment-select`}
         options={PAYMENT_METHODS}
       />

@@ -3,11 +3,11 @@ import { Button, Form, Input, message } from "antd";
 import { useContext } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import { FirebaseContext } from "../../index";
-import { useOutletContext } from "react-router-dom";
 import {
   BITCOIN,
   BNB,
   ETHEREUM,
+  PAYMENT_METHODS_MAP,
   PERFECT_MONEY,
   POLKADOT,
   SOLANA,
@@ -15,6 +15,18 @@ import {
 } from "../../utils/consts";
 import ChooseAvatarImage from "assets/images/add-avatar.png";
 import AuthContext from "../../components/Auth-Provider/AuthContext";
+
+// const setWallets = (wallets) => {
+//   return {
+//     [PERFECT_MONEY]: wallets[PERFECT_MONEY] ? wallets[PERFECT_MONEY] : "",
+//     [TRC20_TETHER]: wallets[TRC20_TETHER] ? wallets[TRC20_TETHER] : "",
+//     [BITCOIN]: wallets[BITCOIN] ? wallets[BITCOIN] : "",
+//     [ETHEREUM]: wallets[ETHEREUM] ? wallets[ETHEREUM] : "",
+//     [SOLANA]: wallets[SOLANA] ? wallets[SOLANA] : "",
+//     [POLKADOT]: wallets[POLKADOT] ? wallets[POLKADOT] : "",
+//     [BNB]: wallets[BNB] ? wallets[BNB] : "",
+//   };
+// };
 
 const Settings = () => {
   const { firestore } = useContext(FirebaseContext);
@@ -39,19 +51,43 @@ const Settings = () => {
 
   const onFinish = (values) => {
     const sendData = async () => {
+      const payments = currentUser.paymentMethods;
+
       await updateDoc(doc(firestore, "users", currentUser.email), {
         email: values.email,
         phoneNumber: values.phone,
         nickname: values.nickname,
-        wallets: {
-          [PERFECT_MONEY]: values[PERFECT_MONEY] ? values[PERFECT_MONEY] : "",
-          [TRC20_TETHER]: values[TRC20_TETHER] ? values[TRC20_TETHER] : "",
-          [BITCOIN]: values[BITCOIN] ? values[BITCOIN] : "",
-          [ETHEREUM]: values[ETHEREUM] ? values[ETHEREUM] : "",
-          [SOLANA]: values[SOLANA] ? values[SOLANA] : "",
-          [POLKADOT]: values[POLKADOT] ? values[POLKADOT] : "",
-          [BNB]: values[BNB] ? values[BNB] : "",
+        paymentMethods: {
+          [BITCOIN]: {
+            ...payments[BITCOIN],
+            number: values[BITCOIN],
+          },
+          [BNB]: {
+            ...payments[BNB],
+            number: values[BNB],
+          },
+          [PERFECT_MONEY]: {
+            ...payments[PERFECT_MONEY],
+            number: values[PERFECT_MONEY],
+          },
+          [ETHEREUM]: {
+            ...payments[ETHEREUM],
+            number: values[ETHEREUM],
+          },
+          [SOLANA]: {
+            ...payments[SOLANA],
+            number: values[SOLANA],
+          },
+          [POLKADOT]: {
+            ...payments[POLKADOT],
+            number: values[POLKADOT],
+          },
+          [TRC20_TETHER]: {
+            ...payments[TRC20_TETHER],
+            number: values[TRC20_TETHER],
+          },
         },
+        // wallets: setWallets(values),
       });
     };
 
@@ -76,21 +112,17 @@ const Settings = () => {
           nickname: currentUser.nickname,
           email: currentUser.email,
           phone: currentUser.phoneNumber,
-          [PERFECT_MONEY]: currentUser.wallets[PERFECT_MONEY],
-          [TRC20_TETHER]: currentUser.wallets[TRC20_TETHER],
-          [BITCOIN]: currentUser.wallets[BITCOIN],
-          [ETHEREUM]: currentUser.wallets[ETHEREUM],
-          [SOLANA]: currentUser.wallets[SOLANA],
-          [POLKADOT]: currentUser.wallets[POLKADOT],
-          [BNB]: currentUser.wallets[BNB],
+          [PERFECT_MONEY]: currentUser.paymentMethods[PERFECT_MONEY]?.number,
+          [TRC20_TETHER]: currentUser.paymentMethods[TRC20_TETHER]?.number,
+          [BITCOIN]: currentUser.paymentMethods[BITCOIN]?.number,
+          [ETHEREUM]: currentUser.paymentMethods[ETHEREUM]?.number,
+          [SOLANA]: currentUser.paymentMethods[SOLANA]?.number,
+          [POLKADOT]: currentUser.paymentMethods[POLKADOT]?.number,
+          [BNB]: currentUser.paymentMethods[BNB]?.number,
         }}
         className={styles["form"]}
       >
-        <img
-          src={ChooseAvatarImage}
-          alt={"user-avatar"}
-          className={styles["user-avatar"]}
-        />
+        <img src={ChooseAvatarImage} alt={"user-avatar"} className={styles["user-avatar"]} />
         <div className={styles["personal-info-wrapper"]}>
           <h3>Личная информация</h3>
           <Form.Item name="nickname" label={"Никнейм"}>
@@ -124,24 +156,16 @@ const Settings = () => {
             <Input placeholder={"T9zG21"} />
           </Form.Item>
           <Form.Item label={"Solana"} name={SOLANA}>
-            <Input
-              placeholder={"fGF4cGJB2eh5mSd1sKBBrZmx6ER1awjwL4gMsp1SjZg"}
-            />
+            <Input placeholder={"fGF4cGJB2eh5mSd1sKBBrZmx6ER1awjwL4gMsp1SjZg"} />
           </Form.Item>
           <Form.Item label={"PolkaDot"} name={POLKADOT}>
-            <Input
-              placeholder={"12qKuqNfo6JZxi7v1VYriyVRc631QD2DanU8gyf2LuTwYzYD"}
-            />
+            <Input placeholder={"12qKuqNfo6JZxi7v1VYriyVRc631QD2DanU8gyf2LuTwYzYD"} />
           </Form.Item>
           <Form.Item label={"BNB Smart Chain"} name={BNB}>
             <Input placeholder={"0xeb24cdB1DFd1f6a7B709D68FF31680388C970b21"} />
           </Form.Item>
         </div>
-        <Button
-          type="primary"
-          htmlType="submit"
-          className={styles["submit-settings"]}
-        >
+        <Button type="primary" htmlType="submit" className={styles["submit-settings"]}>
           Сохранить
         </Button>
       </Form>

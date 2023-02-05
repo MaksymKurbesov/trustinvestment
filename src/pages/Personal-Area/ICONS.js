@@ -8,4 +8,9 @@ import PayeerIcon from "assets/images/platform-icons/payeer.png";
 import YooMoneyIcon from "assets/images/platform-icons/yoomoney.png";
 import QiwiIcon from "assets/images/platform-icons/qiwi.png";
 
-export const ICONS = [PMIcon, VisaMCIcon, TRCIcon, BitcoinIcon, EthereumIcon];
+export const ICONS = {
+  "Perfect Money": PMIcon,
+  "TRC20 Tether": TRCIcon,
+  Bitcoin: BitcoinIcon,
+  Ethereum: EthereumIcon,
+};

@@ -24,13 +24,9 @@ const columns = [
     render: (text, record) => {
       return (
         <div className={styles["progress"]}>
-          <Progress
-            percent={((record.charges * 100) / record.days).toFixed(1)}
-            showInfo={window.innerWidth > 800}
-          />
+          <Progress percent={((record.charges * 100) / record.days).toFixed(1)} showInfo={window.innerWidth > 800} />
           <p>
-            {window.innerWidth < 800 ? "" : "Начислений"} {record.charges} /{" "}
-            {record.days}
+            {window.innerWidth < 800 ? "" : "Начислений"} {record.charges} / {record.days}
           </p>
         </div>
       );
@@ -80,13 +76,9 @@ const ActiveDeposits = () => {
   const [activeDeposits, setActiveDeposits] = useState(null);
 
   const getActiveDeposits = async () => {
-    const depositsRef = await getDoc(
-      doc(collection(firestore, "users"), currentUser.email)
-    );
+    const depositsRef = await getDoc(doc(firestore, "users", currentUser.email));
 
-    const depositsData = depositsRef.data().deposits.active
-      ? depositsRef.data().deposits.active
-      : [];
+    const depositsData = depositsRef.data().deposits.active ? depositsRef.data().deposits.active : [];
     const formattedData = depositsData.map((deposit, index) => {
       // console.log(deposit.received, "deposit.received,");
 

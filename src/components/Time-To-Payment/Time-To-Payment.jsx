@@ -4,10 +4,10 @@ import waitAnimation from "assets/lottie-animations/wait-animation.json";
 import useLottie from "lottie-react";
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../Auth-Provider/AuthContext";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, increment, updateDoc } from "firebase/firestore";
 import { FirebaseContext } from "../../index";
 
-const TimeToPayment = ({ startDate, isCommonPlan, charges }) => {
+const TimeToPayment = ({ startDate, charges }) => {
   const [startTime, setStartTime] = useState(new Date());
   const { currentUser } = useContext(AuthContext);
   const { firestore } = useContext(FirebaseContext);
@@ -21,16 +21,14 @@ const TimeToPayment = ({ startDate, isCommonPlan, charges }) => {
   const resetTimer = () => {
     const activeDeposits = currentUser.deposits.active;
     const activeDepositsLastItem = activeDeposits[activeDeposits.length - 1];
-    let earned = currentUser.earned;
-    const receivedForDay = activeDepositsLastItem.willReceived / activeDepositsLastItem.days;
+    const receivedForDay = +(activeDepositsLastItem.willReceived / activeDepositsLastItem.days).toFixed(2);
 
     activeDepositsLastItem.charges += 1;
     activeDepositsLastItem.received += receivedForDay;
-    earned += receivedForDay;
 
     updateDoc(doc(firestore, "users", currentUser.email), {
       "deposits.active": [...activeDeposits],
-      earned: earned,
+      earned: increment(receivedForDay),
     });
   };
 

@@ -16,12 +16,12 @@ export function getRandomArbitrary() {
 export const hideDigitsInWallet = (text) => {
   if (!text) return "";
 
-  return text.replace(/^.{2}/g, "**").substring(0, text.length - 2) + "**";
+  return text.replace(/^.{2}/g, "U**").substring(0, text.length - 1) + "**";
 };
 
 export const calculateUserBalance = (user) => {
   if (!user) return;
-  return user.paymentMethods.reduce((accum, currentValue) => {
+  return Object.values(user.paymentMethods).reduce((accum, currentValue) => {
     return accum + Number(currentValue.available);
   }, 0);
 };
@@ -35,20 +35,7 @@ export const normalizeDate = (date) => {
   });
 };
 
-const monthNames = [
-  "янв.",
-  "фев",
-  "мар",
-  "апр",
-  "май",
-  "июн",
-  "июл",
-  "авг",
-  "сен",
-  "окт",
-  "ноя",
-  "дек",
-];
+const monthNames = ["янв.", "фев", "мар", "апр", "май", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"];
 
 export const parseDate = (date, offset = 0) => {
   const currentDate = new Date(date * 1000);

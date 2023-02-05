@@ -1,14 +1,14 @@
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { Form } from "components/Login-Form/Login-Form";
-import { setDoc, doc, collection, where, query, getDocs, updateDoc, arrayUnion, getDoc } from "firebase/firestore";
-import { useContext, useEffect } from "react";
+import { setDoc, doc, collection, where, query, getDocs, updateDoc, arrayUnion } from "firebase/firestore";
+import { useContext } from "react";
 import { FirebaseContext } from "../../index";
 import { useNavigate } from "react-router-dom";
 import { RegisterForm } from "../../components/Register-Form/Register-Form";
 import styles from "./Register.module.css";
 import signUpAnimation from "assets/lottie-animations/signUp-animation.json";
 import useLottie from "lottie-react";
-import { firstInputPolyfill } from "web-vitals/dist/modules/lib/polyfills/firstInputPolyfill";
+import { BITCOIN, BNB, ETHEREUM, PERFECT_MONEY, POLKADOT, SOLANA, TRC20_TETHER } from "../../utils/consts";
 
 const setUserCustomFields = (signedUpUser, customFields) => {
   return {
@@ -27,66 +27,57 @@ const setUserCustomFields = (signedUpUser, customFields) => {
       active: [],
       inactive: [],
     },
-    wallets: {
-      PERFECT_MONEY: "",
-      TRC20_TETHER: "",
-      BITCOIN: "",
-      ETHEREUM: "",
-      SOLANA: "",
-      POLKADOT: "",
-      BNB: "",
+    paymentMethods: {
+      [PERFECT_MONEY]: {
+        available: 0,
+        deposited: 0,
+        referrals: 0,
+        withdrawn: 0,
+        number: "",
+      },
+      [BITCOIN]: {
+        available: 0,
+        deposited: 0,
+        referrals: 0,
+        withdrawn: 0,
+        number: "",
+      },
+      [ETHEREUM]: {
+        available: 0,
+        deposited: 0,
+        referrals: 0,
+        withdrawn: 0,
+        number: "",
+      },
+      [TRC20_TETHER]: {
+        available: 0,
+        deposited: 0,
+        referrals: 0,
+        withdrawn: 0,
+        number: "",
+      },
+      [SOLANA]: {
+        available: 0,
+        deposited: 0,
+        referrals: 0,
+        withdrawn: 0,
+        number: "",
+      },
+      [POLKADOT]: {
+        available: 0,
+        deposited: 0,
+        referrals: 0,
+        withdrawn: 0,
+        number: "",
+      },
+      [BNB]: {
+        available: 0,
+        deposited: 0,
+        referrals: 0,
+        withdrawn: 0,
+        number: "",
+      },
     },
-    paymentMethods: [
-      {
-        name: "Perfect Money",
-        available: 0,
-        deposited: 0,
-        withdrawn: 0,
-        referals: 0,
-      },
-      {
-        name: "TRC20 Tether",
-        available: 0,
-        deposited: 0,
-        withdrawn: 0,
-        referals: 0,
-      },
-      {
-        name: "Bitcoin",
-        available: 0,
-        deposited: 0,
-        withdrawn: 0,
-        referals: 0,
-      },
-      {
-        name: "Ethereum",
-        available: 0,
-        deposited: 0,
-        withdrawn: 0,
-        referals: 0,
-      },
-      {
-        name: "Solana",
-        available: 0,
-        deposited: 0,
-        withdrawn: 0,
-        referals: 0,
-      },
-      {
-        name: "Polkadot",
-        available: 0,
-        deposited: 0,
-        withdrawn: 0,
-        referals: 0,
-      },
-      {
-        name: "BNB",
-        available: 0,
-        deposited: 0,
-        withdrawn: 0,
-        referals: 0,
-      },
-    ],
   };
 };
 

@@ -5,15 +5,28 @@ import { EnterAmount } from "components/Enter-Amount/Enter-Amount";
 import { ChoosePaymentMethod } from "components/Choose-Payment-Method/Choose-Payment-Method";
 import { AdditionalInformation } from "components/Additional-Information/Additional-Information";
 import { useNavigate } from "react-router-dom";
-import { useContext, useState } from "react";
-import { getPaymentMethod, getRandomArbitrary, hideDigitsInWallet, secondsToStringDays } from "utils/helpers";
+import { useContext, useEffect, useState } from "react";
+import { getRandomArbitrary, hideDigitsInWallet, secondsToStringDays } from "utils/helpers";
 import Lottie from "lottie-react";
 import withdrawnAnimation from "../../assets/lottie-animations/withdrawn-animation2.json";
-import { addDoc, collection, updateDoc, doc, getDoc, arrayUnion, increment } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  updateDoc,
+  doc,
+  arrayUnion,
+  increment,
+  query,
+  where,
+  getDocs,
+  getDoc,
+} from "firebase/firestore";
 import { FirebaseContext } from "../../index";
 import { ConfirmedWindow } from "../../components/ConfirmedWindow/ConfirmedWindow";
 import AuthContext from "../../components/Auth-Provider/AuthContext";
-import { PAYMENT_METHODS_MAP, PERFECT_MONEY } from "../../utils/consts";
+import { PERCENTAGE_BY_LVL, PERFECT_MONEY } from "../../utils/consts";
+
+const REFERRALS_TOTAL_LEVELS = 6;
 
 const Deposit = () => {
   const navigate = useNavigate();
@@ -25,54 +38,67 @@ const Deposit = () => {
   const { firestore } = useContext(FirebaseContext);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isConfirmedModalOpen, setIsConfirmedModalOpen] = useState(false);
-
+  const [referralsList, setReferralsList] = useState({
+    1: [],
+    2: [],
+    3: [],
+    4: [],
+    5: [],
+  });
   const [enoughMoneyError, setEnoughMoneyError] = useState(false);
-
   const totalIncome = tariffPlan ? ((amount / 100) * tariffPlan.percent * tariffPlan.days).toFixed(2) : 0;
-
   const inDayIncome = tariffPlan ? ((amount / 100) * tariffPlan.percent).toFixed(2) : 0;
+
+  const addReferralReward = (referredBy, limit, amount) => {
+    if (referredBy.trim() !== "" && --limit) {
+      const getReferral = async () => {
+        const q1 = query(collection(firestore, "users"), where("nickname", "==", referredBy));
+        await getDocs(q1).then(async (querySnap) => {
+          const referralLevel = querySnap.docs[0].data();
+
+          await updateDoc(doc(firestore, "users", referralLevel.email), {
+            referals: increment((amount / 100) * PERCENTAGE_BY_LVL[REFERRALS_TOTAL_LEVELS - limit]),
+          });
+
+          return addReferralReward(referralLevel.referredBy, limit, amount);
+        });
+      };
+
+      getReferral();
+    } else {
+      return null;
+    }
+  };
 
   const handleConfirmOk = () => {
     setIsConfirmModalOpen(false);
     setIsConfirmedModalOpen(true);
 
     if (payFrom === "balance") {
-      const sendData = async () => {
-        const userRef = await getDoc(doc(collection(firestore, "users"), currentUser.email));
-
-        const userData = userRef.data();
-        const userPaymentMethods = userData.paymentMethods;
-        const userPaymentMethod = userPaymentMethods.find((item) => item.name === PAYMENT_METHODS_MAP[paymentMethod]);
-
-        // userPaymentMethod.available -= Number(amount);
-
-        updateDoc(doc(firestore, "users", currentUser.email), {
-          // paymentMethods: userPaymentMethods,
-          available: increment(-Number(amount)),
-          // paymentMethods
+      const updateData = async () => {
+        await updateDoc(doc(firestore, "users", currentUser.email), {
+          [`paymentMethods.${paymentMethod}.available`]: increment(-amount),
           invested: increment(amount),
-          // invested: invested,
+          "deposits.active": arrayUnion({
+            planNumber: `#${tariffPlan.title[tariffPlan.title.length - 1]}`,
+            progress: 0,
+            days: tariffPlan.days,
+            amount: amount,
+            willReceived: +totalIncome,
+            date: new Date(),
+            charges: 0,
+            received: 0,
+          }),
         });
       };
-      sendData();
+
+      updateData().then(() => {
+        addReferralReward(currentUser.referredBy, REFERRALS_TOTAL_LEVELS, amount);
+      });
     }
 
-    const sendDepositInfo = async () => {
-      await updateDoc(doc(firestore, "users", currentUser.email), {
-        "deposits.active": arrayUnion({
-          planNumber: `#${tariffPlan.title[tariffPlan.title.length - 1]}`,
-          progress: 0,
-          days: tariffPlan.days,
-          amount: amount,
-          willReceived: parseInt(totalIncome),
-          date: new Date(),
-          charges: 0,
-          received: 0,
-        }),
-      });
-    };
-
-    sendDepositInfo();
+    if (payFrom === "card") {
+    }
 
     const sendTransaction = async () => {
       await addDoc(collection(firestore, "transactions"), {
@@ -83,16 +109,29 @@ const Deposit = () => {
         date: new Date(),
         email: currentUser.email,
         paymentMethod: paymentMethod,
-        executor: PAYMENT_METHODS_MAP[paymentMethod],
+        executor: paymentMethod,
       });
     };
 
     sendTransaction();
   };
 
+  useEffect(() => {
+    if (currentUser.referredBy.trim() === "") return;
+
+    // const getReferralsFromReferral = async () => {
+    //   const q = query(collection(firestore, "users"), where("nickname", "==", currentUser.referredBy));
+    //   await getDocs(q).then((doc) => {
+    //     console.log(doc.docs[0].data().referredTo, "doc.docs[0].data().referredTo");
+    //     getReferrals(doc.docs[0].data().referredTo);
+    //   });
+    // };
+
+    // getReferralsFromReferral();
+  }, []);
+
   const showConfirmModal = async () => {
-    const enoughMoney =
-      amount <= getPaymentMethod(currentUser.paymentMethods, PAYMENT_METHODS_MAP[paymentMethod]).available;
+    const enoughMoney = amount <= currentUser.paymentMethods[paymentMethod].available;
 
     if (enoughMoney) {
       setIsConfirmModalOpen(true);
@@ -118,7 +157,7 @@ const Deposit = () => {
       navigate("/my-account/replenishment", {
         state: {
           tariffPlan,
-          paymentMethod: PAYMENT_METHODS_MAP[paymentMethod],
+          paymentMethod: paymentMethod,
           amount,
           date: secondsToStringDays(Math.floor(Date.now() / 1000)),
         },
@@ -193,11 +232,11 @@ const Deposit = () => {
             Комиссия: <span>0 USD</span>
           </p>
           <p>
-            Платёжная система: <span>{PAYMENT_METHODS_MAP[paymentMethod]}</span>
+            Платёжная система: <span>{paymentMethod}</span>
           </p>
           <p>
             Кошелёк:
-            <span>{hideDigitsInWallet(currentUser.wallets[paymentMethod])}</span>
+            <span>{hideDigitsInWallet(currentUser.paymentMethods[paymentMethod].number)}</span>
           </p>
           <p>
             Дата: <span>{secondsToStringDays(Math.floor(Date.now() / 1000))}</span>

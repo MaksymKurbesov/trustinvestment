@@ -1,7 +1,7 @@
 import styles from "./Enter-Amount.module.css";
 import { Input, Form } from "antd";
 
-const EnterAmount = ({ stepNumber, amount, amountHandler }) => {
+const EnterAmount = ({ stepNumber, amountHandler }) => {
   return (
     <div className={styles["enter-amount"]}>
       <h3>
@@ -19,8 +19,8 @@ const EnterAmount = ({ stepNumber, amount, amountHandler }) => {
         <Input
           placeholder={0}
           onChange={(e) => {
-            if (!Number(e.target.value)) return;
-            amountHandler(e.target.value);
+            if (!e.target.value) return;
+            amountHandler(Number(e.target.value));
           }}
         />
       </Form.Item>

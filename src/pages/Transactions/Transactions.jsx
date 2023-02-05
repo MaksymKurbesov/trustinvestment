@@ -1,6 +1,5 @@
-import styles from "./Transactions.module.css";
-import React, { useContext, useEffect, useState } from "react";
-import { collection, query, where, orderBy, getDocs } from "firebase/firestore";
+import React, { useContext, useEffect } from "react";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { FirebaseContext } from "../../index";
 import { TransactionsTable } from "./TransactionsTable";
 import AuthContext from "../../components/Auth-Provider/AuthContext";
@@ -10,16 +9,22 @@ const Transactions = () => {
   const { currentUser } = useContext(AuthContext);
   const { firestore } = useContext(FirebaseContext);
 
-  const q = query(
-    collection(firestore, "transactions"),
-    where("account_id", "==", currentUser.uid)
-    // where("status", "==", "Выполнено"),
-    // where("type", "==", "Пополнение")
-  );
+  const q = query(collection(firestore, "transactions"), where("account_id", "==", currentUser.uid));
 
   const [transactions, loading, error] = useCollection(q);
 
-  console.log(transactions);
+  // useEffect(() => {
+  //   const unsub = onSnapshot(q, (snapshot) => {
+  //     snapshot.docChanges().forEach((change) => {
+  //       if (change.type === "modified") {
+  //         // added to пополнено
+  //         console.log(change.doc.data(), "change");
+  //       }
+  //     });
+  //   });
+  //
+  //   return () => unsub();
+  // }, []);
 
   if (loading) return;
 

@@ -1,11 +1,5 @@
 import { getAuth, signOut } from "firebase/auth";
-import {
-  Link,
-  NavLink,
-  Outlet,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import styles from "./My-Account-Layout.module.css";
 import { Layout, Menu } from "antd";
 import MyAccountHeader from "../My-Account-Header/My-Account-Header";
@@ -18,10 +12,19 @@ import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 
 import AuthContext from "../Auth-Provider/AuthContext";
 
+const getTotalDeposited = (transactions, platform) => {
+  const total = transactions
+    .filter((item) => item.executor === platform)
+    .reduce((accum, value) => {
+      return accum + parseInt(value.amount);
+    }, 0);
+
+  return total;
+};
+
 const { Content, Sider } = Layout;
 
 const MyAccountLayout = () => {
-  const navigate = useNavigate();
   const auth = getAuth();
   const windowSize = useWindowSize();
   const { currentUser } = useContext(AuthContext);
@@ -56,18 +59,10 @@ const MyAccountLayout = () => {
             setCollapsed((prev) => !prev);
           }}
           collapsedWidth={windowSize.width < 560 ? 0 : 80}
-          trigger={
-            <div className={styles["menu-icon"]}>
-              {!collapsed ? <LeftOutlined /> : <RightOutlined />}
-            </div>
-          }
+          trigger={<div className={styles["menu-icon"]}>{!collapsed ? <LeftOutlined /> : <RightOutlined />}</div>}
         >
           {windowSize.width > 560 ? (
-            <Link
-              to={"/"}
-              className={styles["logotype"]}
-              style={{ paddingLeft: collapsed ? 90 : 0 }}
-            >
+            <Link to={"/"} className={styles["logotype"]} style={{ paddingLeft: collapsed ? 90 : 0 }}>
               <img src={Logo} width={140} alt={""} />
             </Link>
           ) : (
