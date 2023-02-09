@@ -3,6 +3,7 @@
   height: 80px !important;
   display: flex;
   align-items: center;
+  z-index: 111;
 }
 
 .header a {
@@ -31,4 +32,26 @@
   position: relative;
   display: block;
   margin-left: 30px;
+}
+
+.logotype {
+  position: relative;
+  left: -100px;
+  transition: 0.2s;
+}
+
+.logotype-sider {
+  transition: 0.2s;
+  position: relative;
+  left: -220px;
+}
+
+@media screen and (max-width: 1200px) {
+  .logotype {
+    left: 0;
+  }
+
+  .logotype-sider {
+    left: 0;
+  }
 }

@@ -88,7 +88,7 @@ const Withdraw = () => {
         }}
       >
         <ChoosePaymentMethod stepNumber={"01"} paymentMethodHandler={setPaymentMethod} />
-        <EnterAmount stepNumber={"02"} amountHandler={setAmount} />
+        <EnterAmount stepNumber={"02"} amountHandler={setAmount} test={true} />
 
         <AdditionalInformation
           infoLabel1={"Комиссия"}

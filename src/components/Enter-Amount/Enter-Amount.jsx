@@ -1,7 +1,7 @@
 import styles from "./Enter-Amount.module.css";
-import { Input, Form } from "antd";
+import { Input, Form, InputNumber } from "antd";
 
-const EnterAmount = ({ stepNumber, amountHandler }) => {
+const EnterAmount = ({ stepNumber, amountHandler, min, max, test }) => {
   return (
     <div className={styles["enter-amount"]}>
       <h3>
@@ -14,12 +14,22 @@ const EnterAmount = ({ stepNumber, amountHandler }) => {
             required: true,
             message: "Введите пожалуйста сумму",
           },
+          ({ getFieldValue }) => ({
+            validator(_, value) {
+              if (test) return Promise.resolve();
+
+              if (!value || (getFieldValue("amount") >= min && getFieldValue("amount") <= max)) {
+                return Promise.resolve();
+              }
+              return Promise.reject(new Error("Некорректная сумма"));
+            },
+          }),
         ]}
       >
         <Input
-          placeholder={0}
           onChange={(e) => {
             if (!e.target.value) return;
+            console.log(e.target.value);
             amountHandler(Number(e.target.value));
           }}
         />

@@ -3,8 +3,8 @@
   grid-template-areas:
     "ref-info ref-info ref-info"
     "status registered bought"
-    "levels levels percentage"
-    "ref-list ref-list ref-list";
+    "percentage percentage percentage"
+    "levels levels levels";
   grid-template-columns: repeat(6, minmax(0, 1fr));
   grid-template-rows: repeat(4, fit-content(100px));
   gap: 70px;
@@ -126,14 +126,14 @@ span.icon {
 
 .levels {
   grid-area: levels;
-  grid-column: auto / span 4;
+  grid-column: auto / span 6;
   background: none;
   padding: 0;
 }
 
 .partner-percentage {
   grid-area: percentage;
-  grid-column: auto / span 2;
+  grid-column: auto / span 6;
   align-items: center;
   position: relative;
 }
@@ -171,18 +171,19 @@ span.icon {
   font-size: 16px;
   font-weight: 500;
   padding-right: 25px;
+  /*column-gap: 100px;*/
 }
 
 .level-header p:first-child {
   font-weight: 600;
 }
 
-.level-header p span {
-  font-size: 18px;
+.level-header p:last-child {
+  flex-basis: 290px;
 }
 
-.level-header p:not(:last-child) {
-  margin-right: 5px;
+.level-header p span {
+  font-size: 18px;
 }
 
 @media screen and (max-width: 1500px) {
@@ -250,6 +251,10 @@ span.icon {
   .registered-clients div p,
   .deposits-bought-info p {
     margin-right: 5px;
+  }
+
+  .level-header p:last-child {
+    flex-basis: 240px;
   }
 }
 

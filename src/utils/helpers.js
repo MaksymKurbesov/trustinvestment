@@ -4,11 +4,6 @@ export function secondsToStringDays(secs) {
   return t.toLocaleDateString("ru-RU");
 }
 
-export const sortByDate = (a, b) => {
-  if (!a.date) return;
-  return b.date - a.date;
-};
-
 export function getRandomArbitrary() {
   return Math.floor(Math.random() * 90000) + 10000;
 }
@@ -21,6 +16,7 @@ export const hideDigitsInWallet = (text) => {
 
 export const calculateUserBalance = (user) => {
   if (!user) return;
+
   return Object.values(user.paymentMethods).reduce((accum, currentValue) => {
     return accum + Number(currentValue.available);
   }, 0);

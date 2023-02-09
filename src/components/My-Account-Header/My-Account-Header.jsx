@@ -12,13 +12,14 @@ const MyAccountHeader = ({ username, balance, siderCollapsed }) => {
 
   return (
     <AntHeader className={styles["header"]}>
-      {windowSize.width < 560 ? (
-        <Link to={"/"} className={styles["logotype"]}>
-          <img src={Logo} width={140} alt={""} />
-        </Link>
-      ) : (
-        ""
-      )}
+      {/*{windowSize.width < 560 ? (*/}
+
+      <Link to={"/"} className={siderCollapsed ? styles["logotype"] : styles["logotype-sider"]}>
+        <img src={Logo} width={140} alt={""} />
+      </Link>
+      {/*) : (*/}
+      {/*  ""*/}
+      {/*)}*/}
       <div className={styles["user-info"]}>
         <p className={styles["user-info__name"]}>{username}</p>
         <p className={styles["user-info__balance"]}>Баланс: {balance}$</p>

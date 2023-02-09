@@ -95,10 +95,10 @@ const Register = () => {
   const handleRegister = async (user) => {
     const auth = getAuth();
 
-    await createUserWithEmailAndPassword(auth, user.email, user.password).then((userCredential) => {
+    await createUserWithEmailAndPassword(auth, user.email, user.password).then(async (userCredential) => {
       const signedUpUser = userCredential.user;
 
-      const setReferrals = (referredBy, limit) => {
+      const setReferrals = async (referredBy, limit) => {
         if (referredBy.trim() !== "" && --limit) {
           const getReferral = async () => {
             const q1 = query(collection(firestore, "users"), where("nickname", "==", referredBy));
@@ -122,7 +122,6 @@ const Register = () => {
       setDoc(doc(firestore, "users", signedUpUser.email), setUserCustomFields(signedUpUser, user)).then(() => {
         setReferrals(user.referredBy, REFERRALS_TOTAL_LEVELS);
       });
-
       navigate("/login");
     });
   };

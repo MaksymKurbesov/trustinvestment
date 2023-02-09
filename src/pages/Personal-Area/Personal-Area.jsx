@@ -8,19 +8,24 @@ import { TimeToPayment } from "components/Time-To-Payment/Time-To-Payment";
 import { UserWallets } from "components/Wallets/UserWallets";
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../../components/Auth-Provider/AuthContext";
+import { FirebaseContext } from "../../index";
+import { collection, query, getDocs, where, onSnapshot, doc, addDoc } from "firebase/firestore";
+import { useOutletContext } from "react-router-dom";
+
+// const transferTransaction = async (firestore, currentUser) => {
+//   const transRef = collection(firestore, "users", currentUser.email, "transactions");
+//   const transQuery = query(collection(firestore, "transactions"), where("email", "==", currentUser.email));
+//
+//   await getDocs(transQuery).then((snap) => {
+//     snap.docs.map((item) => {
+//       addDoc(transRef, item.data());
+//     });
+//   });
+// };
 
 const PersonalArea = () => {
   const { currentUser } = useContext(AuthContext);
-  const [startDate, setStartDate] = useState(0);
-  const [charges, setCharges] = useState(0);
-
-  useEffect(() => {
-    if (currentUser && currentUser.deposits.active.length > 0) {
-      const activeDeposits = currentUser.deposits.active;
-      setStartDate(activeDeposits[activeDeposits.length - 1].date);
-      setCharges(activeDeposits[activeDeposits.length - 1].charges);
-    }
-  }, [currentUser]);
+  const [userTotals, activeDeposits, setDepositsTimers, depositsTimers] = useOutletContext();
 
   if (!currentUser) {
     return null;
@@ -36,33 +41,33 @@ const PersonalArea = () => {
             <img src={InvestmentIcon} width={50} alt={"Иконка"} />
             <div className={styles["info"]}>
               <p>Инвестировано:</p>
-              <span>{currentUser.invested.toFixed(1)} USD</span>
+              <span>{userTotals.invested} USD</span>
             </div>
           </div>
           <div className={styles["user-statistic__item"]}>
             <img src={EarnedIcon} width={50} alt={"Иконка"} />
             <div className={styles["info"]}>
               <p>Заработано:</p>
-              <span>{currentUser.earned.toFixed(1)} USD</span>
+              <span>{userTotals.earned.toFixed(1)} USD</span>
             </div>
           </div>
           <div className={styles["user-statistic__item"]}>
             <img src={WithdrawnIcon} width={50} alt={"Иконка"} />
             <div className={styles["info"]}>
               <p>Выведено:</p>
-              <span>{currentUser.withdrawn.toFixed(1)} USD</span>
+              <span>{userTotals.withdrawn.toFixed(1)} USD</span>
             </div>
           </div>
           <div className={styles["user-statistic__item"]}>
             <img src={ReferalsIcon} width={50} alt={"Иконка"} />
             <div className={styles["info"]}>
               <p>Реферальных:</p>
-              <span>{currentUser.referals.toFixed(1)} USD</span>
+              <span>{userTotals.referals.toFixed(1)} USD</span>
             </div>
           </div>
         </div>
-        <DepositsStatus />
-        <TimeToPayment charges={charges + 1} startDate={startDate} />
+        <DepositsStatus activeDeposits={activeDeposits} depositsTimers={depositsTimers} />
+        <TimeToPayment activeDeposits={activeDeposits} timersHandler={setDepositsTimers} />
       </div>
     </div>
   );

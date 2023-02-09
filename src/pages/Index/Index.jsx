@@ -12,8 +12,8 @@ const Index = () => {
     <>
       <Layout>
         <Content>
+          <HeroBanner />
           <div className={"index-layout"}>
-            <HeroBanner />
             <Advantage />
             <Plans />
             <AffilateProgram />

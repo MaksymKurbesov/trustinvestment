@@ -34,13 +34,13 @@ function App() {
           <Route path="/contacts" element={<Contacts />} />
         </Route>
         <Route path="/my-account" element={<MyAccountLayout />}>
-          <Route index element={<PersonalArea />} />
-          <Route path="deposit" element={<Deposit />} />
-          <Route path="withdraw" element={<Withdraw />} />
-          <Route path="transactions" element={<Transactions />} />
-          <Route path="partners" element={<Partners />} />
-          <Route path="settings" element={<Settings />} />
-          <Route path="replenishment" element={<Replenishment />} />
+          {/*<Route index element={<PersonalArea />} />*/}
+          {/*<Route path="deposit" element={<Deposit />} />*/}
+          {/*<Route path="withdraw" element={<Withdraw />} />*/}
+          {/*<Route path="transactions" element={<Transactions />} />*/}
+          {/*<Route path="partners" element={<Partners />} />*/}
+          {/*<Route path="settings" element={<Settings />} />*/}
+          {/*<Route path="replenishment" element={<Replenishment />} />*/}
         </Route>
       </Routes>
     </div>

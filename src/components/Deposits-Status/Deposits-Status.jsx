@@ -19,9 +19,7 @@ const columns = [
     title: "Прогресс",
     dataIndex: "progress",
     key: "progress",
-    render: (text) => (
-      <Progress percent={text} showInfo={window.innerWidth > 560} />
-    ),
+    render: (text) => <Progress percent={text} showInfo={window.innerWidth > 560} />,
     width: "30%",
     align: "center",
   },
@@ -48,14 +46,14 @@ const columns = [
   },
 ];
 
-const DepositsStatus = () => {
+const DepositsStatus = ({ activeDeposits, depositsTimers }) => {
   const windowSize = useWindowSize();
 
   const items = [
     {
       key: "1",
       label: `Активные депозиты`,
-      children: <ActiveDeposits />,
+      children: <ActiveDeposits activeDeposits={activeDeposits} depositsTimers={depositsTimers} />,
     },
     {
       key: "2",
@@ -70,6 +68,7 @@ const DepositsStatus = () => {
           }}
           size={windowSize.width < 560 ? "small" : "middle"}
           locale={{ emptyText: <Empty description={"Нет данных"} /> }}
+          scroll={{ x: 1300 }}
         />
       ),
     },

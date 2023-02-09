@@ -1,11 +1,8 @@
 import { Table, Progress, Empty } from "antd";
 import { useWindowSize } from "../../hooks/useWindowSize";
-import { useOutletContext } from "react-router-dom";
-import { collection, doc, getDoc } from "firebase/firestore";
-import { useContext, useEffect, useState } from "react";
-import { FirebaseContext } from "../../index";
 import { parseDate } from "../../utils/helpers";
 import styles from "./Deposits-Status.module.css";
+import { CountdownTimer } from "../CountdownTimer/CountdownTimer";
 
 const columns = [
   {
@@ -31,7 +28,19 @@ const columns = [
         </div>
       );
     },
-    width: window.innerWidth < 800 ? "17%" : "25%",
+    width: window.innerWidth < 800 ? "12%" : "25%",
+  },
+  {
+    title: "След. начисление",
+    dataIndex: "nextAccrual",
+    key: "nextAccrual",
+    render: (text) => (
+      <>
+        {/*{text}*/}
+        <CountdownTimer targetDate={text} resetHandler={() => {}} />
+      </>
+    ),
+    width: 250,
   },
   {
     title: "Сумма вклада",
@@ -43,7 +52,7 @@ const columns = [
     title: "Получено",
     dataIndex: "received",
     key: "received",
-    render: (text) => <> {text ? text : 0} USD</>,
+    render: (text) => <> {text.toFixed(2)} USD</>,
   },
   {
     title: "Будет получено",
@@ -55,7 +64,7 @@ const columns = [
     title: "Дата",
     dataIndex: "date",
     key: "date",
-    render: (text) => {
+    render: (text = "") => {
       const splittedText = text.split(":");
 
       return (
@@ -65,45 +74,36 @@ const columns = [
         </>
       );
     },
-    width: window.innerWidth < 800 ? "25%" : "20%",
+    width: 200,
   },
 ];
 
-const ActiveDeposits = () => {
+const ActiveDeposits = ({ activeDeposits, depositsTimers }) => {
   const windowSize = useWindowSize();
-  const [currentUser] = useOutletContext();
-  const { firestore } = useContext(FirebaseContext);
-  const [activeDeposits, setActiveDeposits] = useState(null);
 
-  const getActiveDeposits = async () => {
-    const depositsRef = await getDoc(doc(firestore, "users", currentUser.email));
+  const updateDepositsList = () => {
+    if (!activeDeposits) return;
 
-    const depositsData = depositsRef.data().deposits.active ? depositsRef.data().deposits.active : [];
-    const formattedData = depositsData.map((deposit, index) => {
-      // console.log(deposit.received, "deposit.received,");
-
-      return {
-        ...deposit,
-        key: index + 1,
-        date: parseDate(deposit.date.seconds, deposit.days),
-        received: deposit.received,
-        charges: deposit.charges,
-      };
-    });
-
-    return formattedData.reverse();
+    return (
+      activeDeposits
+        // .sort((a, b) => a.date.seconds - b.date.seconds)
+        .map((deposit, index) => {
+          return {
+            ...deposit,
+            key: index + 1,
+            date: parseDate(deposit.date, deposit.days),
+            nextAccrual: depositsTimers[index],
+          };
+        })
+    );
   };
 
-  useEffect(() => {
-    getActiveDeposits().then((data) => {
-      setActiveDeposits(data);
-    });
-  }, [currentUser]);
+  if (!activeDeposits) return;
 
   return (
     <Table
       columns={columns}
-      dataSource={activeDeposits}
+      dataSource={updateDepositsList().reverse()}
       pagination={{
         defaultPageSize: 5,
         pageSize: 5,
@@ -111,7 +111,7 @@ const ActiveDeposits = () => {
       // size={windowSize.width < 560 ? "small" : "middle"}
       locale={{ emptyText: <Empty description={"Нет данных"} /> }}
       size={windowSize.width < 800 ? "small" : "middle"}
-      scroll={{ x: windowSize.width < 800 ? 700 : 900 }}
+      scroll={{ x: 1300 }}
     />
   );
 };

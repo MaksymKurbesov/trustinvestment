@@ -5,12 +5,23 @@
 .affilate-program__wrapper {
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .affilate-program p {
-  max-width: 50%;
-  font-size: 16px;
+  /*max-width: 50%;*/
+  max-width: 700px;
+  font-size: 20px;
   line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.program-description p span {
+  color: var(--blue);
+  font-weight: 600;
+  font-size: 40px;
+  margin-top: 70px;
+  display: block;
 }
 
 @media screen and (max-width: 1000px) {

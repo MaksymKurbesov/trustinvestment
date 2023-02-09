@@ -3,30 +3,9 @@ import { Button, Form, Input, message } from "antd";
 import { useContext } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import { FirebaseContext } from "../../index";
-import {
-  BITCOIN,
-  BNB,
-  ETHEREUM,
-  PAYMENT_METHODS_MAP,
-  PERFECT_MONEY,
-  POLKADOT,
-  SOLANA,
-  TRC20_TETHER,
-} from "../../utils/consts";
+import { BITCOIN, BNB, ETHEREUM, PERFECT_MONEY, POLKADOT, SOLANA, TRC20_TETHER } from "../../utils/consts";
 import ChooseAvatarImage from "assets/images/add-avatar.png";
 import AuthContext from "../../components/Auth-Provider/AuthContext";
-
-// const setWallets = (wallets) => {
-//   return {
-//     [PERFECT_MONEY]: wallets[PERFECT_MONEY] ? wallets[PERFECT_MONEY] : "",
-//     [TRC20_TETHER]: wallets[TRC20_TETHER] ? wallets[TRC20_TETHER] : "",
-//     [BITCOIN]: wallets[BITCOIN] ? wallets[BITCOIN] : "",
-//     [ETHEREUM]: wallets[ETHEREUM] ? wallets[ETHEREUM] : "",
-//     [SOLANA]: wallets[SOLANA] ? wallets[SOLANA] : "",
-//     [POLKADOT]: wallets[POLKADOT] ? wallets[POLKADOT] : "",
-//     [BNB]: wallets[BNB] ? wallets[BNB] : "",
-//   };
-// };
 
 const Settings = () => {
   const { firestore } = useContext(FirebaseContext);

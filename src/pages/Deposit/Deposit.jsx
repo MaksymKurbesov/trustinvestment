@@ -20,6 +20,8 @@ import {
   where,
   getDocs,
   getDoc,
+  setDoc,
+  getCountFromServer,
 } from "firebase/firestore";
 import { FirebaseContext } from "../../index";
 import { ConfirmedWindow } from "../../components/ConfirmedWindow/ConfirmedWindow";
@@ -38,16 +40,10 @@ const Deposit = () => {
   const { firestore } = useContext(FirebaseContext);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isConfirmedModalOpen, setIsConfirmedModalOpen] = useState(false);
-  const [referralsList, setReferralsList] = useState({
-    1: [],
-    2: [],
-    3: [],
-    4: [],
-    5: [],
-  });
   const [enoughMoneyError, setEnoughMoneyError] = useState(false);
   const totalIncome = tariffPlan ? ((amount / 100) * tariffPlan.percent * tariffPlan.days).toFixed(2) : 0;
   const inDayIncome = tariffPlan ? ((amount / 100) * tariffPlan.percent).toFixed(2) : 0;
+  const [form] = Form.useForm();
 
   const addReferralReward = (referredBy, limit, amount) => {
     if (referredBy.trim() !== "" && --limit) {
@@ -58,6 +54,17 @@ const Deposit = () => {
 
           await updateDoc(doc(firestore, "users", referralLevel.email), {
             referals: increment((amount / 100) * PERCENTAGE_BY_LVL[REFERRALS_TOTAL_LEVELS - limit]),
+          });
+
+          await addDoc(collection(firestore, "transactions"), {
+            account_id: referralLevel.uid,
+            amount: ((amount / 100) * PERCENTAGE_BY_LVL[REFERRALS_TOTAL_LEVELS - limit]).toFixed(2),
+            status: "Выполнено",
+            type: "Реферальные",
+            date: new Date(),
+            email: referralLevel.email,
+            paymentMethod: paymentMethod,
+            executor: currentUser.nickname,
           });
 
           return addReferralReward(referralLevel.referredBy, limit, amount);
@@ -74,32 +81,6 @@ const Deposit = () => {
     setIsConfirmModalOpen(false);
     setIsConfirmedModalOpen(true);
 
-    if (payFrom === "balance") {
-      const updateData = async () => {
-        await updateDoc(doc(firestore, "users", currentUser.email), {
-          [`paymentMethods.${paymentMethod}.available`]: increment(-amount),
-          invested: increment(amount),
-          "deposits.active": arrayUnion({
-            planNumber: `#${tariffPlan.title[tariffPlan.title.length - 1]}`,
-            progress: 0,
-            days: tariffPlan.days,
-            amount: amount,
-            willReceived: +totalIncome,
-            date: new Date(),
-            charges: 0,
-            received: 0,
-          }),
-        });
-      };
-
-      updateData().then(() => {
-        addReferralReward(currentUser.referredBy, REFERRALS_TOTAL_LEVELS, amount);
-      });
-    }
-
-    if (payFrom === "card") {
-    }
-
     const sendTransaction = async () => {
       await addDoc(collection(firestore, "transactions"), {
         account_id: currentUser.uid,
@@ -113,22 +94,39 @@ const Deposit = () => {
       });
     };
 
+    if (payFrom === "balance") {
+      const updateData = async () => {
+        const q = query(collection(firestore, "users", currentUser.email, "deposits"));
+        const queryCount = await getCountFromServer(q);
+
+        await updateDoc(doc(firestore, "users", currentUser.email), {
+          [`paymentMethods.${paymentMethod}.available`]: increment(-amount),
+          invested: increment(amount),
+        });
+
+        await setDoc(doc(firestore, "users", currentUser.email, "deposits", `${queryCount.data().count}`), {
+          planNumber: `#${tariffPlan.title[tariffPlan.title.length - 1]}`,
+          progress: 0,
+          days: tariffPlan.days,
+          amount: amount,
+          willReceived: +totalIncome,
+          date: new Date(),
+          charges: 0,
+          received: 0,
+          status: "active",
+        });
+      };
+
+      updateData().then(async () => {
+        addReferralReward(currentUser.referredBy, REFERRALS_TOTAL_LEVELS, amount);
+      });
+    }
+
+    if (payFrom === "card") {
+    }
+
     sendTransaction();
   };
-
-  useEffect(() => {
-    if (currentUser.referredBy.trim() === "") return;
-
-    // const getReferralsFromReferral = async () => {
-    //   const q = query(collection(firestore, "users"), where("nickname", "==", currentUser.referredBy));
-    //   await getDocs(q).then((doc) => {
-    //     console.log(doc.docs[0].data().referredTo, "doc.docs[0].data().referredTo");
-    //     getReferrals(doc.docs[0].data().referredTo);
-    //   });
-    // };
-
-    // getReferralsFromReferral();
-  }, []);
 
   const showConfirmModal = async () => {
     const enoughMoney = amount <= currentUser.paymentMethods[paymentMethod].available;
@@ -153,16 +151,19 @@ const Deposit = () => {
   };
 
   const onFinish = () => {
-    if (payFrom === "card") {
-      navigate("/my-account/replenishment", {
-        state: {
-          tariffPlan,
-          paymentMethod: paymentMethod,
-          amount,
-          date: secondsToStringDays(Math.floor(Date.now() / 1000)),
-        },
-      });
-    }
+    form.validateFields().then((values) => {
+      console.log(values, "values");
+      if (payFrom === "card") {
+        navigate("/my-account/replenishment", {
+          state: {
+            tariffPlan,
+            paymentMethod: paymentMethod,
+            amount,
+            date: secondsToStringDays(Math.floor(Date.now() / 1000)),
+          },
+        });
+      }
+    });
 
     if (payFrom === "balance") {
       showConfirmModal();
@@ -177,6 +178,7 @@ const Deposit = () => {
     <div className={styles["deposit"]}>
       <h2 className={"my-account-title"}>Сделать депозит</h2>
       <Form
+        form={form}
         onFinish={onFinish}
         initialValues={{
           "payment-method": "Perfect Money",
@@ -199,7 +201,7 @@ const Deposit = () => {
               status={enoughMoneyError}
             />
 
-            <EnterAmount stepNumber={"03"} amountHandler={setAmount} />
+            <EnterAmount stepNumber={"03"} amountHandler={setAmount} min={tariffPlan?.min} max={tariffPlan?.max} />
             <AdditionalInformation
               infoLabel1={"Доход в день"}
               infoValue1={inDayIncome}

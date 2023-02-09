@@ -7,7 +7,7 @@
   flex-direction: column;
   background: var(--blue);
   color: white;
-  padding: 20px;
+  /*padding: 20px;*/
   border-radius: 30px;
   position: relative;
   margin-right: 20px;
@@ -18,11 +18,7 @@
   content: "";
   height: 50%;
   width: 100%;
-  background: linear-gradient(
-    29deg,
-    rgba(22, 119, 255, 1) 0%,
-    rgba(178, 210, 255, 1) 100%
-  );
+  background: linear-gradient(29deg, rgba(22, 119, 255, 1) 0%, rgba(178, 210, 255, 1) 100%);
   position: absolute;
   top: -6px;
   left: 0;
@@ -35,9 +31,12 @@
 .title {
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  /*margin-bottom: 20px;*/
   min-height: 50px;
   display: flex;
+  padding: 20px;
+  position: relative;
+  /*top: 10px;*/
 }
 
 .platform-name {
@@ -51,6 +50,7 @@
   grid-template-columns: 1fr 1fr;
   grid-gap: 15px;
   margin-top: auto;
+  padding: 20px;
 }
 
 .platform-statistic p {
@@ -103,7 +103,8 @@
 
 @media screen and (max-width: 750px) {
   .platform-balance {
-    padding: 15px;
+    /*padding: 15px;*/
+    /*top: -12px;*/
   }
 
   .platform-name {
@@ -117,7 +118,7 @@
 
 @media screen and (max-width: 480px) {
   .platform-balance {
-    padding: 25px;
+    /*padding: 25px;*/
   }
 
   .platform-name {

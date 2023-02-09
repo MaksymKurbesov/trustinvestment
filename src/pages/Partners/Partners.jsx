@@ -43,9 +43,9 @@ const getActiveReferrals = (referrals) => {
   }, 0);
 };
 
-const getPurchasedPlans = (user) => {
-  return user.deposits.active.length + user.deposits.inactive.length;
-};
+// const getPurchasedPlans = (user) => {
+//   return user.deposits.active.length + user.deposits.inactive.length;
+// };
 
 const Partners = () => {
   const { currentUser } = useContext(AuthContext);
@@ -153,7 +153,7 @@ const Partners = () => {
           <ThunderboltFilled className={styles["icon"]} />
           <div className={styles["deposits-bought-info"]}>
             <p>Куплено пакетов:</p>
-            <span>{getPurchasedPlans(currentUser)}</span>
+            <span>0</span>
           </div>
         </div>
         <div className={`${styles["levels"]} levelsRoot`}>
@@ -165,7 +165,7 @@ const Partners = () => {
           <span className={styles["percentage"]}>7%-4%-3%-2%-1%</span>
         </div>
 
-        <Table scroll={{ x: 1100 }} dataSource={[]} columns={columns} className={styles["your-referrals"]} />
+        {/*<Table scroll={{ x: 1100 }} dataSource={[]} columns={columns} className={styles["your-referrals"]} />*/}
       </div>
       <>{contextHolder}</>
     </div>

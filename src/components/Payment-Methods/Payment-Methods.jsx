@@ -41,7 +41,7 @@ const PaymentMethods = ({ paymentMethodHandler }) => {
         showSearch
         optionFilterProp="children"
         onChange={(value) => {
-          paymentMethodHandler(Number(value));
+          paymentMethodHandler(value);
         }}
         filterOption={(input, option) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase())}
         className={`${styles["payment-select"]} payment-select`}

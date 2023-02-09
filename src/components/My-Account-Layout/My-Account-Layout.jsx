@@ -1,47 +1,76 @@
-import { getAuth, signOut } from "firebase/auth";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import styles from "./My-Account-Layout.module.css";
-import { Layout, Menu } from "antd";
+import { Layout } from "antd";
 import MyAccountHeader from "../My-Account-Header/My-Account-Header";
-import { useWindowSize } from "../../hooks/useWindowSize";
-import Logo from "../../assets/images/logo.png";
 import { useContext, useEffect, useState } from "react";
-import { MENU_LIST } from "../../pages/Personal-Area/MENU_LIST";
 import { calculateUserBalance } from "../../utils/helpers";
-import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 
 import AuthContext from "../Auth-Provider/AuthContext";
 
-const getTotalDeposited = (transactions, platform) => {
-  const total = transactions
-    .filter((item) => item.executor === platform)
-    .reduce((accum, value) => {
-      return accum + parseInt(value.amount);
-    }, 0);
+import MainSider from "./MainSider";
+import { FirebaseContext } from "../../index";
+import { collection, getDocs, onSnapshot, query, where } from "firebase/firestore";
 
-  return total;
-};
-
-const { Content, Sider } = Layout;
+const { Content } = Layout;
 
 const MyAccountLayout = () => {
-  const auth = getAuth();
-  const windowSize = useWindowSize();
   const { currentUser } = useContext(AuthContext);
-  const location = useLocation();
+
   const [collapsed, setCollapsed] = useState(false);
+  const { firestore } = useContext(FirebaseContext);
 
-  const sideMenuList = MENU_LIST.map((item, index) => ({
-    key: String(index + 1),
-    label: <NavLink to={item.link}>{item.title}</NavLink>,
-    icon: item.icon,
-    title: "",
-    className: location.pathname === item.link ? styles["active"] : "",
-  }));
+  const [activeDeposits, setActiveDeposits] = useState([]);
+  const [userTotals, setUserTotals] = useState({ invested: 0, earned: 0, withdrawn: 0, referals: 0 });
+  const [depositsTimers, setDepositsTimers] = useState([]);
+  const [transactions, setTransactions] = useState([]);
 
-  const signOutHandler = async () => {
-    await signOut(auth);
+  // const q = query(collection(firestore, "users", currentUser.email, "deposits"), where("status", "==", "active"));
+  // const transactionsDocRef = collection(firestore, "users", currentUser.email, "transactions");
+
+  const getUserTotals = async () => {
+    let invested = 0;
+    let earned = 0;
+    let withdrawn = 0;
+    let referals = 0;
+
+    // await getDocs(transactionsDocRef).then((transaction) => {
+    //   transaction.docs.map((item) => {
+    //     setTransactions((prevState) => [...prevState, item.data()]);
+    //   });
+    // });
+
+    setUserTotals({
+      invested,
+      earned,
+      withdrawn,
+      referals,
+    });
   };
+
+  const getDeposits = async () => {
+    // await getDocs(q).then((snap) => {
+    //   snap.docs.map((item) => {
+    //     setActiveDeposits((prevState) => {
+    //       return [...prevState, item.data()];
+    //     });
+    //   });
+    // });
+  };
+
+  useEffect(() => {
+    if (currentUser) {
+      // onSnapshot(q, (changedDoc) => {
+      //   changedDoc.docChanges().forEach(async (item) => {
+      //     if (item.type === "modified") {
+      //       getDeposits();
+      //     }
+      //   });
+      // });
+
+      getUserTotals();
+      getDeposits();
+    }
+  }, []);
 
   if (!currentUser) {
     return null;
@@ -50,37 +79,7 @@ const MyAccountLayout = () => {
   return (
     <div className={styles["my-account"]}>
       <Layout className={styles["my-account-layout"]} hasSider>
-        <Sider
-          className={styles["left-sider"]}
-          breakpoint="xl"
-          collapsible
-          collapsed={collapsed}
-          onCollapse={() => {
-            setCollapsed((prev) => !prev);
-          }}
-          collapsedWidth={windowSize.width < 560 ? 0 : 80}
-          trigger={<div className={styles["menu-icon"]}>{!collapsed ? <LeftOutlined /> : <RightOutlined />}</div>}
-        >
-          {windowSize.width > 560 ? (
-            <Link to={"/"} className={styles["logotype"]} style={{ paddingLeft: collapsed ? 90 : 0 }}>
-              <img src={Logo} width={140} alt={""} />
-            </Link>
-          ) : (
-            ""
-          )}
-          <Menu
-            theme="dark"
-            defaultSelectedKeys={["1"]}
-            selectedKeys={[location.pathname]}
-            items={sideMenuList}
-            onClick={(e) => {
-              setCollapsed(true);
-              if (e.key === "7") {
-                signOutHandler();
-              }
-            }}
-          />
-        </Sider>
+        <MainSider setCollapsed={setCollapsed} collapsed={collapsed} />
         <Layout className="site-layout">
           <MyAccountHeader
             username={currentUser ? currentUser.nickname : ""}
@@ -88,12 +87,9 @@ const MyAccountLayout = () => {
             siderCollapsed={collapsed}
           />
           <Content className={styles["my-account-wrapper"]}>
-            <Outlet context={[currentUser]} />
+            <Outlet context={[currentUser, userTotals, activeDeposits, setDepositsTimers, depositsTimers]} />
           </Content>
         </Layout>
-        {/*<Sider className={styles["right-sider"]}>*/}
-        {/*  <p>Последние операции</p>*/}
-        {/*</Sider>*/}
       </Layout>
     </div>
   );

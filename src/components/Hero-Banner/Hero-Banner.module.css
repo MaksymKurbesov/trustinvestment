@@ -1,28 +1,39 @@
 .hero-banner-wrapper {
-  min-height: 1000px;
-  background: url("../../assets/images/hero-banner copy.jpg") center / cover
-    no-repeat;
-  color: white;
+  background: url("../../assets/images/hero-banner.png");
+  background-position: right 100px;
+  background-repeat: no-repeat;
+  background-clip: padding-box;
+  background-size: 1240px;
   padding: 75px;
   margin-bottom: 100px;
+  display: flex;
+  align-items: center;
+  color: var(--blue);
+  min-height: 740px;
 }
 
 .texts {
   position: relative;
-  top: 100px;
-  left: 100px;
+  /*width: 50%;*/
+}
+
+.lottie-animation {
+  width: 55%;
+  margin-left: 50px;
 }
 
 .texts h1 {
   font-weight: 600;
-  font-size: 9.5vw;
-  margin-bottom: 140px;
+  font-family: "Secular One";
+  font-size: 7.5vw;
+  margin-bottom: 120px;
   line-height: 1;
 }
 
 .texts p {
   font-size: 18px;
   max-width: 550px;
+  font-weight: 500;
 }
 
 .hero-banner-wrapper img {
@@ -32,15 +43,12 @@
 @media screen and (max-width: 1250px) {
   .hero-banner-wrapper {
     min-height: 600px;
+    padding: 45px;
   }
 
-  .texts {
-    top: 0;
-    left: 0;
-  }
-
-  .texts h1 {
-    /*font-size: 90px;*/
+  .texts p {
+    max-width: 800px;
+    font-size: 16px;
   }
 }
 
@@ -48,11 +56,24 @@
   .hero-banner-wrapper {
     min-height: initial;
     padding: 45px;
+    margin-bottom: 45px;
+    flex-direction: column-reverse;
+  }
+
+  .lottie-animation {
+    position: absolute;
+    z-index: -1;
+    /*top: 120px;*/
+    /*left: 80px;*/
+  }
+
+  .texts {
+    width: 100%;
   }
 
   .texts h1 {
     /*font-size: 65px;*/
-    margin-bottom: 75px;
+    margin-bottom: 275px;
     text-align: center;
   }
 
@@ -65,22 +86,21 @@
 
 @media screen and (max-width: 600px) {
   .hero-banner-wrapper {
-    padding: 25px;
+    padding: 0;
     margin-bottom: 50px;
   }
 
+  .lottie-animation {
+    top: 110px;
+    left: 30px;
+  }
+
   .texts h1 {
-    /*font-size: 45px;*/
-    margin-bottom: 50px;
+    margin-bottom: 160px;
   }
 }
 
 @media screen and (max-width: 425px) {
-  .texts h1 {
-    /*font-size: 40px;*/
-    margin-bottom: 30px;
-  }
-
   .texts p {
     font-size: 12px;
   }
