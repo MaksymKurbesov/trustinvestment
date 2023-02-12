@@ -34,9 +34,9 @@ export const normalizeDate = (date) => {
 const monthNames = ["янв.", "фев", "мар", "апр", "май", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"];
 
 export const parseDate = (date, offset = 0) => {
-  const currentDate = new Date(date * 1000);
+  const currentDate = new Date(date.seconds * 1000);
   currentDate.setDate(currentDate.getDate());
-  const offsetDate = new Date(date * 1000);
+  const offsetDate = new Date(date.seconds * 1000);
   offsetDate.setDate(offsetDate.getDate() + offset);
 
   const correctDays = new Date(currentDate).getDate();
@@ -44,6 +44,9 @@ export const parseDate = (date, offset = 0) => {
 
   const offsetDays = new Date(offsetDate).getDate();
   const offsetMonth = monthNames[new Date(offsetDate).getMonth()];
+
+  console.log(date, "date");
+  console.log(offsetDate, "offsetDate");
 
   return `${correctDays} ${correctMonth} : ${offsetDays} ${offsetMonth}`;
 };

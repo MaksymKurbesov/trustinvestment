@@ -48,10 +48,12 @@ const UserWallets = ({ paymentMethods }) => {
     <div className={styles["slider-wrapper"]}>
       <Slider ref={sliderRef} {...sliderSettings}>
         {sortedByAvailable.map((platform, i) => {
+          console.log(platform, "platform");
+
           return (
             <div className={styles["platform-balance"]} key={i}>
               <div className={styles["title"]}>
-                <p className={styles["platform-name"]}>{platform[0]}</p>
+                <p className={styles["platform-name"]}>{platform[0] === "Bnb" ? "BNB Smart Chain" : platform[0]}</p>
                 <img src={ICONS[platform[0]]} width={35} alt={""} />
               </div>
               <ul className={styles["platform-statistic"]}>

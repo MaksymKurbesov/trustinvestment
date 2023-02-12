@@ -1,9 +1,9 @@
 .hero-banner-wrapper {
   background-image: url("../../assets/images/hero-banner.png"), url("../../assets/images/main-bg.svg");
-  background-position: right 180px, -250px 100px;
+  background-position: right -200px top 180px, -250px 100px;
   background-repeat: no-repeat;
   background-clip: padding-box;
-  background-size: 70%, 1200px;
+  background-size: contain, 1200px;
   padding: 50px;
   margin-bottom: 20px;
   display: flex;

@@ -16,7 +16,7 @@ const CountdownTimer = ({ targetDate = 0, depositID, receivedForDay, nickname })
   const countdownIsEnded = days === 0 && hours === 0 && minutes === 0 && seconds <= 1;
 
   useEffect(() => {
-    if (timeLeft <= 0 && timeLeft > -10000) {
+    if (timeLeft <= 0 && timeLeft > -10000 && receivedForDay) {
       updateDoc(doc(firestore, "users", signedInUser.email, "deposits", `${depositID}`), {
         charges: increment(1),
         received: increment(+receivedForDay.toFixed(2)),

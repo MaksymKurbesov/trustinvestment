@@ -57,8 +57,6 @@ export const AuthProvider = ({ children }) => {
           modifiedTransaction.status === "Выполнено" &&
           modifiedTransaction.type === "Вывод";
 
-        console.log(change);
-
         if (isWithdrawnTransaction) {
           updateDoc(doc(firestore, "users", signedInUser.email), {
             [`paymentMethods.${modifiedTransaction.paymentMethod}.withdrawn`]: increment(modifiedTransaction.amount),

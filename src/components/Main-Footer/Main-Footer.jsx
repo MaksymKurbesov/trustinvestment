@@ -13,7 +13,7 @@ const MainFooter = () => {
   return (
     <AntFooter ref={ref} className={styles["footer"]}>
       <p className={isVisible ? styles["aos-animate"] : ""}>
-        Copyright © 2016 – 2023. Trust Investment Inc. All rights reserved
+        Copyright © 2013 – 2023. Trust Investment Inc. All rights reserved
       </p>
     </AntFooter>
   );
