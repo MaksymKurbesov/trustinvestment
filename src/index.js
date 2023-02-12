@@ -26,6 +26,7 @@ export const FirebaseContext = createContext(null);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
+  // <React.StrictMode>
   <BrowserRouter>
     <ScrollToTop>
       <FirebaseContext.Provider
@@ -40,4 +41,5 @@ root.render(
       </FirebaseContext.Provider>
     </ScrollToTop>
   </BrowserRouter>
+  // </React.StrictMode>
 );

@@ -6,11 +6,15 @@ import { FirebaseContext } from "../../index";
 import { BITCOIN, BNB, ETHEREUM, PERFECT_MONEY, POLKADOT, SOLANA, TRC20_TETHER } from "../../utils/consts";
 import ChooseAvatarImage from "assets/images/add-avatar.png";
 import AuthContext from "../../components/Auth-Provider/AuthContext";
+import { useOutletContext } from "react-router-dom";
+import { getAuth } from "firebase/auth";
 
 const Settings = () => {
   const { firestore } = useContext(FirebaseContext);
   const [messageApi, contextHolder] = message.useMessage();
   const { currentUser } = useContext(AuthContext);
+  const { userData } = useOutletContext();
+  const auth = getAuth();
 
   const success = () => {
     console.log("success");
@@ -30,9 +34,9 @@ const Settings = () => {
 
   const onFinish = (values) => {
     const sendData = async () => {
-      const payments = currentUser.paymentMethods;
+      const payments = userData.paymentMethods;
 
-      await updateDoc(doc(firestore, "users", currentUser.email), {
+      await updateDoc(doc(firestore, "users", auth.currentUser.email), {
         email: values.email,
         phoneNumber: values.phone,
         nickname: values.nickname,
@@ -80,7 +84,7 @@ const Settings = () => {
     console.log("Received values of form: ", values);
   };
 
-  if (!currentUser) return;
+  if (!userData) return;
 
   return (
     <div className={`${styles["settings-page"]} settingsRoot`}>
@@ -88,16 +92,16 @@ const Settings = () => {
       <Form
         onFinish={onFinish}
         initialValues={{
-          nickname: currentUser.nickname,
-          email: currentUser.email,
-          phone: currentUser.phoneNumber,
-          [PERFECT_MONEY]: currentUser.paymentMethods[PERFECT_MONEY]?.number,
-          [TRC20_TETHER]: currentUser.paymentMethods[TRC20_TETHER]?.number,
-          [BITCOIN]: currentUser.paymentMethods[BITCOIN]?.number,
-          [ETHEREUM]: currentUser.paymentMethods[ETHEREUM]?.number,
-          [SOLANA]: currentUser.paymentMethods[SOLANA]?.number,
-          [POLKADOT]: currentUser.paymentMethods[POLKADOT]?.number,
-          [BNB]: currentUser.paymentMethods[BNB]?.number,
+          nickname: userData.nickname,
+          email: userData.email,
+          phone: userData.phoneNumber,
+          [PERFECT_MONEY]: userData.paymentMethods[PERFECT_MONEY]?.number,
+          [TRC20_TETHER]: userData.paymentMethods[TRC20_TETHER]?.number,
+          [BITCOIN]: userData.paymentMethods[BITCOIN]?.number,
+          [ETHEREUM]: userData.paymentMethods[ETHEREUM]?.number,
+          [SOLANA]: userData.paymentMethods[SOLANA]?.number,
+          [POLKADOT]: userData.paymentMethods[POLKADOT]?.number,
+          [BNB]: userData.paymentMethods[BNB]?.number,
         }}
         className={styles["form"]}
       >

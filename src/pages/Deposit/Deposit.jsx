@@ -4,7 +4,7 @@ import { Plans } from "./Plans";
 import { EnterAmount } from "components/Enter-Amount/Enter-Amount";
 import { ChoosePaymentMethod } from "components/Choose-Payment-Method/Choose-Payment-Method";
 import { AdditionalInformation } from "components/Additional-Information/Additional-Information";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { getRandomArbitrary, hideDigitsInWallet, secondsToStringDays } from "utils/helpers";
 import Lottie from "lottie-react";
@@ -32,7 +32,6 @@ const REFERRALS_TOTAL_LEVELS = 6;
 
 const Deposit = () => {
   const navigate = useNavigate();
-  const { currentUser } = useContext(AuthContext);
   const [tariffPlan, setTariffPlan] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState(PERFECT_MONEY);
   const [amount, setAmount] = useState(0);
@@ -44,6 +43,8 @@ const Deposit = () => {
   const totalIncome = tariffPlan ? ((amount / 100) * tariffPlan.percent * tariffPlan.days).toFixed(2) : 0;
   const inDayIncome = tariffPlan ? ((amount / 100) * tariffPlan.percent).toFixed(2) : 0;
   const [form] = Form.useForm();
+
+  const { userData } = useOutletContext();
 
   const addReferralReward = (referredBy, limit, amount) => {
     if (referredBy.trim() !== "" && --limit) {
@@ -64,7 +65,7 @@ const Deposit = () => {
             date: new Date(),
             email: referralLevel.email,
             paymentMethod: paymentMethod,
-            executor: currentUser.nickname,
+            executor: userData.nickname,
           });
 
           return addReferralReward(referralLevel.referredBy, limit, amount);
@@ -83,12 +84,12 @@ const Deposit = () => {
 
     const sendTransaction = async () => {
       await addDoc(collection(firestore, "transactions"), {
-        account_id: currentUser.uid,
+        account_id: userData.uid,
         amount: amount,
         status: payFrom === "balance" ? "Выполнено" : "Ожидание",
         type: payFrom === "balance" ? "Вклад" : "Пополнение",
         date: new Date(),
-        email: currentUser.email,
+        email: userData.email,
         paymentMethod: paymentMethod,
         executor: paymentMethod,
       });
@@ -96,15 +97,15 @@ const Deposit = () => {
 
     if (payFrom === "balance") {
       const updateData = async () => {
-        const q = query(collection(firestore, "users", currentUser.email, "deposits"));
+        const q = query(collection(firestore, "users", userData.email, "deposits"));
         const queryCount = await getCountFromServer(q);
 
-        await updateDoc(doc(firestore, "users", currentUser.email), {
+        await updateDoc(doc(firestore, "users", userData.email), {
           [`paymentMethods.${paymentMethod}.available`]: increment(-amount),
           invested: increment(amount),
         });
 
-        await setDoc(doc(firestore, "users", currentUser.email, "deposits", `${queryCount.data().count}`), {
+        await setDoc(doc(firestore, "users", userData.email, "deposits", `${queryCount.data().count}`), {
           planNumber: `#${tariffPlan.title[tariffPlan.title.length - 1]}`,
           progress: 0,
           days: tariffPlan.days,
@@ -118,7 +119,7 @@ const Deposit = () => {
       };
 
       updateData().then(async () => {
-        addReferralReward(currentUser.referredBy, REFERRALS_TOTAL_LEVELS, amount);
+        addReferralReward(userData.referredBy, REFERRALS_TOTAL_LEVELS, amount);
       });
     }
 
@@ -129,7 +130,7 @@ const Deposit = () => {
   };
 
   const showConfirmModal = async () => {
-    const enoughMoney = amount <= currentUser.paymentMethods[paymentMethod].available;
+    const enoughMoney = amount <= userData.paymentMethods[paymentMethod].available;
 
     if (enoughMoney) {
       setIsConfirmModalOpen(true);
@@ -152,7 +153,6 @@ const Deposit = () => {
 
   const onFinish = () => {
     form.validateFields().then((values) => {
-      console.log(values, "values");
       if (payFrom === "card") {
         navigate("/my-account/replenishment", {
           state: {
@@ -170,7 +170,7 @@ const Deposit = () => {
     }
   };
 
-  if (!currentUser) {
+  if (!userData) {
     return null;
   }
 
@@ -238,7 +238,7 @@ const Deposit = () => {
           </p>
           <p>
             Кошелёк:
-            <span>{hideDigitsInWallet(currentUser.paymentMethods[paymentMethod].number)}</span>
+            <span>{hideDigitsInWallet(userData.paymentMethods[paymentMethod].number)}</span>
           </p>
           <p>
             Дата: <span>{secondsToStringDays(Math.floor(Date.now() / 1000))}</span>

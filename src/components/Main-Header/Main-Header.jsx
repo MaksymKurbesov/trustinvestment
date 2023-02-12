@@ -9,9 +9,9 @@ import Logotype from "assets/images/logo.png";
 const { Header: AntHeader } = Layout;
 
 const MainHeader = () => {
-  // const auth = getAuth();
-  // const [userIsLoggedIn, setUserIsLoggedIn] = useState(false);
-  //
+  const auth = getAuth();
+  const [userIsLoggedIn, setUserIsLoggedIn] = useState(false);
+
   // useEffect(() => {
   //   onAuthStateChanged(auth, (user) => {
   //     if (user) {

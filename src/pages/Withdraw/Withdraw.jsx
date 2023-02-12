@@ -13,6 +13,8 @@ import { addDoc, collection } from "firebase/firestore";
 import { FirebaseContext } from "../../index";
 import AuthContext from "../../components/Auth-Provider/AuthContext";
 import { PERFECT_MONEY } from "../../utils/consts";
+import { useOutletContext } from "react-router-dom";
+import { getAuth } from "firebase/auth";
 
 const Withdraw = () => {
   const { currentUser } = useContext(AuthContext);
@@ -23,6 +25,9 @@ const Withdraw = () => {
   const [state, handleSubmit] = useForm("mdovaazr");
   const [form] = Form.useForm();
   const { firestore } = useContext(FirebaseContext);
+
+  const { userData } = useOutletContext();
+  const auth = getAuth();
 
   const showConfirmModal = () => {
     setIsConfirmModalOpen(true);
@@ -46,13 +51,14 @@ const Withdraw = () => {
 
     const sendData = async () => {
       await addDoc(collection(firestore, "transactions"), {
-        account_id: currentUser.uid,
+        account_id: auth.currentUser.uid,
         amount: amount,
         status: "Ожидание",
         type: "Вывод",
         date: new Date(),
-        email: currentUser.email,
+        email: auth.currentUser.email,
         executor: paymentMethod,
+        paymentMethod: paymentMethod,
       });
     };
     sendData();
@@ -63,14 +69,14 @@ const Withdraw = () => {
       showConfirmModal();
       handleSubmit({
         ...values,
-        email: currentUser.email,
+        email: auth.currentUser.email,
       });
     });
   };
 
-  if (!currentUser) {
-    return null;
-  }
+  // if (!currentUser) {
+  //   return null;
+  // }
 
   return (
     <div className={styles["withdraw"]}>
@@ -101,16 +107,16 @@ const Withdraw = () => {
         <Tooltip
           title={"Укажите кошелёк для вывода средств в настройках аккаунта"}
           open={
-            currentUser.paymentMethods[paymentMethod].number === undefined ||
-            currentUser.paymentMethods[paymentMethod].number === ""
+            userData.paymentMethods[paymentMethod].number === undefined ||
+            userData.paymentMethods[paymentMethod].number === ""
           }
         >
           <Button
             key={"submit"}
             onClick={onFinish}
             disabled={
-              currentUser.paymentMethods[paymentMethod].number === undefined ||
-              currentUser.paymentMethods[paymentMethod].number === ""
+              userData.paymentMethods[paymentMethod].number === undefined ||
+              userData.paymentMethods[paymentMethod].number === ""
             }
           >
             Вывести средства
@@ -137,7 +143,7 @@ const Withdraw = () => {
             Платёжная система: <span>{paymentMethod}</span>
           </p>
           <p>
-            Кошелёк: <span>{hideDigitsInWallet(currentUser.paymentMethods[paymentMethod].number)}</span>
+            Кошелёк: <span>{hideDigitsInWallet(userData.paymentMethods[paymentMethod].number)}</span>
           </p>
           <p>
             Дата: <span>{secondsToStringDays(Math.floor(Date.now() / 1000))}</span>

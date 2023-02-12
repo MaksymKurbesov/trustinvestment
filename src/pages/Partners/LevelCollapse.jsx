@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { Collapse, Table } from "antd";
 import styles from "./Partners.module.css";
 import AuthContext from "../../components/Auth-Provider/AuthContext";
+import { useOutletContext } from "react-router-dom";
 const { Panel } = Collapse;
 
 const panelStyle = {
@@ -78,6 +79,8 @@ const getTotalInvested = (referrals) => {
 
 const LevelCollapse = ({ referralsList }) => {
   const { currentUser } = useContext(AuthContext);
+  const { userData } = useOutletContext();
+
   const onChange = (key) => {
     // console.log(key);
   };
@@ -88,7 +91,7 @@ const LevelCollapse = ({ referralsList }) => {
         style={panelStyle}
         header={Header({
           level: 1,
-          referrals: currentUser.referredTo["1"]?.length ? currentUser.referredTo["1"].length : 0,
+          referrals: userData.referredTo["1"]?.length ? userData.referredTo["1"].length : 0,
           activeReferrals: getActiveReferrals(referralsList["1"]),
           totalInvested: getTotalInvested(referralsList["1"]),
         })}
@@ -102,7 +105,7 @@ const LevelCollapse = ({ referralsList }) => {
         style={panelStyle}
         header={Header({
           level: 2,
-          referrals: currentUser.referredTo["2"]?.length ? currentUser.referredTo["2"].length : 0,
+          referrals: userData.referredTo["2"]?.length ? userData.referredTo["2"].length : 0,
           activeReferrals: getActiveReferrals(referralsList["2"]),
           totalInvested: getTotalInvested(referralsList["2"]),
         })}
@@ -116,7 +119,7 @@ const LevelCollapse = ({ referralsList }) => {
         style={panelStyle}
         header={Header({
           level: 3,
-          referrals: currentUser.referredTo["3"]?.length ? currentUser.referredTo["3"].length : 0,
+          referrals: userData.referredTo["3"]?.length ? userData.referredTo["3"].length : 0,
           activeReferrals: getActiveReferrals(referralsList["3"]),
           totalInvested: getTotalInvested(referralsList["3"]),
         })}
@@ -130,7 +133,7 @@ const LevelCollapse = ({ referralsList }) => {
         style={panelStyle}
         header={Header({
           level: 4,
-          referrals: currentUser.referredTo["4"]?.length ? currentUser.referredTo["4"].length : 0,
+          referrals: userData.referredTo["4"]?.length ? userData.referredTo["4"].length : 0,
           activeReferrals: getActiveReferrals(referralsList["4"]),
           totalInvested: getTotalInvested(referralsList["4"]),
         })}
@@ -144,7 +147,7 @@ const LevelCollapse = ({ referralsList }) => {
         style={panelStyle}
         header={Header({
           level: 5,
-          referrals: currentUser.referredTo["5"]?.length ? currentUser.referredTo["5"].length : 0,
+          referrals: userData.referredTo["5"]?.length ? userData.referredTo["5"].length : 0,
           activeReferrals: getActiveReferrals(referralsList["5"]),
           totalInvested: getTotalInvested(referralsList["5"]),
         })}

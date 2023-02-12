@@ -6,29 +6,8 @@ import AuthContext from "../../components/Auth-Provider/AuthContext";
 import { FirebaseContext } from "../../index";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { LevelCollapse } from "./LevelCollapse";
-
-const columns = [
-  {
-    title: "Никнейм",
-    dataIndex: "nickname",
-    key: "nickname",
-  },
-  {
-    title: "Всего инвестировано",
-    dataIndex: "invested",
-    key: "invested",
-  },
-  {
-    title: "Рефералы",
-    dataIndex: "referralsTo",
-    key: "referralsTo",
-  },
-  {
-    title: "Дата регистрации",
-    dataIndex: "registrationDate",
-    key: "registrationDate",
-  },
-];
+import { useOutletContext } from "react-router-dom";
+import { getAuth } from "firebase/auth";
 
 const getNumberOfReferrals = (referrals) => {
   return Object.values(referrals).reduce((accum, val) => {
@@ -43,10 +22,6 @@ const getActiveReferrals = (referrals) => {
   }, 0);
 };
 
-// const getPurchasedPlans = (user) => {
-//   return user.deposits.active.length + user.deposits.inactive.length;
-// };
-
 const Partners = () => {
   const { currentUser } = useContext(AuthContext);
   const [referralsList, setReferralsList] = useState({
@@ -57,15 +32,14 @@ const Partners = () => {
     5: [],
   });
   const { firestore } = useContext(FirebaseContext);
-
-  console.log(referralsList);
+  const { userData } = useOutletContext();
+  const auth = getAuth();
 
   const getReferrals = (referrals) => {
     for (const [level, userNicknames] of Object.entries(referrals)) {
       userNicknames.forEach(async (userNickname) => {
         const q = query(collection(firestore, "users"), where("nickname", "==", userNickname));
 
-        console.log(level, "level");
         await getDocs(q).then((snap) => {
           snap.docs.map((item, index) => {
             setReferralsList((prevState) => ({
@@ -86,7 +60,7 @@ const Partners = () => {
   };
 
   useEffect(() => {
-    getReferrals(currentUser.referredTo);
+    getReferrals(userData.referredTo);
   }, []);
 
   const [api, contextHolder] = notification.useNotification();
@@ -111,19 +85,19 @@ const Partners = () => {
         <div className={styles["referral-info"]}>
           <p className={styles["your-sponsor"]}>
             Ваш спонсор:
-            <span>{currentUser.referredBy ? currentUser.referredBy : "-"}</span>
+            <span>{userData.referredBy ? userData.referredBy : "-"}</span>
           </p>
           <div className={styles["referral-link"]}>
             <p>Ваша реферальная ссылка:</p>
             <Input
               readOnly={"readonly"}
-              defaultValue={`https://dubaitrustinvestment.net/register?ref=${currentUser.nickname}`}
+              defaultValue={`https://dubaitrustinvestment.net/register?ref=${userData.nickname}`}
             />
           </div>
           <Button
             onClick={() => {
               openNotification();
-              navigator.clipboard.writeText(`https://dubaitrustinvestment.net/register?ref=${currentUser.nickname}`);
+              navigator.clipboard.writeText(`https://dubaitrustinvestment.net/register?ref=${userData.nickname}`);
             }}
           >
             Копировать
@@ -138,7 +112,7 @@ const Partners = () => {
           <SmileFilled className={styles["icon"]} />
           <div>
             <p>Всего рефералов:</p>
-            <span>{getNumberOfReferrals(currentUser.referredTo)}</span>
+            <span>{getNumberOfReferrals(userData.referredTo)}</span>
           </div>
           <div>
             <p>Активных:</p>
@@ -147,7 +121,7 @@ const Partners = () => {
         </div>
         <div className={styles["your-sponsor-mobile"]}>
           <p>Ваш спонсор:</p>
-          <span>{currentUser.referredBy ? currentUser.referredBy : "-"}</span>
+          <span>{userData.referredBy ? userData.referredBy : "-"}</span>
         </div>
         <div className={styles["deposits-bought"]}>
           <ThunderboltFilled className={styles["icon"]} />

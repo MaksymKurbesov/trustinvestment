@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { Button, Form, Input, Modal, Result } from "antd";
 import styles from "./Replenishment.module.css";
 import { useContext, useEffect, useState } from "react";
@@ -13,7 +13,8 @@ import AuthContext from "../../components/Auth-Provider/AuthContext";
 const Replenishment = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [transactionID, setTransactionID] = useState(null);
-  const { currentUser } = useContext(AuthContext);
+
+  const { userData } = useOutletContext();
   const location = useLocation();
   const navigate = useNavigate();
   const { firestore } = useContext(FirebaseContext);
@@ -40,12 +41,12 @@ const Replenishment = () => {
       showModal();
       const sendData = async () => {
         await addDoc(collection(firestore, "transactions"), {
-          account_id: currentUser.uid,
+          account_id: userData.uid,
           amount: data.amount,
           status: "Ожидание",
           type: "Пополнение",
           date: new Date(),
-          email: currentUser.email,
+          email: userData.email,
           paymentMethod: data.paymentMethod,
           executor: data.paymentMethod,
         });
@@ -54,12 +55,14 @@ const Replenishment = () => {
 
       handleSubmit({
         ...values,
-        email: currentUser.email,
+        email: userData.email,
         amount: data.amount,
         tariffPlan: data.tariffPlan,
       });
     });
   };
+
+  if (!userData) return;
 
   return (
     <div className={`${styles["replenishment"]} replenishmentRoot`}>
@@ -99,8 +102,7 @@ const Replenishment = () => {
         </thead>
       </table>
       <p className={styles["information"]}>
-        Данные платежа произведенного вручную через {data.paymentMethod} и
-        реквизиты плательщика
+        Данные платежа произведенного вручную через {data.paymentMethod} и реквизиты плательщика
       </p>
       <Form form={form}>
         <Form.Item
@@ -112,17 +114,14 @@ const Replenishment = () => {
             },
           ]}
         >
-          <Input
-            className={styles["input"]}
-            addonBefore={"Номер/хеш транзакции"}
-          />
+          <Input className={styles["input"]} addonBefore={"Номер/хеш транзакции"} />
         </Form.Item>
         <Form.Item>
           <Input
             className={styles["input"]}
             addonBefore={"Примечание"}
             disabled
-            value={`invoice #${transactionID}, ${currentUser.nickname}`}
+            value={`invoice #${transactionID}, ${userData.nickname}`}
           />
         </Form.Item>
         <Form.Item>
@@ -139,11 +138,7 @@ const Replenishment = () => {
           </Button>
         </Form.Item>
       </Form>
-      <Modal
-        open={isModalOpen}
-        onOk={handleOk}
-        className={"replenishment-modal"}
-      >
+      <Modal open={isModalOpen} onOk={handleOk} className={"replenishment-modal"}>
         <ConfirmedWindow transactionID={transactionID} />
       </Modal>
     </div>

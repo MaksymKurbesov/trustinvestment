@@ -140,9 +140,7 @@ const RegisterForm = ({ handleClick }) => {
         rules={[
           {
             validator: (_, value) =>
-              value
-                ? Promise.resolve()
-                : Promise.reject(new Error("Should accept agreement")),
+              value ? Promise.resolve() : Promise.reject(new Error("Следует принять соглашение")),
           },
         ]}
         {...tailFormItemLayout}

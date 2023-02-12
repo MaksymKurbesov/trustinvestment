@@ -5,6 +5,7 @@ import styles from "./Main-Header.module.css";
 import { MenuOutlined } from "@ant-design/icons";
 import { Link, useLocation } from "react-router-dom";
 import AuthContext from "../Auth-Provider/AuthContext";
+import { getAuth } from "firebase/auth";
 
 const menuList = [
   {
@@ -32,15 +33,16 @@ const menuList = [
 const MenuList = () => {
   const windowSize = useWindowSize();
   const [currentMenuList, setCurrentMenuList] = useState([]);
+  const auth = getAuth();
   const location = useLocation();
-  const { currentUser } = useContext(AuthContext);
+  // const { auth } = useContext(AuthContext);
 
   useEffect(() => {
     if (windowSize.width > 800) {
       setCurrentMenuList(menuList);
     }
 
-    if (windowSize.width < 800 && currentUser) {
+    if (windowSize.width < 800 && auth.currentUser) {
       const menuListWithCabinet = [
         ...menuList,
         {
@@ -52,7 +54,7 @@ const MenuList = () => {
       setCurrentMenuList(menuListWithCabinet);
     }
 
-    if (windowSize.width < 800 && !currentUser) {
+    if (windowSize.width < 800 && !auth.currentUser) {
       const menuListWithSignup = [
         ...menuList,
         {
@@ -67,13 +69,13 @@ const MenuList = () => {
 
       setCurrentMenuList(menuListWithSignup);
     }
-  }, [windowSize.width, currentUser]);
+  }, [auth.currentUser]);
 
   return (
     <>
       {windowSize.width > 800 ? (
         <div className={`${styles["user-icon-wrapper"]} menuListRoot`}>
-          {currentUser ? (
+          {auth.currentUser ? (
             <Link to={"/my-account"}>Кабинет</Link>
           ) : (
             <>
@@ -94,8 +96,7 @@ const MenuList = () => {
               {menuItem.title}
             </Link>
           ),
-          className:
-            location.pathname === menuItem.link ? "active-main-header" : "",
+          className: location.pathname === menuItem.link ? "active-main-header" : "",
         }))}
         className={styles["menu"]}
         overflowedIndicator={<MenuOutlined />}

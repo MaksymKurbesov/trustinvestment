@@ -1,12 +1,8 @@
 import styles from "./UserWallets.module.css";
 import Slider from "react-slick";
 import { ICONS } from "../../utils/ICONS";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
-import { FirebaseContext } from "../../index";
-import { collection, query, where } from "firebase/firestore";
-import { useCollection } from "react-firebase-hooks/firestore";
-import AuthContext from "../Auth-Provider/AuthContext";
 
 const sliderSettings = {
   speed: 500,
@@ -61,7 +57,6 @@ const UserWallets = ({ paymentMethods }) => {
               <ul className={styles["platform-statistic"]}>
                 <li>
                   <p>Доступно</p>
-                  {/*<span>{totalAvailable < 0 ? 0 : totalAvailable} USD</span>*/}
                   <span>{platform[1].available} USD</span>
                 </li>
                 <li>

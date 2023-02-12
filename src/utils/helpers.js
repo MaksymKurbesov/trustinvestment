@@ -51,3 +51,24 @@ export const parseDate = (date, offset = 0) => {
 export const getPaymentMethod = (list, paymentMethod) => {
   return list.find((item) => item.name === paymentMethod);
 };
+
+export const getNextAccrual = (deposit) => {
+  let nearestDate = new Date(deposit.date.seconds * 1000);
+  nearestDate.setDate(nearestDate.getDate() + deposit.charges + 1);
+
+  // console.log(Math.round(Date.now() / 1000), "Date.now()");
+
+  // let rewardDate = Date.now() * 1000 - deposit.date.seconds;
+  // let rewardDate = Date.now() * 1000 - nearestDate;
+
+  // console.log(deposit.date.seconds, "deposit.date.seconds");
+  // console.log(nearestDate.getTime() / 1000, "nearesetDate");
+  //
+  // if (rewardDate < nearestDate) {
+  //   console.log("loh");
+  //   nearestDate = rewardDate;
+  // }
+
+  // console.log(nearestDate.getTime());
+  return nearestDate.getTime();
+};

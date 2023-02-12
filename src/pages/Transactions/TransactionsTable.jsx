@@ -1,13 +1,10 @@
 import { Table, Tag, Tooltip } from "antd";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { CaretDownOutlined } from "@ant-design/icons";
-import { normalizeDate } from "../../utils/helpers";
+import { normalizeDate, secondsToStringDays } from "../../utils/helpers";
 import { STATUS_MAPLIST } from "../../utils/consts";
 import styles from "./Transactions.module.css";
-
-const onChange = (pagination, filters, sorter, extra) => {
-  console.log("params", pagination, filters, sorter, extra);
-};
+import { useEffect, useState } from "react";
 
 const columns = [
   {
@@ -77,6 +74,7 @@ const columns = [
     key: "tax",
     width: 100,
     align: "center",
+    render: (text) => `0%`,
   },
   {
     title: "Дата",
@@ -84,7 +82,10 @@ const columns = [
     key: "date",
     align: "center",
     defaultSortOrder: "descend",
-    sorter: (a, b) => new Date(a.date) - new Date(b.date),
+    sorter: (a, b) => {
+      return new Date(a.date.seconds) - new Date(b.date.seconds);
+    },
+    render: (text) => <p>{secondsToStringDays(text.seconds)}</p>,
   },
   {
     title: "Исполнитель",
@@ -94,34 +95,23 @@ const columns = [
   },
 ];
 
-const TransactionsTable = ({ transactions }) => {
+const TransactionsTable = ({ transactions, totalTransactions }) => {
   const windowSize = useWindowSize();
 
-  if (!transactions.docs) return;
-
-  const transactionsList = transactions.docs.map((doc) => {
-    const data = doc.data();
-
-    if (!data.date) return;
-
-    return {
-      ...data,
-      key: doc.id,
-      id: doc.id.slice(0, 5),
-      tax: "0%",
-      date: data.date.seconds,
-    };
-  });
+  const onChange = (pagination, filters, sorter, extra) => {
+    // setPage(pagination.current);
+    console.log("params", pagination, filters, sorter, extra);
+  };
 
   return (
     <Table
       tableLayout={"fixed"}
       columns={columns}
-      dataSource={[]}
+      pagination={{ total: totalTransactions }}
+      dataSource={transactions}
       onChange={onChange}
       size={windowSize.width < 600 ? "small" : ""}
       className={"transactionsListRoot"}
-      // mobileBreakpoint={768}
       scroll={{ x: windowSize.width < 600 ? 800 : 1200 }}
     />
   );

@@ -5,7 +5,7 @@ import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import { sideMenuList } from "./SideMenuList";
 import { getAuth, signOut } from "firebase/auth";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useWindowSize } from "../../hooks/useWindowSize";
 
 const { Sider } = Layout;
@@ -13,9 +13,15 @@ const { Sider } = Layout;
 const MainSider = ({ setCollapsed, collapsed }) => {
   const windowSize = useWindowSize();
   const auth = getAuth();
+  const navigate = useNavigate();
   const location = useLocation();
-  const signOutHandler = async () => {
-    await signOut(auth);
+  const signOutHandler = () => {
+    signOut(auth)
+      .then(() => {
+        console.log("success");
+        navigate("/");
+      })
+      .catch((e) => console.log(e));
   };
 
   return (
