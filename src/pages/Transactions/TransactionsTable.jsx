@@ -39,25 +39,25 @@ const columns = [
     key: "type",
     align: "center",
     sorter: (a, b) => a.type.length - b.type.length,
-    filters: [
-      {
-        text: "Вклад",
-        value: "Вклад",
-      },
-      {
-        text: "Реферальные",
-        value: "Реферальные",
-      },
-      {
-        text: "Начисления",
-        value: "Начисления",
-      },
-      {
-        text: "Вывод",
-        value: "Вывод",
-      },
-    ],
-    onFilter: (value, record) => record.type.indexOf(value) === 0,
+    // filters: [
+    //   {
+    //     text: "Вклад",
+    //     value: "Вклад",
+    //   },
+    //   {
+    //     text: "Реферальные",
+    //     value: "Реферальные",
+    //   },
+    //   {
+    //     text: "Начисления",
+    //     value: "Начисления",
+    //   },
+    //   {
+    //     text: "Вывод",
+    //     value: "Вывод",
+    //   },
+    // ],
+    // onFilter: (value, record) => record.type.indexOf(value) === 0,
 
     // onFilter: (value, record) => record.name.indexOf(value) === 0,
   },
@@ -95,8 +95,27 @@ const columns = [
   },
 ];
 
-const TransactionsTable = ({ transactions, totalTransactions }) => {
+const TransactionsTable = ({ transactions, totalTransactions, showPrevious, showNext, loading }) => {
   const windowSize = useWindowSize();
+  console.log(loading, "loading");
+
+  const itemRender = (_, type, originalElement) => {
+    // console.log(originalElement, "originalElement");
+
+    if (type === "prev") {
+      // showPrevious();
+      return (
+        <a className={styles["prev-button"]} onClick={() => showPrevious({ item: transactions[0] })}>
+          Предыдущая
+        </a>
+      );
+    }
+    if (type === "next") {
+      // showNext();
+      return <a onClick={() => showNext({ item: transactions[transactions.length - 1] })}>Следующая</a>;
+    }
+    return originalElement;
+  };
 
   const onChange = (pagination, filters, sorter, extra) => {
     // setPage(pagination.current);
@@ -107,7 +126,7 @@ const TransactionsTable = ({ transactions, totalTransactions }) => {
     <Table
       tableLayout={"fixed"}
       columns={columns}
-      pagination={{ total: totalTransactions }}
+      pagination={{ total: totalTransactions, itemRender: itemRender, disabled: loading, simple: true }}
       dataSource={transactions}
       onChange={onChange}
       size={windowSize.width < 600 ? "small" : ""}

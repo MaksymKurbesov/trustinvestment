@@ -97,9 +97,11 @@ const Register = () => {
 
     await createUserWithEmailAndPassword(auth, user.email, user.password).then(async (userCredential) => {
       const signedUpUser = userCredential.user;
+      // await signedUpUser.sendEmailVerification().then((data) => console.log(data));
+      // console.log(signedUpUser, "signedUpUser");
 
       const setReferrals = async (referredBy, limit) => {
-        if (referredBy.trim() !== "" && --limit) {
+        if (referredBy && referredBy.trim() !== "" && --limit) {
           const getReferral = async () => {
             const q1 = query(collection(firestore, "users"), where("nickname", "==", referredBy));
             await getDocs(q1).then(async (querySnap) => {

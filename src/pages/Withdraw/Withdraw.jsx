@@ -9,7 +9,7 @@ import withdrawnAnimation from "assets/lottie-animations/withdrawn-animation2.js
 import { getRandomArbitrary, hideDigitsInWallet, secondsToStringDays } from "../../utils/helpers";
 import { ConfirmedWindow } from "../../components/ConfirmedWindow/ConfirmedWindow";
 import { useForm } from "@formspree/react";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, increment, updateDoc } from "firebase/firestore";
 import { FirebaseContext } from "../../index";
 import AuthContext from "../../components/Auth-Provider/AuthContext";
 import { PERFECT_MONEY } from "../../utils/consts";
@@ -17,7 +17,6 @@ import { useOutletContext } from "react-router-dom";
 import { getAuth } from "firebase/auth";
 
 const Withdraw = () => {
-  const { currentUser } = useContext(AuthContext);
   const [amount, setAmount] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState(PERFECT_MONEY);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
@@ -74,6 +73,10 @@ const Withdraw = () => {
     });
   };
 
+  const setTax = (e) => {
+    console.log(e);
+  };
+
   // if (!currentUser) {
   //   return null;
   // }
@@ -98,7 +101,7 @@ const Withdraw = () => {
 
         <AdditionalInformation
           infoLabel1={"Комиссия"}
-          infoValue1={0}
+          infoValue1={paymentMethod === "TRC20 Tether" ? 1 : 0}
           infoLabel2={"Будет выведено с учетом комиссии"}
           infoValue2={amount}
         />

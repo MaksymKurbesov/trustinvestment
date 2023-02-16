@@ -3,6 +3,8 @@ import { parseDate } from "../../utils/helpers";
 import styles from "./Deposits-Status.module.css";
 import { CountdownTimer } from "../CountdownTimer/CountdownTimer";
 
+const DAY_IN_MS = 86400 * 1000;
+
 const columns = [
   {
     title: "План",
@@ -34,12 +36,15 @@ const columns = [
     dataIndex: "nextAccrual",
     key: "nextAccrual",
     render: (text, record) => {
+      console.log(text, "text");
+
       return (
         <CountdownTimer
           targetDate={text}
           depositID={record.key}
           receivedForDay={record.willReceived / record.days}
           nickname={record.executor}
+          paymentMethod={record.paymentMethod}
         />
       );
     },

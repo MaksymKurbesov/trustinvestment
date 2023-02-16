@@ -5,6 +5,7 @@ import EthereumIcon from "assets/images/platform-icons/ethereum.png";
 import SolanaIcon from "assets/images/platform-icons/solana.png";
 import PolkadotIcon from "assets/images/platform-icons/polkadot-logo.png";
 import BnbIcon from "assets/images/platform-icons/bnb.png";
+import QiwiIcon from "assets/images/platform-icons/qiwi.png";
 
 export const ICONS = {
   "Perfect Money": PMIcon,
@@ -14,4 +15,5 @@ export const ICONS = {
   Solana: SolanaIcon,
   Polkadot: PolkadotIcon,
   Bnb: BnbIcon,
+  QIWI: QiwiIcon,
 };

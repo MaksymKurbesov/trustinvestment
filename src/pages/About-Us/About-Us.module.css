@@ -1,5 +1,5 @@
 .about-us {
-  padding-top: 150px;
+  padding-top: 50px;
   background-image: url("../../assets/images/about-us-background2.svg");
   min-height: 1000px;
   background-repeat: no-repeat;
@@ -23,7 +23,7 @@
 
 .about-us__subtitle {
   max-width: 600px;
-  margin: 0 auto 400px;
+  margin: 0 auto 500px;
   text-align: center;
   font-weight: 500;
 }

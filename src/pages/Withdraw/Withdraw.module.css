@@ -1,7 +1,3 @@
-.enter-amount {
-  width: 150px;
-}
-
 .withdraw-info {
   max-width: 800px;
   line-height: 1.6;
@@ -50,4 +46,17 @@
 .modal-content p span {
   font-weight: 600;
   margin-left: auto;
+}
+
+@media screen and (max-width: 600px) {
+  .withdraw-info {
+    padding: 20px;
+    font-size: 12px;
+  }
+  .withdraw-info:before {
+    font-size: 200px;
+    opacity: 0.2;
+    right: 0;
+    left: initial;
+  }
 }

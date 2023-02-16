@@ -12,12 +12,12 @@ const Index = () => {
   return (
     <>
       <Layout>
+        <HeroBanner />
         <Content>
-          <HeroBanner />
           <div className={"index-layout"}>
             <Advantage />
-            <Roadmap />
             <Plans />
+            <Roadmap />
             <AffilateProgram />
             <ContactUs />
           </div>

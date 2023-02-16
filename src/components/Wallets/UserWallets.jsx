@@ -20,14 +20,14 @@ const sliderSettings = {
       },
     },
     {
-      breakpoint: 850,
+      breakpoint: 1000,
       settings: {
         slidesToShow: 2,
         infinite: true,
       },
     },
     {
-      breakpoint: 480,
+      breakpoint: 700,
       settings: {
         slidesToShow: 1,
         centerMode: true,
@@ -48,32 +48,32 @@ const UserWallets = ({ paymentMethods }) => {
     <div className={styles["slider-wrapper"]}>
       <Slider ref={sliderRef} {...sliderSettings}>
         {sortedByAvailable.map((platform, i) => {
-          console.log(platform, "platform");
-
           return (
-            <div className={styles["platform-balance"]} key={i}>
-              <div className={styles["title"]}>
-                <p className={styles["platform-name"]}>{platform[0] === "Bnb" ? "BNB Smart Chain" : platform[0]}</p>
-                <img src={ICONS[platform[0]]} width={35} alt={""} />
+            <div key={i} className={styles["platform-balance-wrapper"]}>
+              <div className={styles["platform-balance"]} key={i}>
+                <div className={styles["title"]}>
+                  <p className={styles["platform-name"]}>{platform[0] === "Bnb" ? "BNB Smart Chain" : platform[0]}</p>
+                  <img src={ICONS[platform[0]]} width={155} alt={""} />
+                </div>
+                <ul className={styles["platform-statistic"]}>
+                  <li>
+                    <p>Доступно</p>
+                    <span>{platform[1].available.toFixed(1)} USD</span>
+                  </li>
+                  <li>
+                    <p>Пополнено</p>
+                    <span>{platform[1].deposited.toFixed(1)} USD</span>
+                  </li>
+                  <li>
+                    <p>Выведено</p>
+                    <span>{platform[1].withdrawn.toFixed(1)} USD</span>
+                  </li>
+                  <li>
+                    <p>Реферальные</p>
+                    <span>{platform[1].referrals.toFixed(1)} USD</span>
+                  </li>
+                </ul>
               </div>
-              <ul className={styles["platform-statistic"]}>
-                <li>
-                  <p>Доступно</p>
-                  <span>{platform[1].available} USD</span>
-                </li>
-                <li>
-                  <p>Пополнено</p>
-                  <span>{platform[1].deposited} USD</span>
-                </li>
-                <li>
-                  <p>Выведено</p>
-                  <span>{platform[1].withdrawn} USD</span>
-                </li>
-                <li>
-                  <p>Реферальные</p>
-                  <span>{platform[1].referrals} USD</span>
-                </li>
-              </ul>
             </div>
           );
         })}

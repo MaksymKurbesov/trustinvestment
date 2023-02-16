@@ -8,6 +8,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { ScrollToTop } from "./components/Scroll-To-Top/Scroll-To-Top";
 import { AuthProvider } from "./components/Auth-Provider/Auth-Provider";
+import { getStorage } from "firebase/storage";
 
 const firebaseApp = initializeApp({
   apiKey: "AIzaSyBRYVcyjt0EBhRzmd5SKdvoSeA6j6941PY",
@@ -23,6 +24,7 @@ AOS.init();
 const firestore = getFirestore(firebaseApp);
 
 export const FirebaseContext = createContext(null);
+// export const storage = getStorage(firebaseApp);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

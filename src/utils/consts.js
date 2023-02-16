@@ -26,6 +26,7 @@ export const WALLETS = {
   Ethereum: "0xeb24cdB1DFd1f6a7B709D68FF31680388C970b21",
   Bitcoin: "bc1qstglqnwpqe5l990cr69rt75pkvkk0hhwnvaphg",
   Solana: "7fGF4cGJB2eh5MSd3sKBArZmx9ER1awjnL4gMsp9SjZg",
+  QIWI: "2200730251373524",
 };
 
 // export const PERFECT_MONEY = "PERFECT_MONEY";
@@ -51,6 +52,7 @@ export const TRC20_TETHER = "TRC20 Tether";
 export const SOLANA = "Solana";
 export const POLKADOT = "Polkadot";
 export const BNB = "Bnb";
+export const QIWI = "QIWI";
 
 export const PAYMENT_METHODS_MAP = {
   PERFECT_MONEY: "Perfect Money",
@@ -60,4 +62,5 @@ export const PAYMENT_METHODS_MAP = {
   SOLANA: "Solana",
   POLKADOT: "Polkadot",
   BNB: "Bnb",
+  QIWI: "QIWI",
 };

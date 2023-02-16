@@ -1,8 +1,8 @@
 .header {
   background: #001529;
-  position: sticky;
+  /*position: fixed;*/
   top: 0;
-  z-index: 99;
+  z-index: 1199;
   width: 100%;
   padding: 0 20px;
   overflow: hidden;
@@ -10,8 +10,9 @@
 
 .header-container {
   display: flex;
-  flex-direction: row-reverse;
+  /*flex-direction: row-reverse;*/
   justify-content: center;
+  align-items: center;
 }
 
 .logotype {
@@ -25,16 +26,16 @@
 .menu {
   display: flex;
   justify-content: center;
-  height: 63px;
+  align-items: center;
   margin-right: auto;
 }
 
-.menu li {
-  padding-top: 7px;
-  height: 100%;
+.menu li a {
+  font-size: 14px;
+  line-height: 6.6;
 }
 
-.menu li a {
+.menu li > div {
   width: 100%;
 }
 

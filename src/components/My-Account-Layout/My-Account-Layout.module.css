@@ -36,18 +36,20 @@
 
 .left-sider {
   /*height: 100%;*/
+  /*width: 150px !important;*/
+  /*max-width: 150px !important;*/
   z-index: 10;
   /*position: fixed !important;*/
-  padding-top: 90px;
+  /*padding-top: 90px;*/
 }
 
 .active {
   background: var(--blue);
-  color: white;
 }
 
-.menu-icon {
-  font-size: 14px;
+.menu-icon span {
+  font-size: 18px !important;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 @media screen and (max-width: 1200px) {
@@ -82,6 +84,5 @@
   .left-sider {
     overflow: initial;
     z-index: 99;
-    padding-top: 90px;
   }
 }

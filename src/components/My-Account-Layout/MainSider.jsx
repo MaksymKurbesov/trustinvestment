@@ -33,7 +33,7 @@ const MainSider = ({ setCollapsed, collapsed }) => {
       onCollapse={() => {
         setCollapsed((prev) => !prev);
       }}
-      collapsedWidth={windowSize.width < 560 ? 0 : 80}
+      collapsedWidth={windowSize.width < 560 ? 0 : 90}
       trigger={<div className={styles["menu-icon"]}>{!collapsed ? <LeftOutlined /> : <RightOutlined />}</div>}
     >
       <Menu

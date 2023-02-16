@@ -7,6 +7,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  margin-bottom: 50px;
 }
 
 .wrapper {
@@ -38,6 +40,10 @@
     left: 40px;
   }
 
+  .time-to-payment {
+    padding: 10px 0;
+  }
+
   .wrapper {
     flex-direction: column;
     padding: 20px 0;
@@ -49,6 +55,11 @@
     position: absolute;
     left: -45px;
     top: 18px;
+  }
+}
+@media screen and (max-width: 1700px) {
+  .time-to-payment {
+    margin-bottom: 0;
   }
 }
 

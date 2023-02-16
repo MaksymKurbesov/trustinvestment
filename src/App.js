@@ -3,7 +3,7 @@ import "./utils/libs/slick/slick.css";
 import "./utils/libs/slick/slick-theme.css";
 import { Index } from "./pages/Index/Index";
 
-import { Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Switch } from "react-router-dom";
 import { HomeLayout } from "./components/Layouts/Home-Layout";
 import { Login } from "./pages/Login/Login";
 import { Register } from "./pages/Register/Register";
@@ -33,6 +33,7 @@ function App() {
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contacts" element={<Contacts />} />
         </Route>
+
         <Route path="/my-account" element={<MyAccountLayout />}>
           <Route index element={<PersonalArea />} />
           <Route path="deposit" element={<Deposit />} />

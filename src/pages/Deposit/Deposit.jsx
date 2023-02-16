@@ -14,19 +14,17 @@ import {
   collection,
   updateDoc,
   doc,
-  arrayUnion,
   increment,
   query,
   where,
   getDocs,
-  getDoc,
   setDoc,
   getCountFromServer,
 } from "firebase/firestore";
 import { FirebaseContext } from "../../index";
 import { ConfirmedWindow } from "../../components/ConfirmedWindow/ConfirmedWindow";
-import AuthContext from "../../components/Auth-Provider/AuthContext";
 import { PERCENTAGE_BY_LVL, PERFECT_MONEY } from "../../utils/consts";
+import { v4 as uuidv4 } from "uuid";
 
 const REFERRALS_TOTAL_LEVELS = 6;
 
@@ -105,9 +103,12 @@ const Deposit = () => {
           invested: increment(amount),
         });
 
-        await setDoc(doc(firestore, "users", userData.email, "deposits", `${queryCount.data().count}`), {
+        // const depositsCount = queryCount.data().count > 9 ? `${queryCount.data().count}`
+
+        const depositID = `900${queryCount.data().count}`;
+
+        await setDoc(doc(firestore, "users", userData.email, "deposits", depositID), {
           planNumber: `#${tariffPlan.title[tariffPlan.title.length - 1]}`,
-          progress: 0,
           days: tariffPlan.days,
           amount: amount,
           willReceived: +totalIncome,
@@ -115,6 +116,8 @@ const Deposit = () => {
           charges: 0,
           received: 0,
           status: "active",
+          paymentMethod: paymentMethod,
+          deposit_id: depositID,
         });
       };
 

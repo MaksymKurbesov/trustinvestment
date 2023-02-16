@@ -26,7 +26,7 @@
 }
 
 body {
-  background-color: #e7e7e7;
+  background-color: #efefef;
   color: var(--black);
   counter-reset: section;
 
@@ -68,8 +68,8 @@ ol {
   min-height: 380px;
   background-image: url("./../src/assets/images/TEST.png"), url("./../src/assets/images/TEST.png");
   background-repeat: no-repeat, no-repeat;
-  background-position: -600px 350px, right -400px top 1570px;
-  background-size: 1500px;
+  background-position: -400px 550px, right -300px top 1570px, left 0 top 2070px, left -400px top 3770px;
+  background-size: 800px, 800px;
   overflow: hidden;
 }
 
@@ -98,15 +98,29 @@ h3 {
 
 .accountRoot .slick-slide > div {
   /*margin-right: 20px !important;*/
-  height: 200px;
-  padding-top: 10px;
+  height: 230px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+
   /*height: 200px;*/
 }
 
 .accountRoot .slick-dots li {
   width: 100%;
+  /*height: 30px;*/
+  /*border-radius: 50%;*/
   margin: 0;
   /*height: 5px;*/
+}
+
+.accountRoot .slick-dots li button:before {
+  border-radius: 50%;
+  height: 7px !important;
+  width: 7px !important;
+}
+
+.slick-dots li.slick-active button:before {
+  background: var(--blue) !important;
 }
 
 .accountRoot .slick-list {
@@ -115,12 +129,13 @@ h3 {
 
 .accountRoot .slick-dots {
   display: grid !important;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(8, 1fr);
   gap: 5px;
   bottom: -32px;
   left: 50%;
   transform: translateX(-50%);
   width: 50%;
+  margin-bottom: 7px;
 }
 
 .accountRoot .slick-dots li button:before {
@@ -190,6 +205,14 @@ h3 {
   text-align: initial;
 }
 
+.settingsRoot .anticon {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.settingsRoot label {
+  color: white !important;
+}
+
 .replenishment-modal .ant-modal-footer {
   display: none;
 }
@@ -200,21 +223,14 @@ h3 {
 
 .slick-track {
   display: flex !important;
-  /*top: -10px !important;*/
-  /*padding-top: 10px;*/
-  /*padding-bottom: 10px;*/
-}
-
-.slick-list {
-  /*padding-top: 10px !important;*/
-  /*margin-right: -20px !important;*/
-  /*padding: 20px 0 10px 2px !important;*/
-  /*overflow: initial !important;*/
-  /*overflow-x: hidden !important;*/
 }
 
 #normal_login .anticon {
   color: rgba(0, 0, 0, 0.25);
+}
+
+.container .ant-menu-horizontal {
+  line-height: 63px !important;
 }
 
 .ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item:not(.ant-menu-item-selected):hover {
@@ -237,11 +253,12 @@ h3 {
 }
 
 .ant-form-item {
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 
 .ant-layout {
   background: none;
+  /*padding-top: 95px;*/
 }
 
 .ant-tabs-content-holder {
@@ -302,6 +319,10 @@ h3 {
   padding-right: 25px !important;
 }
 
+.depositRoot .ant-tabs-nav-wrap {
+  padding: 0 20px;
+}
+
 .levelsRoot .ant-collapse-item:not(:last-child) {
   margin-bottom: 24px !important;
 }
@@ -316,6 +337,11 @@ h3 {
 
 .levelsRoot .ant-collapse-item .ant-collapse-arrow {
   color: white !important;
+}
+
+.registerFormRoot .ant-col-sm-8 {
+  flex: 0 0 50% !important;
+  max-width: 50% !important;
 }
 @media screen and (max-width: 1000px) {
   .plans-listRoot .ant-card-body {

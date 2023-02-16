@@ -1,15 +1,25 @@
 import { Button, Checkbox, Form, Input } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import styles from "./Login-Form.module.css";
+import { useState } from "react";
 
-const LoginForm = ({ handleClick }) => {
+const LoginForm = ({ handleClick, resetPassword }) => {
+  const [email, setEmail] = useState("");
+
   const onFinish = ({ email, password }) => {
     handleClick(email, password);
   };
 
+  const onChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const [activeClass, setActiveClass] = useState("");
+
   return (
     <Form
       name="normal_login"
-      className="login-form"
+      className={styles["login-form"]}
       initialValues={{
         remember: true,
       }}
@@ -24,10 +34,7 @@ const LoginForm = ({ handleClick }) => {
           },
         ]}
       >
-        <Input
-          prefix={<UserOutlined className="site-form-item-icon" />}
-          placeholder="Email"
-        />
+        <Input prefix={<UserOutlined className={styles["site-form-item-icon"]} />} placeholder="Email" />
       </Form.Item>
       <Form.Item
         name="password"
@@ -37,25 +44,31 @@ const LoginForm = ({ handleClick }) => {
             message: "Введите ваш пароль!",
           },
         ]}
+        className={styles["password"]}
       >
         <Input
-          prefix={<LockOutlined className="site-form-item-icon" />}
+          prefix={<LockOutlined className={styles["site-form-item-icon"]} />}
           type="password"
           placeholder="Пароль"
         />
       </Form.Item>
+      <Form.Item name="remember" valuePropName="checked">
+        <Checkbox>Запомнить меня</Checkbox>
+      </Form.Item>
       <Form.Item>
-        <Form.Item name="remember" valuePropName="checked" noStyle>
-          <Checkbox>Запомнить меня</Checkbox>
-        </Form.Item>
-
-        <a className="login-form-forgot" href="">
+        <button onClick={() => setActiveClass("active")} className={styles["reset-password-button"]} href="">
           Забыл пароль
-        </a>
+        </button>
+        <div className={`${styles[`reset-password-wrapper`]} ${styles[activeClass]}`}>
+          <Input className={styles["reset-password-input"]} value={email} onChange={onChange} />
+          <Button onClick={() => resetPassword(email)} className={`${styles[`send-button`]} ${styles[activeClass]}`}>
+            Отправить
+          </Button>
+        </div>
       </Form.Item>
 
       <Form.Item>
-        <Button type="primary" htmlType="submit" className="login-form-button">
+        <Button type="primary" htmlType="submit" className={styles["login-form-button"]}>
           Войти
         </Button>
       </Form.Item>

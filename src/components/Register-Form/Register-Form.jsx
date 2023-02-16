@@ -66,6 +66,7 @@ const RegisterForm = ({ handleClick }) => {
       name="register"
       onFinish={onFinish}
       scrollToFirstError
+      className={"registerFormRoot"}
     >
       <Form.Item
         name="email"
@@ -92,6 +93,28 @@ const RegisterForm = ({ handleClick }) => {
             required: true,
             message: "Введите пожалуйста пароль!",
           },
+        ]}
+        hasFeedback
+      >
+        <Input.Password />
+      </Form.Item>
+      <Form.Item
+        name="confirm"
+        label="Подтвердите пароль"
+        dependencies={["password"]}
+        rules={[
+          {
+            required: true,
+            message: "Подтвердите пожалуйста пароль!",
+          },
+          ({ getFieldValue }) => ({
+            validator(_, value) {
+              if (!value || getFieldValue("password") === value) {
+                return Promise.resolve();
+              }
+              return Promise.reject(new Error("Пароли не совпадают!"));
+            },
+          }),
         ]}
         hasFeedback
       >

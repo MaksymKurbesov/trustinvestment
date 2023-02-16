@@ -2,19 +2,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useState, useEffect, useContext } from "react";
 
 import AuthContext from "./AuthContext";
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  increment,
-  limit,
-  onSnapshot,
-  orderBy,
-  query,
-  updateDoc,
-  where,
-} from "firebase/firestore";
+import { collection, doc, increment, limit, onSnapshot, orderBy, query, updateDoc, where } from "firebase/firestore";
 import { FirebaseContext } from "../../index";
 
 export const AuthProvider = ({ children }) => {
@@ -73,6 +61,8 @@ export const AuthProvider = ({ children }) => {
         }
       });
     });
+
+    return unsubscribe;
   }, [signedInUser]);
 
   return <AuthContext.Provider value={{ signedInUser }}>{children}</AuthContext.Provider>;

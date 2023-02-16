@@ -2,6 +2,7 @@
   grid-area: d;
   /*margin-right: -20px;*/
   font-family: Fira Mono;
+  box-shadow: rgba(50, 50, 93, 0.15) 0px 10px 12px -2px, rgba(0, 0, 0, 0.15) 0px 3px 7px -3px;
 }
 
 .progress {

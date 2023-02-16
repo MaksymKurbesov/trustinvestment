@@ -45,9 +45,6 @@ export const parseDate = (date, offset = 0) => {
   const offsetDays = new Date(offsetDate).getDate();
   const offsetMonth = monthNames[new Date(offsetDate).getMonth()];
 
-  console.log(date, "date");
-  console.log(offsetDate, "offsetDate");
-
   return `${correctDays} ${correctMonth} : ${offsetDays} ${offsetMonth}`;
 };
 
@@ -58,20 +55,9 @@ export const getPaymentMethod = (list, paymentMethod) => {
 export const getNextAccrual = (deposit) => {
   let nearestDate = new Date(deposit.date.seconds * 1000);
   nearestDate.setDate(nearestDate.getDate() + deposit.charges + 1);
-
-  // console.log(Math.round(Date.now() / 1000), "Date.now()");
-
-  // let rewardDate = Date.now() * 1000 - deposit.date.seconds;
-  // let rewardDate = Date.now() * 1000 - nearestDate;
-
-  // console.log(deposit.date.seconds, "deposit.date.seconds");
-  // console.log(nearestDate.getTime() / 1000, "nearesetDate");
-  //
-  // if (rewardDate < nearestDate) {
-  //   console.log("loh");
-  //   nearestDate = rewardDate;
-  // }
-
-  // console.log(nearestDate.getTime());
   return nearestDate.getTime();
+};
+
+export const declensionNum = (num, words) => {
+  return words[num % 100 > 4 && num % 100 < 20 ? 2 : [2, 0, 1, 1, 1, 2][num % 10 < 5 ? num % 10 : 5]];
 };

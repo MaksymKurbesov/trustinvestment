@@ -46,13 +46,15 @@ const PersonalArea = () => {
         snap.docs.map((item, index) => {
           const data = item.data();
 
+          console.log(item, "item");
+
           if (getNextAccrual(data) < nextAccrual) {
             nextAccrual = getNextAccrual(data);
           }
 
           depositsArr.push({
             ...data,
-            key: index,
+            key: item.id,
             nextAccrual: getNextAccrual(data),
             executor: userData.nickname,
           });

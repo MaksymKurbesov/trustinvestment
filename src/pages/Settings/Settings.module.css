@@ -2,28 +2,73 @@
   padding-bottom: 50px;
 }
 
-.settings-page h3 {
+.upload-button {
+  /*padding-left: 85px;*/
+  /*margin-top: auto;*/
+}
+
+.settings-page h3,
+.wallets-wrapper h3 {
   margin-bottom: 30px;
-  font-size: 20px;
+  font-size: 34px;
   font-weight: 600;
+  color: white;
 }
 
-.user-avatar {
-  grid-column: auto / span 2;
-  cursor: pointer;
-}
-
-.form {
+.wallets {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 20px;
+}
+
+.wallets-wrapper {
+  background: var(--blue);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 25px;
+}
+
+.avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-right: 100px;
 }
 
 .personal-info-wrapper {
-  margin-right: 35px;
+  /*margin-right: 35px;*/
+  display: flex;
+  background: var(--blue);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  border-radius: 15px;
+  padding: 25px;
+  color: white;
+  margin-bottom: 50px;
+}
+
+.personal-information > div {
+  width: 100%;
 }
 
 .submit-settings {
   max-width: 200px;
+}
+
+@media screen and (max-width: 900px) {
+  .personal-info-wrapper {
+    flex-direction: column;
+  }
+
+  .avatar {
+    margin-right: 0;
+    margin-bottom: 45px;
+  }
+
+  .wallets {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 @media screen and (max-width: 550px) {
@@ -33,5 +78,15 @@
 
   .personal-info-wrapper {
     margin-bottom: 75px;
+  }
+
+  .wallets {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .settings-page h3,
+  .wallets-wrapper h3 {
+    font-size: 26px;
   }
 }

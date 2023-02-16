@@ -2,45 +2,66 @@
   grid-area: b;
 }
 
-.platform-balance {
+.platform-balance,
+.platform-balance-wrapper {
   display: flex !important;
   flex-direction: column;
   background: var(--blue);
   color: white;
-  /*padding: 20px;*/
   border-radius: 30px;
   position: relative;
   margin-right: 20px;
   height: 100%;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  min-width: 270px;
+}
+
+.platform-balance {
+  margin-right: 0;
 }
 
 .platform-balance:before {
   content: "";
-  height: 50%;
+  height: 100%;
   width: 100%;
-  background: linear-gradient(29deg, rgba(22, 119, 255, 1) 0%, rgba(178, 210, 255, 1) 100%);
+  /*background: linear-gradient(29deg, rgba(22, 119, 255, 1) 0%, rgba(178, 210, 255, 1) 100%);*/
+  /*background: url(https://dl.dropbox.com/s/mpmu0gjtxv2x3fs/Webp.net-resizeimage%20%281%29.jpg?raw=1) no-repeat center*/
+  /*  center fixed;*/
+  /*background-size: cover;*/
+
   position: absolute;
-  top: -6px;
+  top: 0;
   left: 0;
   z-index: -1;
+  border-radius: 30px;
 
-  border-top-left-radius: 30px;
-  border-top-right-radius: 30px;
+  /*border-top-left-radius: 30px;*/
+  /*border-top-right-radius: 30px;*/
 }
 
 .title {
   align-items: center;
   justify-content: space-between;
-  /*margin-bottom: 20px;*/
   min-height: 50px;
   display: flex;
-  padding: 20px;
-  position: relative;
-  /*top: 10px;*/
+  padding: 30px 20px 20px 20px;
+  /*position: relative;*/
+}
+
+.title img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  bottom: 0;
+  opacity: 0.1;
+  /*background: rgba(255, 255, 255, 0.1);*/
+  /*backdrop-filter: blur(20px);*/
+  /*-webkit-backdrop-filter: blur(20px);*/
 }
 
 .platform-name {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 600;
   font-family: Fira Mono;
 }
@@ -83,7 +104,7 @@
   color: white;
   border-radius: 10px;
   cursor: pointer;
-  /*text-align: right;*/
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 }
 
 @media screen and (max-width: 1700px) {
@@ -102,11 +123,6 @@
 }
 
 @media screen and (max-width: 750px) {
-  .platform-balance {
-    /*padding: 15px;*/
-    /*top: -12px;*/
-  }
-
   .platform-name {
     font-size: 18px;
   }
@@ -117,10 +133,6 @@
 }
 
 @media screen and (max-width: 480px) {
-  .platform-balance {
-    /*padding: 25px;*/
-  }
-
   .platform-name {
     font-size: 20px;
   }

@@ -144,6 +144,10 @@
   .advantages-list li:not(:last-child) {
     margin-bottom: 30px;
   }
+
+  .advantage-title {
+    margin-bottom: 35px;
+  }
 }
 
 @media screen and (max-width: 450px) {

@@ -12,21 +12,24 @@ const MainHeader = () => {
   const auth = getAuth();
   const [userIsLoggedIn, setUserIsLoggedIn] = useState(false);
 
-  // useEffect(() => {
-  //   onAuthStateChanged(auth, (user) => {
-  //     if (user) {
-  //       setUserIsLoggedIn(true);
-  //     }
-  //   });
-  // }, []);
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      console.log(user, "user");
+      if (user) {
+        setUserIsLoggedIn(true);
+      } else {
+        setUserIsLoggedIn(false);
+      }
+    });
+  }, []);
 
   return (
     <AntHeader className={styles["header"]}>
       <div className={`${styles["header-container"]} container`}>
-        <MenuList />
         <NavLink to={"/"} className={styles["logotype"]}>
-          <img src={Logotype} width={100} />
+          <img src={Logotype} width={140} />
         </NavLink>
+        <MenuList userIsLoggedIn={userIsLoggedIn} />
       </div>
     </AntHeader>
   );

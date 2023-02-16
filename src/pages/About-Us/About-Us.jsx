@@ -1,7 +1,6 @@
 import styles from "./About-Us.module.css";
 import AboutCompanyImage from "assets/images/about-company-image.svg";
 import AboutCompanyImage2 from "assets/images/about-company-image2.svg";
-import OurClient from "assets/images/our-client.jpg";
 import TeamMember1 from "assets/images/team-members/1.png";
 import TeamMember2 from "assets/images/team-members/2.png";
 import TeamMember3 from "assets/images/team-members/3.png";
@@ -105,9 +104,8 @@ const AboutUs = () => {
       <div className={`${styles["about-us__container"]}`}>
         <h2 className={styles["about-us__title"]}>O нас</h2>
         <p className={styles["about-us__subtitle"]}>
-          Если ты хочешь знать о нас больше, то ты в правильном месте. Прочитай,
-          чтобы понять как мы можем помочь тебе с инвестированием в
-          недвижимость.
+          Если ты хочешь знать о нас больше, то ты в правильном месте. Прочитай, чтобы понять как мы можем помочь тебе с
+          инвестированием в недвижимость.
         </p>
         <ul className={styles["features-list"]}>
           <li>
@@ -126,61 +124,38 @@ const AboutUs = () => {
         <div className={styles["about-company"]}>
           <div className={styles["about-company-wrapper"]}>
             <h3 className={styles["about-company-title"]}>О компании</h3>
-            <div
-              className={`${styles["about-company-text"]} ${styles["text"]}`}
-            >
-              <img
-                className={styles["decorate-image1"]}
-                src={AboutCompanyImage}
-                width={"50%"}
-              />
+            <div className={`${styles["about-company-text"]} ${styles["text"]}`}>
+              <img className={styles["decorate-image1"]} src={AboutCompanyImage} width={"50%"} />
               <div>
                 <p>
-                  <b>TRUST INVESTMENT</b> – это дочерняя компания международного
-                  холдинга Azizi Group, основанная в мае 2013 года.
+                  <b>TRUST INVESTMENT</b> – это дочерняя компания международного холдинга Azizi Group, основанная в мае
+                  2013 года.
                 </p>
                 <p>
-                  Компания объединяет сразу несколько глобальных направлений:
-                  строительство высоток с апартаментами, строительство вилл,
-                  одноэтажных домов, объединенных в коттеджные поселки, отдел
-                  продаж и сдачи в аренду коммерческой недвижимости
-                  инвестиционная онлайн платформа.
+                  Компания объединяет сразу несколько глобальных направлений: строительство высоток с апартаментами,
+                  строительство вилл, одноэтажных домов, объединенных в коттеджные поселки, отдел продаж и сдачи в
+                  аренду коммерческой недвижимости инвестиционная онлайн платформа.
                 </p>
                 <p>
-                  Вместе с Azizi Development участвовали в постройке разных
-                  проектов, расположенных в самых популярных районах эмиратов:
-                  Al Furjan ⁃ Downtown Jebel Ali ⁃ Dubai Healthcare City ⁃
-                  Sports City ⁃ Studio City.
+                  Вместе с Azizi Development участвовали в постройке разных проектов, расположенных в самых популярных
+                  районах эмиратов: Al Furjan ⁃ Downtown Jebel Ali ⁃ Dubai Healthcare City ⁃ Sports City ⁃ Studio City.
                 </p>
               </div>
             </div>
-            <h3
-              className={`${styles["about-company-title"]} ${styles["vector"]}`}
-            >
-              Чем мы занимаемся?
-            </h3>
+            <h3 className={`${styles["about-company-title"]} ${styles["vector"]}`}>Чем мы занимаемся?</h3>
             <div className={styles["about-company-text"]}>
-              <img
-                className={styles["decorate-image2"]}
-                src={AboutCompanyImage2}
-                width={"50%"}
-              />
+              <img className={styles["decorate-image2"]} src={AboutCompanyImage2} width={"50%"} />
               <div>
                 <p>
-                  Основным и самым значимым активом компании является жилая
-                  недвижимость, то есть квартиры и апартаменты в высотках, а
-                  также виллы и одноэтажные дома. Чуть менее значимым
-                  направлением является продажа и аренда площадей под кафе, бары
-                  и рестораны, в туристических местах ОАЭ.
+                  Основным и самым значимым активом компании является жилая недвижимость, то есть квартиры и апартаменты
+                  в высотках, а также виллы и одноэтажные дома. Чуть менее значимым направлением является продажа и
+                  аренда площадей под кафе, бары и рестораны, в туристических местах ОАЭ.
                 </p>
                 <p>
-                  Так же занимаемся скупкой недвижимости на вторичном рынке
-                  недвижимости, реновацией этих объектов, перепродажей в
-                  последствии. С 2020 года <b>Trust Investment</b> создала
-                  программу привлечения инвестиций со стороны корпоративного
-                  сектора. В 2022 году в рамках планового развития
-                  инвестиционной и строительной деятельности наша компания
-                  открыла онлайн направление для привлечения инвестиций со
+                  Так же занимаемся скупкой недвижимости на вторичном рынке недвижимости, реновацией этих объектов,
+                  перепродажей в последствии. С 2020 года <b>Trust Investment</b> создала программу привлечения
+                  инвестиций со стороны корпоративного сектора. В 2022 году в рамках планового развития инвестиционной и
+                  строительной деятельности наша компания открыла онлайн направление для привлечения инвестиций со
                   стороны частных лиц.
                 </p>
               </div>

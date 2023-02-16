@@ -1,12 +1,16 @@
 import React from "react";
 import { Select, Form } from "antd";
 import styles from "./Payment-Methods.module.css";
-import { BITCOIN, BNB, ETHEREUM, PERFECT_MONEY, POLKADOT, SOLANA, TRC20_TETHER } from "../../utils/consts";
+import { BITCOIN, BNB, ETHEREUM, PERFECT_MONEY, POLKADOT, QIWI, SOLANA, TRC20_TETHER } from "../../utils/consts";
 
 const PAYMENT_METHODS = [
   {
     value: PERFECT_MONEY,
     label: "Perfect Money",
+  },
+  {
+    value: QIWI,
+    label: "QIWI",
   },
   {
     value: TRC20_TETHER,
