@@ -14,7 +14,7 @@
 
 .content-wrapper {
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 43% 57%;
 }
 
 .left-row {
@@ -117,10 +117,6 @@
   background: var(--blue);
 }
 
-/*.right-row > div p {*/
-/*  margin-bottom: 7px;*/
-/*}*/
-
 .contacts-list a:not(last:last-child) {
   margin-right: 10px;
 }
@@ -151,23 +147,57 @@
 
 .company-photos-list {
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 100%;
+  grid-template:
+    "a b"
+    "a c"
+    "a d";
   margin-left: 40px;
-  gap: 40px;
+  padding-left: 50px;
 }
 
 .company-photos-list li {
   display: flex;
   align-items: center;
   justify-content: center;
-  filter: drop-shadow(1px 1px 1px black);
+  position: relative;
 }
 
-.company-photos-list li:nth-child(1),
+.company-photos-list li:nth-child(2) {
+  position: relative;
+  top: 50px;
+  right: 50px;
+  transform: rotate(10deg);
+  height: 70%;
+}
+
+.company-photos-list li:nth-child(3) {
+  position: relative;
+  top: -50px;
+  right: 50px;
+  transform: rotate(-5deg);
+}
+
 .company-photos-list li:nth-child(4) {
   position: relative;
-  z-index: 10;
-  grid-column: auto / span 2;
+  top: -50px;
+  right: 50px;
+  transform: rotate(5deg);
+}
+
+.company-photos-list li img {
+  object-fit: contain;
+}
+
+.company-photos-list li:before {
+  content: "";
+  position: absolute;
+  top: -5%;
+  left: -5%;
+  background-color: var(--blue);
+  width: 110%;
+  height: 110%;
+  z-index: -1;
 }
 
 @media screen and (max-width: 1600px) {
@@ -189,16 +219,12 @@
   .left-row {
     padding-right: 30px;
   }
-
-  /*.company-photos-list li img {*/
-  /*  width: 200px;*/
-  /*}*/
 }
 
 @media screen and (max-width: 950px) {
   .contacts {
     grid-template-columns: 1fr;
-    padding: 100px 50px 0 50px;
+    padding: 100px 20px 0 50px;
   }
 
   .contacts h2 {
@@ -211,9 +237,7 @@
 
   .right-row {
     margin-left: initial;
-    /*display: flex;*/
     border-left: none;
-    /*justify-content: space-between;*/
   }
 }
 
@@ -234,20 +258,14 @@
   .form-wrapper {
     margin-bottom: 50px;
     margin-right: 0;
-    /*order: 2;*/
   }
 
   .left-row {
     padding-right: 0;
   }
 
-  .where-are-we {
-    /*order: 3;*/
-  }
-
   .decorate-image-container {
     margin: 0 auto 50px auto;
-    /*order: 1;*/
     width: 280px;
   }
 }

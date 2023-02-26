@@ -308,11 +308,11 @@
 
   /*.how-to-work__item:nth-child(even) p {*/
   /*  max-width: 50%;*/
-  /*  order: 1;*/
+  /*  order: TestFn;*/
   /*}*/
 
   /*.how-to-work__item:nth-child(odd) span {*/
-  /*  order: 1;*/
+  /*  order: TestFn;*/
   /*}*/
 
   /*.how-to-work__item:nth-child(odd) h3 {*/

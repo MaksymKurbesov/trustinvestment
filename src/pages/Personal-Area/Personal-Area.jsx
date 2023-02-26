@@ -7,28 +7,18 @@ import { DepositsStatus } from "components/Deposits-Status/Deposits-Status";
 import { TimeToPayment } from "components/Time-To-Payment/Time-To-Payment";
 import { UserWallets } from "components/Wallets/UserWallets";
 import { useContext, useEffect, useState } from "react";
-import AuthContext from "../../components/Auth-Provider/AuthContext";
 import { FirebaseContext } from "../../index";
-import { collection, query, getDocs, where, onSnapshot, doc, addDoc } from "firebase/firestore";
+import { collection, query, getDocs, where, onSnapshot } from "firebase/firestore";
 import { useOutletContext } from "react-router-dom";
 import { getNextAccrual } from "../../utils/helpers";
-
-// const transferTransaction = async (firestore, currentUser) => {
-//   const transRef = collection(firestore, "users", currentUser.email, "transactions");
-//   const transQuery = query(collection(firestore, "transactions"), where("email", "==", currentUser.email));
-//
-//   await getDocs(transQuery).then((snap) => {
-//     snap.docs.map((item) => {
-//       addDoc(transRef, item.data());
-//     });
-//   });
-// };
+import { useTranslation } from "react-i18next";
 
 const PersonalArea = () => {
   const { firestore } = useContext(FirebaseContext);
   const { userData } = useOutletContext();
   const [depositsList, setDepositsList] = useState([]);
   const [nearestAccrual, setNearestAccrual] = useState(null);
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     if (!userData) return;
@@ -36,31 +26,31 @@ const PersonalArea = () => {
     const getDeposits = async () => {
       const q = query(collection(firestore, "users", userData.email, "deposits"), where("status", "==", "active"));
 
-      await getDocs(q).then((snap) => {
-        const depositsArr = [];
+      onSnapshot(q, async (snapshot) => {
+        await getDocs(q).then((snap) => {
+          const depositsArr = [];
 
-        if (snap.docs.length === 0) return;
+          if (snap.docs.length === 0) return;
 
-        let nextAccrual = getNextAccrual(snap.docs[0].data());
+          let nextAccrual = getNextAccrual(snap.docs[0].data());
 
-        snap.docs.map((item, index) => {
-          const data = item.data();
+          snap.docs.map((item, index) => {
+            const data = item.data();
 
-          console.log(item, "item");
+            if (getNextAccrual(data) < nextAccrual) {
+              nextAccrual = getNextAccrual(data);
+            }
 
-          if (getNextAccrual(data) < nextAccrual) {
-            nextAccrual = getNextAccrual(data);
-          }
-
-          depositsArr.push({
-            ...data,
-            key: item.id,
-            nextAccrual: getNextAccrual(data),
-            executor: userData.nickname,
+            depositsArr.push({
+              ...data,
+              key: item.id,
+              nextAccrual: getNextAccrual(data),
+              executor: userData.nickname,
+            });
+            setDepositsList(depositsArr);
           });
-          setDepositsList(depositsArr);
+          setNearestAccrual(nextAccrual);
         });
-        setNearestAccrual(nextAccrual);
       });
     };
 
@@ -73,35 +63,35 @@ const PersonalArea = () => {
 
   return (
     <div className={`${styles["my-account-page"]} accountRoot`}>
-      <h2 className={"my-account-title"}>Личный кабинет</h2>
+      <h2 className={"my-account-title"}>{t("personal_area.title")}</h2>
       <div className={styles["my-account"]}>
         <UserWallets paymentMethods={userData.paymentMethods} />
         <div className={styles["user-statistic"]}>
           <div className={styles["user-statistic__item"]}>
             <img src={InvestmentIcon} width={50} alt={"Иконка"} />
             <div className={styles["info"]}>
-              <p>Инвестировано:</p>
+              <p>{t("personal_area.invested")}:</p>
               <span>{userData.invested.toFixed(1)} USD</span>
             </div>
           </div>
           <div className={styles["user-statistic__item"]}>
             <img src={EarnedIcon} width={50} alt={"Иконка"} />
             <div className={styles["info"]}>
-              <p>Заработано:</p>
+              <p>{t("personal_area.earned")}:</p>
               <span>{userData.earned.toFixed(1)} USD</span>
             </div>
           </div>
           <div className={styles["user-statistic__item"]}>
             <img src={WithdrawnIcon} width={50} alt={"Иконка"} />
             <div className={styles["info"]}>
-              <p>Выведено:</p>
+              <p>{t("personal_area.withdrawn")}:</p>
               <span>{userData.withdrawn.toFixed(1)} USD</span>
             </div>
           </div>
           <div className={styles["user-statistic__item"]}>
             <img src={ReferalsIcon} width={50} alt={"Иконка"} />
             <div className={styles["info"]}>
-              <p>Реферальных:</p>
+              <p>{t("personal_area.referrals")}:</p>
               <span>{userData.referals.toFixed(1)} USD</span>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import styles from "./Main-Header.module.css";
-import { Layout } from "antd";
-import { Link, NavLink } from "react-router-dom";
+import Layout from "antd/lib/layout";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { MenuList } from "./Menu-List";
@@ -11,10 +11,10 @@ const { Header: AntHeader } = Layout;
 const MainHeader = () => {
   const auth = getAuth();
   const [userIsLoggedIn, setUserIsLoggedIn] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      console.log(user, "user");
       if (user) {
         setUserIsLoggedIn(true);
       } else {
@@ -24,7 +24,10 @@ const MainHeader = () => {
   }, []);
 
   return (
-    <AntHeader className={styles["header"]}>
+    <AntHeader
+      className={`${styles["header"]} ${location.pathname === "/" ? styles["index-page"] : ""}`}
+      data-aos={"fade-down"}
+    >
       <div className={`${styles["header-container"]} container`}>
         <NavLink to={"/"} className={styles["logotype"]}>
           <img src={Logotype} width={140} />

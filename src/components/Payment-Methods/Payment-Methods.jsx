@@ -1,5 +1,6 @@
 import React from "react";
-import { Select, Form } from "antd";
+import Select from "antd/lib/select";
+import Form from "antd/lib/form";
 import styles from "./Payment-Methods.module.css";
 import { BITCOIN, BNB, ETHEREUM, PERFECT_MONEY, POLKADOT, QIWI, SOLANA, TRC20_TETHER } from "../../utils/consts";
 
@@ -38,13 +39,16 @@ const PAYMENT_METHODS = [
   },
 ];
 
-const PaymentMethods = ({ paymentMethodHandler }) => {
+const PaymentMethods = ({ paymentMethodHandler, setTax }) => {
   return (
     <Form.Item name={"payment-method"}>
       <Select
         showSearch
         optionFilterProp="children"
         onChange={(value) => {
+          if (value === "TRC20 Tether") {
+            setTax(1);
+          }
           paymentMethodHandler(value);
         }}
         filterOption={(input, option) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase())}

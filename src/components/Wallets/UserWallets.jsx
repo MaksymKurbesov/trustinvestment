@@ -3,6 +3,7 @@ import Slider from "react-slick";
 import { ICONS } from "../../utils/ICONS";
 import { useRef } from "react";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 
 const sliderSettings = {
   speed: 500,
@@ -43,6 +44,7 @@ const sliderSettings = {
 const UserWallets = ({ paymentMethods }) => {
   const sliderRef = useRef();
   const sortedByAvailable = Object.entries(paymentMethods).sort((a, b) => b[1].available - a[1].available);
+  const { t, i18n } = useTranslation();
 
   return (
     <div className={styles["slider-wrapper"]}>
@@ -57,19 +59,19 @@ const UserWallets = ({ paymentMethods }) => {
                 </div>
                 <ul className={styles["platform-statistic"]}>
                   <li>
-                    <p>Доступно</p>
+                    <p>{t("personal_area.available")}</p>
                     <span>{platform[1].available.toFixed(1)} USD</span>
                   </li>
                   <li>
-                    <p>Пополнено</p>
+                    <p>{t("personal_area.deposited")}</p>
                     <span>{platform[1].deposited.toFixed(1)} USD</span>
                   </li>
                   <li>
-                    <p>Выведено</p>
+                    <p>{t("personal_area.withdrawn")}</p>
                     <span>{platform[1].withdrawn.toFixed(1)} USD</span>
                   </li>
                   <li>
-                    <p>Реферальные</p>
+                    <p>{t("personal_area.referrals")}</p>
                     <span>{platform[1].referrals.toFixed(1)} USD</span>
                   </li>
                 </ul>

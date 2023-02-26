@@ -5,6 +5,7 @@ import { addDoc, collection, doc, increment, updateDoc } from "firebase/firestor
 import { FirebaseContext } from "../../index";
 import AuthContext from "../Auth-Provider/AuthContext";
 import { declensionNum } from "../../utils/helpers";
+import { useTranslation } from "react-i18next";
 
 const SECONDS_IN_DAY = 86400;
 
@@ -12,8 +13,8 @@ const CountdownTimer = ({ targetDate = 0, depositID, receivedForDay, nickname, p
   const { signedInUser } = useContext(AuthContext);
   const { firestore } = useContext(FirebaseContext);
   const [days, hours, minutes, seconds, timeLeft] = useCountdown(targetDate);
-  // const countdownIsEnded = days === 0 && hours === 0 && minutes === 0 && seconds <= 1;
   const countdownIsEnded = timeLeft <= 0;
+  const { t, i18n } = useTranslation();
 
   const getElapsedDays = (time) => {
     let elapsedDays = Math.floor(Math.abs(time) / (86400 * 1000));
@@ -21,15 +22,17 @@ const CountdownTimer = ({ targetDate = 0, depositID, receivedForDay, nickname, p
   };
 
   const setCharges = (days) => {
-    const receivedByCharges = receivedForDay * days;
+    const receivedByCharges = (receivedForDay * days).toFixed(2);
+
+    if (!receivedByCharges) return;
 
     updateDoc(doc(firestore, "users", signedInUser.email, "deposits", `${depositID}`), {
       charges: increment(days),
-      received: increment(+receivedByCharges.toFixed(2)),
+      received: increment(+receivedByCharges),
     }).then(() => {
       addDoc(collection(firestore, "transactions"), {
         account_id: signedInUser.uid,
-        amount: receivedByCharges,
+        amount: +receivedByCharges,
         status: "Выполнено",
         type: "Начисления",
         date: new Date(),
@@ -38,13 +41,11 @@ const CountdownTimer = ({ targetDate = 0, depositID, receivedForDay, nickname, p
       });
 
       updateDoc(doc(firestore, "users", signedInUser.email), {
-        earned: increment(receivedByCharges),
-        [`paymentMethods.${paymentMethod}.available`]: increment(receivedByCharges),
+        earned: increment(+receivedByCharges),
+        [`paymentMethods.${paymentMethod}.available`]: increment(+receivedByCharges),
       });
     });
   };
-
-  // console.log(timeLeft, "timeLeft");
 
   useEffect(() => {
     if (countdownIsEnded && receivedForDay) {
@@ -52,19 +53,30 @@ const CountdownTimer = ({ targetDate = 0, depositID, receivedForDay, nickname, p
     }
   }, [countdownIsEnded]);
 
-  const formattedDays = declensionNum(days, ["день", "дня", "дней"]);
-  const formattedHours = declensionNum(hours, ["час", "часа", "часов"]);
-  const formattedMinutes = declensionNum(minutes, ["минута", "минуты", "минут"]);
-  const formattedSeconds = declensionNum(seconds, ["секунда", "секунды", "секунд"]);
+  // const formattedDays = declensionNum(days, [t("personal.area_days_1"), "дня", "дней"]);
+  const formattedHours = declensionNum(hours, [
+    t("personal_area.hours_1"),
+    t("personal_area.hours_2"),
+    t("personal_area.hours_3"),
+  ]);
+  const formattedMinutes = declensionNum(minutes, [
+    t("personal_area.minutes_1"),
+    t("personal_area.minutes_2"),
+    t("personal_area.minutes_3"),
+  ]);
+  const formattedSeconds = declensionNum(seconds, [
+    t("personal_area.seconds_1"),
+    t("personal_area.seconds_2"),
+    t("personal_area.seconds_3"),
+  ]);
 
   return (
     <div className={styles["countdown-wrapper"]}>
       <div className={styles["countdown"]}>
         {days === -1 ? (
-          "Загрузка..."
+          t("personal_area.loading")
         ) : (
           <>
-            {/*<div className={styles["days"]}>{`${days} ${formattedDays}`}</div>*/}
             <div className={styles["hours"]}>
               <span>{hours}</span>
               <p>{formattedHours}</p>

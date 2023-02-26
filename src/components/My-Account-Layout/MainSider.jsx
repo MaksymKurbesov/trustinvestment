@@ -2,11 +2,16 @@ import React from "react";
 import styles from "./My-Account-Layout.module.css";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 
-import { Layout, Menu } from "antd";
-import { sideMenuList } from "./SideMenuList";
+import Layout from "antd/lib/layout";
+import Menu from "antd/lib/menu";
+import { SideMenuList } from "./SideMenuList";
 import { getAuth, signOut } from "firebase/auth";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useWindowSize } from "../../hooks/useWindowSize";
+import Button from "antd/lib/button";
+import RusLangIcon from "../../assets/images/rus-lang.svg";
+import EngLangIcon from "../../assets/images/eng-lang.svg";
+import { useTranslation } from "react-i18next";
 
 const { Sider } = Layout;
 
@@ -18,10 +23,15 @@ const MainSider = ({ setCollapsed, collapsed }) => {
   const signOutHandler = () => {
     signOut(auth)
       .then(() => {
-        console.log("success");
         navigate("/");
       })
       .catch((e) => console.log(e));
+  };
+
+  const { t, i18n } = useTranslation();
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
   };
 
   return (
@@ -40,7 +50,7 @@ const MainSider = ({ setCollapsed, collapsed }) => {
         theme="dark"
         defaultSelectedKeys={["1"]}
         selectedKeys={[location.pathname]}
-        items={sideMenuList(location)}
+        items={SideMenuList(location)}
         onClick={(e) => {
           setCollapsed(true);
           if (e.key === "7") {
@@ -48,6 +58,15 @@ const MainSider = ({ setCollapsed, collapsed }) => {
           }
         }}
       />
+      <div className={styles["choose-language"]}>
+        <span>{t("cabinet_menu.language")}</span>
+        <Button onClick={() => changeLanguage("ru")} type={"primary"}>
+          <img src={RusLangIcon} width={25} />
+        </Button>
+        <Button onClick={() => changeLanguage("en")} type={"primary"}>
+          <img src={EngLangIcon} width={25} />
+        </Button>
+      </div>
     </Sider>
   );
 };

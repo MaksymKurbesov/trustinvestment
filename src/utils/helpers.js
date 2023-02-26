@@ -1,3 +1,6 @@
+import { BITCOIN, BNB, ETHEREUM, PERFECT_MONEY, POLKADOT, SOLANA, TRC20_TETHER, QIWI } from "./consts";
+import { useTranslation } from "react-i18next";
+
 export function secondsToStringDays(secs) {
   const t = new Date(0); // Epoch
   t.setSeconds(secs);
@@ -31,25 +34,21 @@ export const normalizeDate = (date) => {
   });
 };
 
-const monthNames = ["янв.", "фев", "мар", "апр", "май", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"];
+export const ParseDate = (date, offset = 0) => {
+  // const { t, i18n } = useTranslation();
 
-export const parseDate = (date, offset = 0) => {
   const currentDate = new Date(date.seconds * 1000);
   currentDate.setDate(currentDate.getDate());
   const offsetDate = new Date(date.seconds * 1000);
   offsetDate.setDate(offsetDate.getDate() + offset);
 
   const correctDays = new Date(currentDate).getDate();
-  const correctMonth = monthNames[new Date(currentDate).getMonth()];
+  // const correctMonth = monthNames[new Date(currentDate).getMonth()];
 
   const offsetDays = new Date(offsetDate).getDate();
-  const offsetMonth = monthNames[new Date(offsetDate).getMonth()];
+  // const offsetMonth = monthNames[new Date(offsetDate).getMonth()];
 
-  return `${correctDays} ${correctMonth} : ${offsetDays} ${offsetMonth}`;
-};
-
-export const getPaymentMethod = (list, paymentMethod) => {
-  return list.find((item) => item.name === paymentMethod);
+  return `${correctDays} ${new Date(currentDate).getMonth()} : ${offsetDays} ${new Date(offsetDate).getMonth()}`;
 };
 
 export const getNextAccrual = (deposit) => {
@@ -60,4 +59,82 @@ export const getNextAccrual = (deposit) => {
 
 export const declensionNum = (num, words) => {
   return words[num % 100 > 4 && num % 100 < 20 ? 2 : [2, 0, 1, 1, 1, 2][num % 10 < 5 ? num % 10 : 5]];
+};
+
+export const setUserCustomFields = (signedUpUser, customFields) => {
+  return {
+    uid: signedUpUser.uid,
+    email: customFields.email.toLowerCase(),
+    nickname: customFields.nickname,
+    phoneNumber: customFields.phone,
+    referredBy: customFields.referredBy,
+    registrationDate: new Date(signedUpUser.metadata.creationTime),
+    referredTo: {},
+    earned: 0,
+    referals: 0,
+    withdrawn: 0,
+    invested: 0,
+    deposits: {
+      active: [],
+      inactive: [],
+    },
+    paymentMethods: {
+      [PERFECT_MONEY]: {
+        available: 0,
+        deposited: 0,
+        referrals: 0,
+        withdrawn: 0,
+        number: "",
+      },
+      [BITCOIN]: {
+        available: 0,
+        deposited: 0,
+        referrals: 0,
+        withdrawn: 0,
+        number: "",
+      },
+      [ETHEREUM]: {
+        available: 0,
+        deposited: 0,
+        referrals: 0,
+        withdrawn: 0,
+        number: "",
+      },
+      [TRC20_TETHER]: {
+        available: 0,
+        deposited: 0,
+        referrals: 0,
+        withdrawn: 0,
+        number: "",
+      },
+      [SOLANA]: {
+        available: 0,
+        deposited: 0,
+        referrals: 0,
+        withdrawn: 0,
+        number: "",
+      },
+      [POLKADOT]: {
+        available: 0,
+        deposited: 0,
+        referrals: 0,
+        withdrawn: 0,
+        number: "",
+      },
+      [BNB]: {
+        available: 0,
+        deposited: 0,
+        referrals: 0,
+        withdrawn: 0,
+        number: "",
+      },
+      [QIWI]: {
+        available: 0,
+        deposited: 0,
+        referrals: 0,
+        withdrawn: 0,
+        number: "",
+      },
+    },
+  };
 };

@@ -1,4 +1,4 @@
-import { Layout } from "antd";
+import Layout from "antd/lib/layout";
 import { HeroBanner } from "../../components/Hero-Banner/Hero-Banner";
 import { Advantage } from "../../components/Advantage/Advantage";
 import { Plans } from "../../components/Plans/Plans";
@@ -17,8 +17,10 @@ const Index = () => {
           <div className={"index-layout"}>
             <Advantage />
             <Plans />
-            <Roadmap />
-            <AffilateProgram />
+            <div className={"affilate-roadmap-wrapper"}>
+              <Roadmap />
+              <AffilateProgram />
+            </div>
             <ContactUs />
           </div>
         </Content>

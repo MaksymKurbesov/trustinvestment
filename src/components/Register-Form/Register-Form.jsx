@@ -1,6 +1,11 @@
-import { Button, Checkbox, Col, Form, Input, Row, Select } from "antd";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import Button from "antd/lib/button";
+import Checkbox from "antd/lib/checkbox";
+import Form from "antd/lib/form";
+import Input from "antd/lib/input";
+import Select from "antd/lib/select";
+import { Link, useSearchParams } from "react-router-dom";
 import styles from "./Register-Form.module.css";
+import { Trans, useTranslation } from "react-i18next";
 const { Option } = Select;
 
 const formItemLayout = {
@@ -35,11 +40,11 @@ const tailFormItemLayout = {
 };
 const RegisterForm = ({ handleClick }) => {
   const [searchParams, setSearchParams] = useSearchParams();
-
-  // console.log(searchParams)
+  const { t } = useTranslation();
 
   const [form] = Form.useForm();
   const onFinish = (values) => {
+    form.resetFields();
     handleClick(values);
   };
 
@@ -74,11 +79,11 @@ const RegisterForm = ({ handleClick }) => {
         rules={[
           {
             type: "email",
-            message: "Это неверный E-mail!",
+            message: t("registration.email_error"),
           },
           {
             required: true,
-            message: "Введите пожалуйста E-mail!",
+            message: t("registration.email_warning"),
           },
         ]}
       >
@@ -87,11 +92,11 @@ const RegisterForm = ({ handleClick }) => {
 
       <Form.Item
         name="password"
-        label="Пароль"
+        label={t("registration.password")}
         rules={[
           {
             required: true,
-            message: "Введите пожалуйста пароль!",
+            message: t("registration.password_warning"),
           },
         ]}
         hasFeedback
@@ -100,19 +105,19 @@ const RegisterForm = ({ handleClick }) => {
       </Form.Item>
       <Form.Item
         name="confirm"
-        label="Подтвердите пароль"
+        label={t("registration.confirm_password")}
         dependencies={["password"]}
         rules={[
           {
             required: true,
-            message: "Подтвердите пожалуйста пароль!",
+            message: t("registration.confirm_password_warning"),
           },
           ({ getFieldValue }) => ({
             validator(_, value) {
               if (!value || getFieldValue("password") === value) {
                 return Promise.resolve();
               }
-              return Promise.reject(new Error("Пароли не совпадают!"));
+              return Promise.reject(new Error(t("registration.password_mismatch")));
             },
           }),
         ]}
@@ -123,12 +128,12 @@ const RegisterForm = ({ handleClick }) => {
 
       <Form.Item
         name="nickname"
-        label="Никнейм"
-        tooltip="Этот никнейм будет виден другим пользователям"
+        label={t("registration.nickname")}
+        tooltip={t("registration.nickname_tooltip")}
         rules={[
           {
             required: true,
-            message: "Введите пожалуйста ваш никнейм!",
+            message: t("registration.nickname_warning"),
             whitespace: true,
           },
         ]}
@@ -138,11 +143,11 @@ const RegisterForm = ({ handleClick }) => {
 
       <Form.Item
         name="phone"
-        label="Номер телефона"
+        label={t("registration.phone_number")}
         rules={[
           {
             required: true,
-            message: "Введите пожалуйста ваш номер телефона!",
+            message: t("registration.phone_number_warning"),
           },
         ]}
       >
@@ -153,7 +158,7 @@ const RegisterForm = ({ handleClick }) => {
           }}
         />
       </Form.Item>
-      <Form.Item name="referredBy" label="Ник реферала">
+      <Form.Item name="referredBy" label={t("registration.nickname_referral")}>
         <Input />
       </Form.Item>
 
@@ -163,21 +168,32 @@ const RegisterForm = ({ handleClick }) => {
         rules={[
           {
             validator: (_, value) =>
-              value ? Promise.resolve() : Promise.reject(new Error("Следует принять соглашение")),
+              value ? Promise.resolve() : Promise.reject(new Error(t("registration.agree_warning"))),
           },
         ]}
         {...tailFormItemLayout}
       >
         <Checkbox>
-          Я согласен с этими{" "}
-          <Link className={styles["agreement-link"]} to="/#">
-            правилами
-          </Link>
+          <Trans
+            i18nKey="registration.agree"
+            components={{
+              link: (
+                <Link className={styles["agreement-link"]} to="/#">
+                  link
+                </Link>
+              ),
+              button: <Button />,
+            }}
+          ></Trans>
+          {/*Я согласен с этими*/}
+          {/*  <Link className={styles["agreement-link"]} to="/#">*/}
+          {/*    правилами*/}
+          {/*  </Link>*/}
         </Checkbox>
       </Form.Item>
       <Form.Item {...tailFormItemLayout}>
         <Button type="primary" htmlType="submit">
-          Регистрация
+          {t("registration.title")}
         </Button>
       </Form.Item>
     </Form>

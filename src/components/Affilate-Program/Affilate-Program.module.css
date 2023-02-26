@@ -1,19 +1,50 @@
 .affilate-program {
-  margin-bottom: 100px;
+  color: white;
+  padding: 0 40px 70px 40px;
+  position: relative;
+}
+
+.affilate-program h2 {
+  position: relative;
+  z-index: 5;
+  text-align: center;
+  font-size: clamp(40px, 5.4vw, 70px);
+  color: white;
+  margin-bottom: 40px;
+}
+
+.affilate-program:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .affilate-program__wrapper {
   display: flex;
-  align-items: center;
   justify-content: center;
+  flex-direction: column;
 }
 
 .affilate-program p {
-  /*max-width: 50%;*/
   max-width: 700px;
-  font-size: 20px;
+  font-size: 16px;
   line-height: 1.6;
   margin-bottom: 30px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.program-description {
+  position: relative;
+  z-index: 5;
+  text-align: center;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .program-description p span {
@@ -24,13 +55,185 @@
   display: block;
 }
 
+.partner-animation {
+  position: relative;
+  top: 40px;
+  min-width: 450px;
+  width: 85%;
+}
+
+.partner-animation:before {
+  content: "";
+  background: url("../../assets/images/affilate-glow.png") no-repeat center / cover;
+  position: absolute;
+  bottom: -25px;
+  left: 30px;
+  width: 474px;
+  height: 161px;
+  opacity: 0;
+  animation-duration: 1.5s;
+  animation-name: glowing;
+  animation-iteration-count: infinite;
+  animation-direction: alternate-reverse;
+}
+
+.percentage-levels {
+  text-align: center;
+  max-width: 700px;
+  min-width: 380px;
+  position: relative;
+  z-index: 5;
+}
+
+/*.percentage-levels span {*/
+/*  font-size: 20px;*/
+/*  font-weight: 600;*/
+/*  color: #63a2ff;*/
+/*}*/
+
+/*.percentage-levels span:nth-child(1) {*/
+/*  position: absolute;*/
+/*  top: 30px;*/
+/*  left: 70px;*/
+/*}*/
+
+/*.percentage-levels span:nth-child(2) {*/
+/*  position: absolute;*/
+/*  top: 135px;*/
+/*  left: 190px;*/
+/*}*/
+
+/*.percentage-levels span:nth-child(3) {*/
+/*  position: absolute;*/
+/*  top: 180px;*/
+/*  left: 310px;*/
+/*}*/
+
+/*.percentage-levels span:nth-child(4) {*/
+/*  position: absolute;*/
+/*  bottom: 165px;*/
+/*  right: 190px;*/
+/*}*/
+
+/*.percentage-levels span:nth-child(5) {*/
+/*  position: absolute;*/
+/*  bottom: 135px;*/
+/*  right: 70px;*/
+/*}*/
+
+.wrapper {
+  display: flex;
+  align-items: flex-end;
+}
+
+.mobile-text {
+  display: none;
+}
+
+@keyframes glowing {
+  from {
+    opacity: 0.1;
+  }
+  to {
+    opacity: 0.7;
+  }
+}
+
+@media screen and (max-width: 1250px) {
+  /*.percentage-levels span:nth-child(1) {*/
+  /*  top: 1vw;*/
+  /*  left: 5vw;*/
+  /*}*/
+
+  /*.percentage-levels span:nth-child(2) {*/
+  /*  top: 135px;*/
+  /*  left: 190px;*/
+  /*}*/
+
+  /*.percentage-levels span:nth-child(3) {*/
+  /*  top: 180px;*/
+  /*  left: 310px;*/
+  /*}*/
+
+  /*.percentage-levels span:nth-child(4) {*/
+  /*  bottom: 165px;*/
+  /*  right: 190px;*/
+  /*}*/
+
+  /*.percentage-levels span:nth-child(5) {*/
+  /*  bottom: 135px;*/
+  /*  right: 70px;*/
+  /*}*/
+}
+
 @media screen and (max-width: 1000px) {
   .affilate-program p {
     font-size: 14px;
-    max-width: 100%;
+    opacity: 0.4;
+  }
+
+  .desktop-text {
+    display: none;
+  }
+
+  p.mobile-text {
+    display: block;
+    margin-bottom: 0;
+  }
+
+  .wrapper {
+    flex-direction: column-reverse;
+    align-items: center;
+    position: relative;
   }
 
   .affilate-program__wrapper {
-    flex-direction: column-reverse;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .program-description {
+    width: 80%;
+    position: absolute;
+  }
+
+  .percentage-levels {
+    margin-bottom: 40px;
+  }
+
+  .partner-animation {
+    min-width: auto;
+    margin-bottom: 50px;
+    opacity: 0.1 !important;
+    position: relative;
+    top: -50px;
+    left: -300px;
+    z-index: -1;
+  }
+
+  .partner-animation:before {
+    bottom: -20px;
+    left: 11px;
+    width: 394px;
+    height: 127px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .affilate-program p:last-child {
+    font-size: 12px;
+    max-width: 300px;
+  }
+
+  .partner-animation:before {
+    bottom: -10px;
+    left: -15px;
+    width: 285px;
+    height: 82px;
+  }
+
+  .mobile-text {
+    padding: 0 20px;
+    margin-bottom: 20px !important;
   }
 }

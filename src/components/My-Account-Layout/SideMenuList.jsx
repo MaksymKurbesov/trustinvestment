@@ -1,8 +1,57 @@
 import { NavLink } from "react-router-dom";
 import styles from "./My-Account-Layout.module.css";
-import { MENU_LIST } from "../../utils/MENU_LIST";
+import {
+  BarsOutlined,
+  CreditCardOutlined,
+  DollarCircleOutlined,
+  HomeOutlined,
+  ImportOutlined,
+  SettingOutlined,
+  UsergroupAddOutlined,
+} from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 
-export const sideMenuList = (location) => {
+export const SideMenuList = (location) => {
+  const { t } = useTranslation();
+
+  const MENU_LIST = [
+    {
+      title: t("cabinet_menu.cabinet"),
+      link: "/my-account",
+      icon: <HomeOutlined />,
+    },
+    {
+      title: t("cabinet_menu.make_deposit"),
+      link: "/my-account/deposit",
+      icon: <CreditCardOutlined />,
+    },
+    {
+      title: t("cabinet_menu.withdrawn"),
+      link: "/my-account/withdraw",
+      icon: <DollarCircleOutlined />,
+    },
+    {
+      title: t("cabinet_menu.transactions"),
+      link: "/my-account/transactions",
+      icon: <BarsOutlined />,
+    },
+    {
+      title: t("cabinet_menu.partners"),
+      link: "/my-account/partners",
+      icon: <UsergroupAddOutlined />,
+    },
+    {
+      title: t("cabinet_menu.settings"),
+      link: "/my-account/settings",
+      icon: <SettingOutlined />,
+    },
+    {
+      title: t("cabinet_menu.exit"),
+      link: "/",
+      icon: <ImportOutlined />,
+    },
+  ];
+
   return MENU_LIST.map((item, index) => ({
     key: String(index + 1),
     label: <NavLink to={item.link}>{item.title}</NavLink>,

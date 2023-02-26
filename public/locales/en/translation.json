@@ -1,0 +1,415 @@
+{
+  "balance": "Balance",
+  "app_name": "TRUST INVESTMENT",
+  "menu": {
+    "home": "Home",
+    "affilate_program": "Partner Program",
+    "about_us": "About us",
+    "faq": "FAQ",
+    "contacts": "Our Contacts",
+    "registration": "Sign Up",
+    "sign_in": "Sign In",
+    "cabinet": "My Account"
+  },
+  "hero_text": "We are an international real estate holding company in the UAE market that combines several global areas such as: investment online platform, construction and design, sales and letting department, planning and development department.",
+  "benefits": {
+    "title": "JOB BENEFITS",
+    "1": {
+      "title": "Impressive results for the company",
+      "description": "Demand and interest in Trust Investment is constantly growing and our experience accumulates and always allows us to achieve our goals."
+    },
+    "2": {
+      "title": "A modern online investment platform",
+      "description": "An online platform with a simple and informative interface has been developed for customer convenience. The development team is working on an application to make investing even easier and more accessible."
+    },
+    "3": {
+      "title": "Quick profit withdrawal",
+      "description": "You will get your profit within 24 hours after submitting your order, even on weekends and public holidays."
+    },
+    "4": {
+      "title": "Low entry threshold",
+      "description": "You can start investing and earning with as little as $100. Advantageous plans for everyone."
+    },
+    "5": {
+      "title": "Referral programme",
+      "description": "With us you get the opportunity to attract friends and associates to invest, while receiving additional income."
+    },
+    "6": {
+      "title": "Protection of our clients",
+      "description": "Our partners' peace of mind and their confidence in us is a priority for our company, which is why our platform is protected from the misuse of third parties."
+    }
+  },
+  "statistic": {
+    "companies": "Companies",
+    "team_members": "Team members",
+    "capital": "Capital",
+    "year_of_experience": "Year of experience"
+  },
+  "tariffs": {
+    "title": "TARIFF PLANS",
+    "plan": "Plan",
+    "in_day": "in day",
+    "days": "days",
+    "min": "Min. deposit",
+    "max": "Max. deposit",
+    "individually": "Individually",
+    "end_term": "At the end of term",
+    "pay_everyday": "Payment daily"
+  },
+  "roadmap": {
+    "may": "May",
+    "september": "September",
+    "january": "January",
+    "december": "December",
+    "february": "February",
+    "june": "June",
+    "july": "July",
+    "1": "Establishment of Trust Investment as a separate legal entity in the UAE.",
+    "2": "Completed more than 200 properties in the UAE.",
+    "3": "Beginning of investments from the corporate sector.",
+    "4": "Launch of international online platform Trust Investment for private individuals.",
+    "5": "Launch online investment opportunities for European and Asian clients.",
+    "6": "Launch of the international Trust Investment app for greater platform convenience.",
+    "7": "Trust Investment will be involved in the construction of a building that is one of the top 5 in terms of its height."
+  },
+  "partners": {
+    "title": "PARTNER PROGRAM",
+    "subtitle": "Trust Investment has developed a multi-level referral programme especially for our clients. Every client of our company can take part in this programme by registering on our online platform and placing at least one own deposit.",
+    "levels_title": "Interest rate from the deposit of partners attracted by you"
+  },
+  "fill_form": {
+    "title": "Start your journey with us.",
+    "subtitle": "Want to get into the investor chat? Contact us.",
+    "name": "Name",
+    "enter_name": "Enter your name",
+    "enter_name_error": "Please enter your name",
+    "telegram_nickname": "Telegram nickname",
+    "enter_telegram_nickname": "Enter your telegram nickname",
+    "enter_telegram_nickname_error": "Please enter telegram nickname",
+    "phone_number": "Phone number",
+    "enter_phone_number": "Enter your phone number",
+    "message": "Message",
+    "Send": "Send"
+  },
+  "become_partner": {
+    "title": "Become an affiliate",
+    "subtitle": "Join Trust Investment's affiliate program and earn up to 7% for every deposit made by someone you refer.",
+    "button_text": "Register and start earning",
+    "what_is_title": "What is it?",
+    "what_is_descr": "<bolder>Trust Investment</bolder> is constantly developing and making innovative decisions that have a positive impact on all investors. Especially for our clients, <bolder>Trust Investment</bolder> has developed a multi-level referral program. Anyone who has registered on our online platform can join this program. After registering with us, it will only take a couple of clicks to start sharing your referral link with your friends and earning a nice bonus from open deposits made by people you refer.",
+    "how_to_start_title": "How to get started?",
+    "how_to_start_descr": "Your personal referral link can be found in your personal cabinet. Share this link with your friends and associates, and soon after your referred participant makes a first deposit you will receive a reward on your balance. The best part about it is that the program is tiered, which means that you will even get profit from the people invited by your referrals. Interest rate from the deposit of your invited partners: <bolder>7% - 4% - 3% - 2% - 1%</bolder",
+    "how_its_work": {
+      "title": "How does it work?",
+      "1": {
+        "title": "Start",
+        "description": "If you have your own blog, website or buy advertising, you can place your referral link there"
+      },
+      "2": {
+        "title": "Your link",
+        "description": "When a user clicks on your link, we'll tag the user with your unique ID for future referrals"
+      },
+      "3": {
+        "title": "Referral Registration",
+        "description": "The user (referral) registers with our company and begins to use its services"
+      },
+      "4": {
+        "title": "Revenue accrual",
+        "description": "Immediately after registration in the affiliate program your reward will be 7%."
+      },
+      "5": {
+        "title": "Payment",
+        "description": "You can receive your profit from the affiliate program at any time."
+      }
+    }
+  },
+  "about_us": {
+    "title": "About us",
+    "subtitle": "If you want to know more about us, then you are in the right place. Read on to understand how we can help you with your real estate investment.",
+    "about_company": "About the company",
+    "about_company_description": "<bolder>TRUST INVESTMENT</bolder> is a subsidiary company of the international holding Azizi Group, founded in May 2013.\n\nThe company combines several global directions at once: construction of high-rise buildings with apartments, construction of villas, single-storey houses combined into cottage settlements, sales and leasing department of commercial real estate, investment online platform.\n\nTogether with Azizi Development, we have been involved in the construction of various projects located in the most popular areas of the Emirates: Al Furjan ⁃ Downtown Jebel Ali ⁃ Dubai Healthcare City ⁃ Sports City ⁃ Studio City.",
+    "what_we_do": "What do we do?",
+    "what_we_do_description": "The company's main and most significant asset is residential real estate, i.e. flats and flats in high-rise buildings, as well as villas and single-storey houses. Slightly less significant is the sale and lease of space for cafes, bars and restaurants in tourist locations in the UAE.\n\nWe are also buying up properties on the secondary market, renovating them and reselling them afterwards. Since 2020 <bolder>Trust Investment</bolder> has established a programme to raise investment from the corporate sector. In 2022, as part of the planned development of investment and construction activities, our company opened an online area to attract investment from the private sector.",
+    "our_team": "Our team"
+  },
+  "FAQ": {
+    "title": "Frequently asked questions",
+    "subtitle": "All you need to know to work with us",
+    "1": {
+      "question": "How do I get started as an investor with Trust Investment?",
+      "answer": "Simply register on our website and create an account."
+    },
+    "2": {
+      "question": "What details do I need to register on your website?",
+      "answer": "Please note that our company, when registering, does not require any personal data from you, it also does not require a bank card number, CVV, expiration date. It is enough to indicate the details or number of wallets for depositing and withdrawing funds in your personal account on the Trust Investment online platform."
+    },
+    "3": {
+      "question": "Can I create accounts on your online platform for the whole family using one device?",
+      "answer": "Only one account is allowed per device."
+    },
+    "4": {
+      "question": "Can I start investing if I am under 18?",
+      "answer": "Absolutely anyone can make money in Trust."
+    },
+    "5": {
+      "question": "What are the ways of earning income with Trust Investment?",
+      "answer": "You have the opportunity to earn income in two ways: open a deposit according to the selected tariff plan, and also receive a percentage of the affiliate program for attracting new partners. There is a multi-level affiliate program for this, which you can find on the site."
+    },
+    "6": {
+      "question": "Can I earn with Trust Investment without my own deposit?",
+      "answer": "In order to start earning in Trust Investment, it is not necessary to place a deposit, it is enough to register a personal account and generate your referral link."
+    },
+    "7": {
+      "question": "What are the limitations on the amount I can deposit?",
+      "answer": "If you take a look at our tariff plans, you will see that there is a minimum deposit amount - it is 100 USD. The maximum deposit amount is not regulated, there is a \"Individual\" plan, it is discussed with your leader"
+    },
+    "8": {
+      "question": "What is the maximum income that I can earn with Trust Investment?",
+      "answer": "You can find all investment offers on our website. Also, for your convenience, we have placed an investment calculator so that by choosing your plan you can calculate the profit in advance. Your profit directly depends on which investment plan you have chosen , how much you have invested, as well as how many partners you have attracted using our affiliate program."
+    },
+    "9": {
+      "question": "How often will I receive interest on my deposits at Trust Investment?",
+      "answer": "Interest on deposits is calculated based on the tariff plan you have chosen: daily or at the end of the term. Interest will be calculated no earlier than 24 hours after the deposit is placed in the system"
+    },
+    "10": {
+      "question": "What is the yield of the investment offers in Trust Investment?",
+      "answer": "Trust Investment has a unique income accrual system, you can read about it on our website, you can also calculate your exact profit there. We hasten to note that in our company it is allowed to have an unlimited number of simultaneously open deposits, according to different tariff plans ."
+    },
+    "11": {
+      "question": "How can I make a deposit?",
+      "answer": "You can make a deposit using several payment systems, such as: Bitcoin, Etherium, Litecoin, USDT (TRC20), PerfectMoney, Payeer, Qiwi. The list can be expanded based on the wishes of our customers, please check the current deposit options in your personal account."
+    },
+    "12": {
+      "question": "How long does it take to deposit/withdraw funds?",
+      "answer": "The funds are credited and withdrawn within 24 hours from the moment of registration of the application."
+    },
+    "13": {
+      "question": "Can I choose which payment system I will withdraw my profit to?",
+      "answer": "Profit is paid out to the same payment system with which the deposit was made."
+    },
+    "14": {
+      "question": "How can I withdraw funds from my personal wallet?",
+      "answer": "Before withdrawing funds, be sure to check if the wallet is registered in your account. If you have not registered a wallet, enter your wallet details in the \"Settings\" section in your account. Then request a withdrawal through the Trust Investment automated payment gateway."
+    },
+    "15": {
+      "question": "What is the minimum amount I can withdraw?",
+      "answer": "Minimum withdrawal amount: For cryptocurrencies: 10$ PerfectMoney, Payeer and other payment systems: 5$"
+    },
+    "16": {
+      "question": "I can not register on the site, what should I do?",
+      "answer": "Please check that the information you entered is correct. If everything is ok but you still can't register, please contact support."
+    },
+    "17": {
+      "question": "I can not remember my password, how do I log in to my personal cabinet?",
+      "answer": "Use the password recovery system on the authentication page."
+    },
+    "18": {
+      "question": "What should I do if I didn't find the answer to my question here?",
+      "answer": "Contact us via support-service."
+    }
+  },
+  "contact_us": {
+    "title": "Get in touch",
+    "form_title": "Feedback form",
+    "form_subtitle": "We sincerely thank you for your questions, feedback and suggestions. Your message will be forwarded to Customer Service and we will respond as soon as possible.",
+    "policy": "I have read the privacy policy and agree to the processing of my personal data",
+    "our_address": "Our address",
+    "UAE": "United Arab Emirates",
+    "opening_hours": "Opening hours",
+    "work_days": "Monday - Friday",
+    "weekend": "Weekend",
+    "weekend_days": "Saturday - Sunday",
+    "contacts": "Contacts"
+  },
+  "registration": {
+    "title": "Sign up",
+    "subtitle": "Create an account and join our community",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "nickname": "Nickname",
+    "phone_number": "Phone number",
+    "nickname_referral": "Nickname referral",
+    "agree": "I agree with <button>these rules</button>",
+    "agree_warning": "An agreement should be accepted",
+    "notification": {
+      "title": "Congratulations, you have successfully registered!",
+      "content": "Great! Registration completed successfully. We have sent you an email to verify your email address."
+    },
+    "email_error": "This is an invalid email!",
+    "email_warning": "Please enter your E-mail!",
+    "password_warning": "Please enter a password!",
+    "confirm_password_warning": "Please confirm your password!",
+    "nickname_warning": "Please enter your nickname!",
+    "phone_number_warning": "Please enter your phone number!",
+    "password_mismatch": "Password mismatch",
+    "nickname_tooltip": "This nickname will be visible to other users"
+  },
+  "sign_in": {
+    "title": "Login to your personal account",
+    "subtitle": "A new productive journey starts right here",
+    "remember_me": "Remember me",
+    "forgot_password": "Forgot password",
+    "sign_in_button": "Sign In",
+    "enter_email": "Enter your email",
+    "error": "Error!",
+    "success": "Success",
+    "confirm_email": "Please confirm your email.",
+    "wrong_password": "Wrong login or password. Please check the correctness of the data.",
+    "forgot_password_notification": "A link to change your password has been sent to your email. (If you don't find the email, please check your spam folder.",
+    "user_not_exist": "Such a user does not exist."
+  },
+  "personal_area": {
+    "title": "Personal Area",
+    "available": "Available",
+    "deposited": "Deposited",
+    "withdrawn": "Withdrawn",
+    "referrals": "Referrals",
+    "invested": "Invested",
+    "earned": "Earned",
+    "next_accrual_in": "Next accrual in",
+    "loading": "Loading...",
+    "active_deposits": "Active Deposits",
+    "completed_deposits": "Completed Deposits",
+    "plan": "Plan",
+    "progress": "Progress",
+    "next_accrual": "Next accrual",
+    "deposit_amount": "Deposit amount",
+    "received": "Received",
+    "will_received": "Will received",
+    "date": "Date",
+    "no_data": "No data",
+    "accruals": "Accruals",
+    "open": "Opening",
+    "close": "Closing",
+    "january": "jan.",
+    "february": "feb.",
+    "march": "mar.",
+    "april": "apr.",
+    "may": "may",
+    "june": "june",
+    "july": "july",
+    "august": "aug.",
+    "september": "sept.",
+    "october": "oct.",
+    "november": "nov.",
+    "december": "dec.",
+    "days_1": "day",
+    "days_2": "days",
+    "days_3": "days",
+    "hours_1": "hour",
+    "hours_2": "hours",
+    "hours_3": "hours",
+    "minutes_1": "minute",
+    "minutes_2": "minutes",
+    "minutes_3": "minutes",
+    "seconds_1": "second",
+    "seconds_2": "seconds",
+    "seconds_3": "seconds"
+  },
+  "make_deposit": {
+    "title": "Make a deposit",
+    "choose_plan": "Choose a plan",
+    "choose_payment_method": "Choose a payment system",
+    "payment_method": "Payment system",
+    "from_balance": "From the balance",
+    "enter_amount": "Enter the amount",
+    "income_per_day": "Income per day",
+    "total_income": "Total income",
+    "error": "Insufficient funds. Please replenish your wallet.",
+    "enter_amount_warning": "Please enter the amount",
+    "incorrect_amount": "Incorrect amount"
+  },
+  "replenishment": {
+    "title": "Replenishment",
+    "plan": "Plan",
+    "copy": "Copy",
+    "payment_method": "Payment method",
+    "amount": "Amount",
+    "fee": "Fee",
+    "wallet_for_pay": "Wallet for pay",
+    "date": "Date",
+    "transaction_number": "Transaction number",
+    "transaction_warning": "Please enter transaction number",
+    "note": "Notation",
+    "back": "Back",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "wallet": "Wallet"
+  },
+  "withdrawn": {
+    "title": "Withdrawals",
+    "notation": "Before withdrawing funds to the wallet, make sure that you have entered the details for withdrawal to the payment system you are interested in on the Settings page. Please note that Trust Investment does not provide exchange services, so withdrawal is only possible to the payment system from which the funds have been credited.",
+    "fee": "Fee",
+    "withdrawn_fee": "Will be withdrawn subject to commission",
+    "tooltip": "Specify the wallet for withdrawing funds in the account settings",
+    "button": "Withdraw funds",
+    "confirm_withdrawn": "Withdrawal confirmation",
+    "confirm_modal": {
+      "title": "Transaction was successful!",
+      "subtitle": "Transaction number: 48455 Transaction processing usually takes 3-5 minutes, please wait.",
+      "main_button": "To home",
+      "transaction_button": "To transactions"
+    }
+  },
+  "transactions": {
+    "title": "Your transactions",
+    "status": "Status",
+    "type": "Type",
+    "amount": "Amount",
+    "fee": "Fee",
+    "date": "Date",
+    "executor": "Executor",
+    "previous": "Previous",
+    "next": "Next",
+    "Начисления": "Accrual",
+    "Вклад": "Investment",
+    "Пополнение": "Replenishment",
+    "Вывод": "Withdrawals",
+    "Ожидание": "Waiting",
+    "Выполнено": "Success"
+  },
+  "partner_page": {
+    "title": "Partners",
+    "your_sponsor": "Your sponsor",
+    "your_referral_link": "Your referral link",
+    "copy": "Copy",
+    "your_status": "Your status",
+    "partner_status": "Partner",
+    "referrals": "Referrals",
+    "total_referrals": "Total referrals",
+    "total_invested": "Total invested",
+    "invested": "Invested",
+    "active_referrals": "Active",
+    "bought_deposits": "Purchased deposits",
+    "partner_programme": "Partner programmme",
+    "level": "Level",
+    "date_registration": "Registration Date",
+    "nickname": "Nickname",
+    "referral_link_copied": "Referral link copied!"
+  },
+  "settings": {
+    "title": "Settings",
+    "personal_info": "Personal Information",
+    "nickname": "Nickname",
+    "phone_number": "Phone number",
+    "password": "Password",
+    "confirm_password": "Confirm password",
+    "upload": "Upload",
+    "wallets": "Wallets",
+    "save": "Save",
+    "updated": "Data updated successfully",
+    "file_loaded": "file uploaded successfully.",
+    "file_error": "file upload error.",
+    "loading": "Loading..."
+  },
+  "cabinet_menu": {
+    "cabinet": "Home",
+    "make_deposit": "Make a deposit",
+    "withdrawn": "Withdrawals",
+    "transactions": "Transactions",
+    "partners": "Partners",
+    "settings": "Settings",
+    "exit": "Exit",
+    "language": "Language"
+  }
+}

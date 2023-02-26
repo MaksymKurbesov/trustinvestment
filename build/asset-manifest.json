@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/static/css/main.e1c9dd9a.css",
-    "main.js": "/static/js/main.c0933aa1.js",
-    "static/media/company-photo1.png": "/static/media/company-photo1.647430aaf915cdb3b9b7.png",
-    "static/media/company-photo3.png": "/static/media/company-photo3.c23a3fba2082064a8b60.png",
-    "static/media/company-photo2.png": "/static/media/company-photo2.d4a46e20cadd307d29b0.png",
-    "static/media/company-photo4.png": "/static/media/company-photo4.72b21b1bcd7d0e5d6deb.png",
+    "main.css": "/static/css/main.5e3dca0a.css",
+    "main.js": "/static/js/main.f36f7c33.js",
+    "static/media/hero-banner-bg.png": "/static/media/hero-banner-bg.5cb7359aca18637bb444.png",
     "static/media/tether.png": "/static/media/tether.ebe816e536abe9779812.png",
     "static/media/hero-banner2.webp": "/static/media/hero-banner2.5de75d978be16720c8dc.webp",
+    "static/media/roadmap.webp": "/static/media/roadmap.abf1ffde238fbd2b8757.webp",
     "static/media/Asset 2.svg": "/static/media/Asset 2.212419d3af0d4a67849c61d2c8ae5df4.svg",
     "static/media/1.png": "/static/media/1.2e5fc8a7286357569f2f.png",
+    "static/media/company1.webp": "/static/media/company1.a118f712e24b675130fa.webp",
     "static/media/3.png": "/static/media/3.e96e1e5fbe2b6457bd34.png",
-    "static/media/map.png": "/static/media/map.9b04574565dd76ddf96f.png",
     "static/media/6.png": "/static/media/6.51c035bbcf756e20f59d.png",
-    "static/media/roadmap.png": "/static/media/roadmap.4ef3e799605e4435fc6f.png",
+    "static/media/company4.webp": "/static/media/company4.1eb1d32e4e81ea91c159.webp",
     "static/media/about-us-background2.svg": "/static/media/about-us-background2.4a972c0ec4db1e502b37.svg",
     "static/media/4.png": "/static/media/4.ff07c6d55dd82c1afaed.png",
+    "static/media/company2.webp": "/static/media/company2.2108d7a3da90d8838ce6.webp",
     "static/media/2.png": "/static/media/2.96ff34a6a54b45c8ed9d.png",
+    "static/media/coins.webp": "/static/media/coins.18c1991b3348669b5d9c.webp",
     "static/media/polkadot-logo.png": "/static/media/polkadot-logo.8bbd1a4e0076dc37220f.png",
     "static/media/RothekBold.otf": "/static/media/RothekBold.52f80c10c0593ccbf72f.otf",
     "static/media/4.webp": "/static/media/4.bce1ec8649d1c3f7973c.webp",
@@ -24,8 +24,10 @@
     "static/media/1.webp": "/static/media/1.9c86a8209f6378abd006.webp",
     "static/media/5.png": "/static/media/5.d7f1ccb2f6f1d8976665.png",
     "static/media/TEST.png": "/static/media/TEST.4da056ca397fb802851f.png",
+    "static/media/affilate-glow.png": "/static/media/affilate-glow.8ccfee9c4e0faf6924e5.png",
     "static/media/about-company-image2.svg": "/static/media/about-company-image2.7512c9655172de39018d27e7def292bf.svg",
     "static/media/6.webp": "/static/media/6.5fbbdecaeec2525abd6e.webp",
+    "static/media/company3.webp": "/static/media/company3.149e737da5640237da81.webp",
     "static/media/3.webp": "/static/media/3.c2f42706be660c623e5a.webp",
     "static/media/about-company-image.svg": "/static/media/about-company-image.043c58b77217124bca6f4ff611ce98bb.svg",
     "static/media/ethereum.png": "/static/media/ethereum.1e15b1884ed960dfaa7c.png",
@@ -55,13 +57,17 @@
     "static/media/slick.svg": "/static/media/slick.2630a3e3eab21c607e21.svg",
     "static/media/slick.eot": "/static/media/slick.a4e97f5a2a64f0ab1323.eot",
     "static/media/slick.ttf": "/static/media/slick.c94f7671dcc99dce43e2.ttf",
+    "static/media/eng-lang.svg": "/static/media/eng-lang.8411a74a2d01099b9cd827dcba16a600.svg",
     "static/media/slick.woff": "/static/media/slick.295183786cd8a1389865.woff",
     "index.html": "/index.html",
-    "main.e1c9dd9a.css.map": "/static/css/main.e1c9dd9a.css.map",
-    "main.c0933aa1.js.map": "/static/js/main.c0933aa1.js.map"
+    "static/media/index.cjs": "/static/media/index.bab733886d4c9bd36de5.cjs",
+    "static/media/section-title.svg": "/static/media/section-title.81666729911a1dd82ea8.svg",
+    "static/media/rus-lang.svg": "/static/media/rus-lang.b41328698709cf180d8d19cd65d03050.svg",
+    "main.5e3dca0a.css.map": "/static/css/main.5e3dca0a.css.map",
+    "main.f36f7c33.js.map": "/static/js/main.f36f7c33.js.map"
   },
   "entrypoints": [
-    "static/css/main.e1c9dd9a.css",
-    "static/js/main.c0933aa1.js"
+    "static/css/main.5e3dca0a.css",
+    "static/js/main.f36f7c33.js"
   ]
 }

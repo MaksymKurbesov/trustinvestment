@@ -1,11 +1,13 @@
 import styles from "./Deposit.module.css";
-import { Button, Form, Modal } from "antd";
+import Button from "antd/lib/button";
+import Form from "antd/lib/form";
+import Modal from "antd/lib/modal";
 import { Plans } from "./Plans";
 import { EnterAmount } from "components/Enter-Amount/Enter-Amount";
 import { ChoosePaymentMethod } from "components/Choose-Payment-Method/Choose-Payment-Method";
 import { AdditionalInformation } from "components/Additional-Information/Additional-Information";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { getRandomArbitrary, hideDigitsInWallet, secondsToStringDays } from "utils/helpers";
 import Lottie from "lottie-react";
 import withdrawnAnimation from "../../assets/lottie-animations/withdrawn-animation2.json";
@@ -25,6 +27,7 @@ import { FirebaseContext } from "../../index";
 import { ConfirmedWindow } from "../../components/ConfirmedWindow/ConfirmedWindow";
 import { PERCENTAGE_BY_LVL, PERFECT_MONEY } from "../../utils/consts";
 import { v4 as uuidv4 } from "uuid";
+import { useTranslation } from "react-i18next";
 
 const REFERRALS_TOTAL_LEVELS = 6;
 
@@ -41,6 +44,7 @@ const Deposit = () => {
   const totalIncome = tariffPlan ? ((amount / 100) * tariffPlan.percent * tariffPlan.days).toFixed(2) : 0;
   const inDayIncome = tariffPlan ? ((amount / 100) * tariffPlan.percent).toFixed(2) : 0;
   const [form] = Form.useForm();
+  const { t, i18n } = useTranslation();
 
   const { userData } = useOutletContext();
 
@@ -108,7 +112,7 @@ const Deposit = () => {
         const depositID = `900${queryCount.data().count}`;
 
         await setDoc(doc(firestore, "users", userData.email, "deposits", depositID), {
-          planNumber: `#${tariffPlan.title[tariffPlan.title.length - 1]}`,
+          planNumber: `#${tariffPlan.title[tariffPlan?.title.length - 1]}`,
           days: tariffPlan.days,
           amount: amount,
           willReceived: +totalIncome,
@@ -124,9 +128,6 @@ const Deposit = () => {
       updateData().then(async () => {
         addReferralReward(userData.referredBy, REFERRALS_TOTAL_LEVELS, amount);
       });
-    }
-
-    if (payFrom === "card") {
     }
 
     sendTransaction();
@@ -179,7 +180,7 @@ const Deposit = () => {
 
   return (
     <div className={styles["deposit"]}>
-      <h2 className={"my-account-title"}>Сделать депозит</h2>
+      <h2 className={"my-account-title"}>{t("make_deposit.title")}</h2>
       <Form
         form={form}
         onFinish={onFinish}
@@ -188,7 +189,7 @@ const Deposit = () => {
         }}
       >
         <h3>
-          <span>01</span> Выберите план
+          <span>01</span> {t("make_deposit.choose_plan")}
         </h3>
         <Form.Item>
           <Plans tariffHandler={setTariffPlan} />
@@ -202,19 +203,26 @@ const Deposit = () => {
               stepNumber={"02"}
               toggleButton
               status={enoughMoneyError}
+              setTax={() => null}
             />
 
-            <EnterAmount stepNumber={"03"} amountHandler={setAmount} min={tariffPlan?.min} max={tariffPlan?.max} />
+            <EnterAmount
+              stepNumber={"03"}
+              amountHandler={setAmount}
+              min={tariffPlan?.min}
+              max={tariffPlan?.max}
+              paymentMethod={paymentMethod}
+            />
             <AdditionalInformation
-              infoLabel1={"Доход в день"}
+              infoLabel1={`${t("make_deposit.income_per_day")}`}
               infoValue1={inDayIncome}
-              infoLabel2={"Общий доход"}
+              infoLabel2={`${t("make_deposit.total_income")}`}
               infoValue2={totalIncome}
             />
           </div>
           <Form.Item>
             <Button type="primary" htmlType="submit" disabled={!tariffPlan || amount <= 0}>
-              Сделать депозит
+              {t("make_deposit.title")}
             </Button>
           </Form.Item>
         </div>
@@ -225,39 +233,38 @@ const Deposit = () => {
         onOk={handleConfirmOk}
         onCancel={handleConfirmCancel}
         className={"withdraw-modal"}
-        cancelText={"Отмена"}
-        title={<p className={styles["title-modal"]}>Сделать депозит</p>}
+        cancelText={t("replenishment.cancel")}
+        title={<p className={styles["title-modal"]}>{t("make_deposit.title")}</p>}
       >
         <div className={styles["modal-content"]}>
           <Lottie animationData={withdrawnAnimation} className={styles["withdraw-animation"]} />
           <p>
-            Сумма: <span>{amount} USD</span>
+            {t("replenishment.amount")}: <span>{amount} USD</span>
           </p>
           <p>
-            Комиссия: <span>0 USD</span>
+            {t("replenishment.fee")}: <span>0 USD</span>
           </p>
           <p>
-            Платёжная система: <span>{paymentMethod}</span>
+            {t("replenishment.payment_method")}: <span>{paymentMethod}</span>
           </p>
           <p>
-            Кошелёк:
-            <span>{hideDigitsInWallet(userData.paymentMethods[paymentMethod].number)}</span>
+            {t("replenishment.wallet")}:<span>{hideDigitsInWallet(userData.paymentMethods[paymentMethod].number)}</span>
           </p>
           <p>
-            Дата: <span>{secondsToStringDays(Math.floor(Date.now() / 1000))}</span>
+            {t("replenishment.date")}: <span>{secondsToStringDays(Math.floor(Date.now() / 1000))}</span>
           </p>
         </div>
       </Modal>
-      <Modal
-        open={isConfirmedModalOpen}
-        onOk={handleConfirmedOk}
-        onCancel={handleConfirmedCancel}
-        cancelText={"Отмена"}
-        title={<p className={styles["title-modal"]}>Подтверждение вывода</p>}
-        footer={null}
-      >
-        <ConfirmedWindow transactionID={getRandomArbitrary()} />
-      </Modal>
+      {/*<Modal*/}
+      {/*  open={isConfirmedModalOpen}*/}
+      {/*  onOk={handleConfirmedOk}*/}
+      {/*  onCancel={handleConfirmedCancel}*/}
+      {/*  cancelText={"Отмена"}*/}
+      {/*  title={<p className={styles["title-modal"]}>Подтверждение вывода</p>}*/}
+      {/*  footer={null}*/}
+      {/*>*/}
+      {/*  <ConfirmedWindow transactionID={getRandomArbitrary()} />*/}
+      {/*</Modal>*/}
     </div>
   );
 };

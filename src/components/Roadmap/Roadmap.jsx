@@ -1,63 +1,63 @@
 import React from "react";
 import styles from "./Roadmap.module.css";
-import Background from "assets/images/roadmap.png";
 import DashedLine from "assets/images/dashed-line-long.png";
+import { useTranslation } from "react-i18next";
 
 const Roadmap = () => {
+  const { t, i18n } = useTranslation();
+
   return (
     <div className={styles["roadmap"]}>
-      <h2>Roadmap Trust Investment</h2>
+      <h2 data-aos="fade-down">TRUST INVESTMENT ROADMAP</h2>
       <ul className={styles["roadmap-list"]}>
-        <li>
+        <li data-aos="fade-right" data-aos-offset={200}>
           <div className={styles["text"]}>
-            <span>Май 2013</span>{" "}
-            <p>Основание компании Trust Investment как самостоятельного юридического лица в ОАЭ.</p>
+            <span>{t("roadmap.may")} 2013</span>
+            <p>{t("roadmap.1")}</p>
           </div>
           <img className={styles["dashed-line"]} src={DashedLine} width={150} />
         </li>
-        <li>
+        <li data-aos="fade-right" data-aos-offset={200} data-aos-delay={window.innerWidth < 800 ? 0 : 200}>
           <div className={styles["text"]}>
-            <span> Сентябрь 2019</span> <p>Построено более 200 объектов недвижимости на территории ОАЭ.</p>
+            <span>{t("roadmap.september")} 2019</span>
+            <p>{t("roadmap.2")}</p>
           </div>
           <img className={styles["dashed-line2"]} src={DashedLine} width={150} />
         </li>
-        <li>
+        <li data-aos="fade-right" data-aos-offset={200} data-aos-delay={window.innerWidth < 800 ? 0 : 300}>
           <div className={styles["text"]}>
-            <span> Январь 2020</span> <p>Начало привлечений инвестиций со стороны корпоративного сектора.</p>
+            <span>{t("roadmap.january")} 2020</span>
+            <p>{t("roadmap.3")}</p>
           </div>
           <img className={styles["dashed-line"]} src={DashedLine} width={150} />
         </li>
-        <li>
+        <li data-aos="fade-right" data-aos-offset={200} data-aos-delay={window.innerWidth < 800 ? 0 : 400}>
           <div className={styles["text"]}>
-            <span> Июнь 2020</span>
-            <p>
-              Запуск международной онлайн платформы Trust Investment для частных лиц, что бы развиваться и зарабатывать
-              мог каждый желающий.
-            </p>
+            <span>{t("roadmap.june")} 2020</span>
+            <p>{t("roadmap.4")}</p>
           </div>
           <img className={styles["dashed-line2"]} src={DashedLine} width={150} />
         </li>
-        <li>
+        <li data-aos="fade-right" data-aos-offset={200} data-aos-delay={window.innerWidth < 800 ? 0 : 500}>
           <div className={styles["text"]}>
-            <span> Декабрь 2022</span> <p>Открытие возможности онлайн инвестиций для клиентов из Европы и Азии.</p>
+            <span>{t("roadmap.december")} 2022</span>
+            <p>{t("roadmap.5")}</p>
           </div>
           <img className={styles["dashed-line"]} src={DashedLine} width={150} />
         </li>
-        <li>
+        <li data-aos="fade-right" data-aos-offset={200} data-aos-delay={window.innerWidth < 800 ? 0 : 600}>
           <div className={styles["text"]}>
-            <span> Июль 2023</span>{" "}
-            <p>Запуск международного приложения «Trust Investment» для большего удобства платформы.</p>
+            <span>{t("roadmap.july")} 2023</span>
+            <p>{t("roadmap.6")}</p>
           </div>
           <img className={styles["dashed-line2"]} src={DashedLine} width={150} />
         </li>
-        <li>
+        <li data-aos="fade-right" data-aos-offset={200} data-aos-delay={window.innerWidth < 800 ? 0 : 700}>
           <div className={styles["text"]}>
-            <span> Февраль 2025</span>
-            <p>
-              Компания Trust Investment будет принимать участие в постройке здания, входящее в 5-ку лидеров по своей
-              высоте.
-            </p>
+            <span>{t("roadmap.february")} 2025</span>
+            <p>{t("roadmap.7")}</p>
           </div>
+          {/*<img className={styles["dashed-line"]} src={DashedLine} width={150} />*/}
         </li>
       </ul>
       {/*<img className={styles["background"]} src={Background} alt={""} />*/}

@@ -1,5 +1,8 @@
 import styles from "./Withdraw.module.css";
-import { Button, Form, Modal, Tooltip } from "antd";
+import Button from "antd/lib/button";
+import Form from "antd/lib/form";
+import Modal from "antd/lib/modal";
+import Tooltip from "antd/lib/tooltip";
 import { ChoosePaymentMethod } from "../../components/Choose-Payment-Method/Choose-Payment-Method";
 import { EnterAmount } from "../../components/Enter-Amount/Enter-Amount";
 import { AdditionalInformation } from "../../components/Additional-Information/Additional-Information";
@@ -9,24 +12,27 @@ import withdrawnAnimation from "assets/lottie-animations/withdrawn-animation2.js
 import { getRandomArbitrary, hideDigitsInWallet, secondsToStringDays } from "../../utils/helpers";
 import { ConfirmedWindow } from "../../components/ConfirmedWindow/ConfirmedWindow";
 import { useForm } from "@formspree/react";
-import { addDoc, collection, doc, increment, updateDoc } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 import { FirebaseContext } from "../../index";
-import AuthContext from "../../components/Auth-Provider/AuthContext";
 import { PERFECT_MONEY } from "../../utils/consts";
 import { useOutletContext } from "react-router-dom";
 import { getAuth } from "firebase/auth";
+import { useTranslation } from "react-i18next";
+
+//
 
 const Withdraw = () => {
   const [amount, setAmount] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState(PERFECT_MONEY);
+  const [tax, setTax] = useState(0);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isConfirmedModalOpen, setIsConfirmedModalOpen] = useState(false);
   const [state, handleSubmit] = useForm("mdovaazr");
   const [form] = Form.useForm();
   const { firestore } = useContext(FirebaseContext);
-
   const { userData } = useOutletContext();
   const auth = getAuth();
+  const { t, i18n } = useTranslation();
 
   const showConfirmModal = () => {
     setIsConfirmModalOpen(true);
@@ -58,6 +64,7 @@ const Withdraw = () => {
         email: auth.currentUser.email,
         executor: paymentMethod,
         paymentMethod: paymentMethod,
+        tax: paymentMethod === "TRC20 Tether" ? 1 : 0,
       });
     };
     sendData();
@@ -73,42 +80,29 @@ const Withdraw = () => {
     });
   };
 
-  const setTax = (e) => {
-    console.log(e);
-  };
-
-  // if (!currentUser) {
-  //   return null;
-  // }
-
   return (
     <div className={styles["withdraw"]}>
-      <h2 className={"my-account-title"}>Вывод средств</h2>
-      <p className={styles["withdraw-info"]}>
-        Перед тем, как вывести средства на свой кошелек, убедитесь, что на странице «Настройки» вами были введены
-        реквизиты для вывода на интересующую вас платежную систему. Обратите внимание что Trust Investment не
-        предоставляет услуги обмена, поэтому вывод возможен только на ту платежную систему, с которой заводились
-        средства на депозит.
-      </p>
+      <h2 className={"my-account-title"}>{t("withdrawn.title")}</h2>
+      <p className={styles["withdraw-info"]}>{t("withdrawn.notation")}</p>
       <Form
         form={form}
         initialValues={{
           "payment-method": "Perfect Money",
         }}
       >
-        <ChoosePaymentMethod stepNumber={"01"} paymentMethodHandler={setPaymentMethod} />
+        <ChoosePaymentMethod stepNumber={"01"} paymentMethodHandler={setPaymentMethod} setTax={setTax} />
         <EnterAmount stepNumber={"02"} amountHandler={setAmount} test={true} />
 
         <AdditionalInformation
-          infoLabel1={"Комиссия"}
+          infoLabel1={t("replenishment.fee")}
           infoValue1={paymentMethod === "TRC20 Tether" ? 1 : 0}
-          infoLabel2={"Будет выведено с учетом комиссии"}
-          infoValue2={amount}
+          infoLabel2={t("withdrawn.withdrawn_fee")}
+          infoValue2={paymentMethod === "TRC20 Tether" ? amount + 1 : amount}
         />
         {}
 
         <Tooltip
-          title={"Укажите кошелёк для вывода средств в настройках аккаунта"}
+          title={t("withdrawn.tooltip")}
           open={
             userData.paymentMethods[paymentMethod].number === undefined ||
             userData.paymentMethods[paymentMethod].number === ""
@@ -122,7 +116,7 @@ const Withdraw = () => {
               userData.paymentMethods[paymentMethod].number === ""
             }
           >
-            Вывести средства
+            {t("withdrawn.button")}
           </Button>
         </Tooltip>
       </Form>
@@ -131,25 +125,26 @@ const Withdraw = () => {
         onOk={handleConfirmOk}
         onCancel={handleConfirmCancel}
         className={"withdraw-modal"}
-        cancelText={"Отмена"}
-        title={<p className={styles["title-modal"]}>Вывод средств</p>}
+        cancelText={t("replenishment.cancel")}
+        title={<p className={styles["title-modal"]}>{t("withdrawn.title")}</p>}
       >
         <div className={styles["modal-content"]}>
           <Lottie animationData={withdrawnAnimation} className={styles["withdraw-animation"]} />
           <p>
-            Сумма: <span>{amount} USD</span>
+            {t("replenishment.amount")}: <span>{amount} USD</span>
           </p>
           <p>
-            Комиссия: <span>0 USD</span>
+            {t("replenishment.fee")}: <span>{tax} USD</span>
           </p>
           <p>
-            Платёжная система: <span>{paymentMethod}</span>
+            {t("replenishment.payment_method")}: <span>{paymentMethod}</span>
           </p>
           <p>
-            Кошелёк: <span>{hideDigitsInWallet(userData.paymentMethods[paymentMethod].number)}</span>
+            {t("replenishment.wallet")}:{" "}
+            <span>{hideDigitsInWallet(userData.paymentMethods[paymentMethod].number)}</span>
           </p>
           <p>
-            Дата: <span>{secondsToStringDays(Math.floor(Date.now() / 1000))}</span>
+            {t("replenishment.date")}: <span>{secondsToStringDays(Math.floor(Date.now() / 1000))}</span>
           </p>
         </div>
       </Modal>
@@ -157,8 +152,8 @@ const Withdraw = () => {
         open={isConfirmedModalOpen}
         onOk={handleConfirmedOk}
         onCancel={handleConfirmedCancel}
-        cancelText={"Отмена"}
-        title={<p className={styles["title-modal"]}>Подтверждение вывода</p>}
+        cancelText={t("replenishment.cancel")}
+        title={<p className={styles["title-modal"]}>{t("withdrawn.confirm_withdrawn")}</p>}
         footer={null}
       >
         <ConfirmedWindow transactionID={getRandomArbitrary()} />

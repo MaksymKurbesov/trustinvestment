@@ -14,8 +14,9 @@
 }
 
 .user-info {
-  margin-left: auto;
   display: flex;
+  align-items: center;
+  margin-left: auto;
 }
 
 .user-info img {
@@ -53,6 +54,22 @@
   transition: 0.2s;
   position: relative;
   /*left: -220px;*/
+}
+
+.choose-language {
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+}
+
+.choose-language button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.choose-language button:not(:last-child) {
+  margin-bottom: 10px;
 }
 
 @media screen and (max-width: 1200px) {

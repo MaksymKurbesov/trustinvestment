@@ -14,6 +14,7 @@ import {
 import { getAuth } from "firebase/auth";
 import { useContext, useEffect, useState } from "react";
 import { FirebaseContext } from "../../index";
+import { useTranslation } from "react-i18next";
 
 const Transactions = () => {
   const auth = getAuth();
@@ -22,6 +23,7 @@ const Transactions = () => {
   const { firestore } = useContext(FirebaseContext);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   const transactionsCollection = query(
     collection(firestore, "transactions"),
@@ -99,7 +101,6 @@ const Transactions = () => {
         const arr = [];
 
         transaction.docs.map((item, index) => {
-          console.log(item, "item");
           arr.push({ ...item.data(), key: index, id: item.id.slice(0, 5) });
           setTransactions(arr);
           setPage(page - 1);
@@ -112,7 +113,7 @@ const Transactions = () => {
 
   return (
     <div>
-      <h3 className={"my-account-title"}>Ваши транзакции</h3>
+      <h3 className={"my-account-title"}>{t("transactions.title")}</h3>
       <TransactionsTable
         transactions={transactions}
         totalTransactions={totalTransactions}

@@ -1,8 +1,10 @@
-import React, { useContext, useEffect } from "react";
-import { Collapse, Table } from "antd";
+import React, { useContext } from "react";
+import Collapse from "antd/lib/collapse";
+import Table from "antd/lib/table";
 import styles from "./Partners.module.css";
 import AuthContext from "../../components/Auth-Provider/AuthContext";
 import { useOutletContext } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 const { Panel } = Collapse;
 
 const panelStyle = {
@@ -13,51 +15,22 @@ const panelStyle = {
   color: "white",
 };
 
-const levelColumns = [
-  {
-    title: "Ник",
-    dataIndex: "nickname",
-    key: "nickname",
-    width: "20%",
-    align: "center",
-  },
-  {
-    title: "Рефералов",
-    dataIndex: "numberOfReferrals",
-    key: "referrals",
-    width: "13%",
-    align: "center",
-  },
-  {
-    title: "Дата регистрация",
-    dataIndex: "registrationDate",
-    key: "registrationDate",
-    width: "20%",
-    render: (text = "") => `${new Date(text.seconds * 1000).toLocaleDateString("ru-RU")}`,
-    align: "center",
-  },
-  {
-    title: "Инвестировано",
-    dataIndex: "invested",
-    key: "invested",
-    align: "center",
-    width: "20%",
-    render: (text) => `${text} USD`,
-  },
-];
-
 const Header = ({ level, referrals, activeReferrals, totalInvested }) => {
+  const { t } = useTranslation();
+
   return (
     <div className={styles["level-header"]}>
-      <p>{level} уровень</p>
       <p>
-        Рефералов: <span>{referrals}</span>
+        {level} {t("partner_page.level")}
       </p>
       <p>
-        Активных: <span>{activeReferrals}</span>
+        {t("partner_page.referrals")}: <span>{referrals}</span>
       </p>
       <p>
-        Всего инвестировано: <span>{totalInvested} USD</span>
+        {t("partner_page.active_referrals")}: <span>{activeReferrals}</span>
+      </p>
+      <p>
+        {t("partner_page.total_invested")}: <span>{totalInvested} USD</span>
       </p>
     </div>
   );
@@ -78,15 +51,44 @@ const getTotalInvested = (referrals) => {
 };
 
 const LevelCollapse = ({ referralsList }) => {
-  const { currentUser } = useContext(AuthContext);
   const { userData } = useOutletContext();
+  const { t } = useTranslation();
 
-  const onChange = (key) => {
-    // console.log(key);
-  };
+  const levelColumns = [
+    {
+      title: t("partner_page.nickname"),
+      dataIndex: "nickname",
+      key: "nickname",
+      width: "20%",
+      align: "center",
+    },
+    {
+      title: t("partner_page.referrals"),
+      dataIndex: "numberOfReferrals",
+      key: "referrals",
+      width: "13%",
+      align: "center",
+    },
+    {
+      title: t("partner_page.date_registration"),
+      dataIndex: "registrationDate",
+      key: "registrationDate",
+      width: "20%",
+      render: (text = "") => `${new Date(text.seconds * 1000).toLocaleDateString("ru-RU")}`,
+      align: "center",
+    },
+    {
+      title: t("partner_page.invested"),
+      dataIndex: "invested",
+      key: "invested",
+      align: "center",
+      width: "20%",
+      render: (text) => `${text} USD`,
+    },
+  ];
 
   return (
-    <Collapse onChange={onChange} bordered={false} className={styles["levels-list"]}>
+    <Collapse bordered={false} className={styles["levels-list"]}>
       <Panel
         style={panelStyle}
         header={Header({

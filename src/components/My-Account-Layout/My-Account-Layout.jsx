@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import styles from "./My-Account-Layout.module.css";
-import { Layout } from "antd";
+import Layout from "antd/lib/layout";
 import MyAccountHeader from "../My-Account-Header/My-Account-Header";
 import { useContext, useEffect, useState } from "react";
 import { calculateUserBalance } from "../../utils/helpers";
@@ -28,8 +28,6 @@ const MyAccountLayout = () => {
   useEffect(() => {
     if (signedInUser) getUserData();
   }, [signedInUser]);
-
-  console.log("my account layout render ");
 
   if (!signedInUser || !userData) {
     return null;

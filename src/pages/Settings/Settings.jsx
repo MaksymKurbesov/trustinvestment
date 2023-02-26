@@ -1,16 +1,19 @@
 import styles from "./Settings.module.css";
-import { Button, Form, Input, message, Upload } from "antd";
+import Button from "antd/lib/button";
+import Form from "antd/lib/form";
+import Input from "antd/lib/input";
+import message from "antd/lib/message";
+import Upload from "antd/lib/upload";
 import { useContext, useEffect, useState } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import { FirebaseContext } from "../../index";
 import { BITCOIN, BNB, ETHEREUM, PERFECT_MONEY, POLKADOT, QIWI, SOLANA, TRC20_TETHER } from "../../utils/consts";
 import ChooseAvatarImage from "assets/images/add-avatar2.png";
-// import { storage } from "index.js";
-import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable, put } from "firebase/storage";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { getStorage, ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { useOutletContext } from "react-router-dom";
 import { getAuth, updateProfile } from "firebase/auth";
 import { UploadOutlined } from "@ant-design/icons";
-// import { useForm } from "antd/es/form/Form";
+import { useTranslation } from "react-i18next";
 
 const Settings = () => {
   const { firestore } = useContext(FirebaseContext);
@@ -21,22 +24,10 @@ const Settings = () => {
   const [form] = Form.useForm();
   const [avatar, setAvatar] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     setLoading(true);
-    const onResolve = (url) => {
-      setAvatar(url);
-      setLoading(false);
-      return Promise.resolve(url);
-    };
-
-    const onReject = (e) => {
-      setLoading(false);
-      setAvatar(null);
-      console.log(e);
-    };
-
     getDownloadURL(ref(storage, `images/${userData.nickname}`))
       .then((url) => {
         setAvatar(url);
@@ -53,7 +44,7 @@ const Settings = () => {
   const success = () => {
     messageApi.open({
       type: "success",
-      content: "Данные успешно обновлены",
+      content: t("settings.updated"),
     });
   };
 
@@ -66,8 +57,6 @@ const Settings = () => {
   };
 
   const onFinish = (values) => {
-    console.log(values, "values");
-
     const sendData = async () => {
       const payments = userData.paymentMethods;
       await updateDoc(doc(firestore, "users", auth.currentUser.email), {
@@ -129,14 +118,14 @@ const Settings = () => {
     },
     onChange(info) {
       if (info.file.status === "done") {
-        message.success(`${info.file.name} файл успешно загружен`);
+        message.success(`${info.file.name} ${t("settings.file_loaded")}`);
       } else if (info.file.status === "error") {
-        message.error(`${info.file.name} ошибка загрузки файла.`);
+        message.error(`${info.file.name} ${t("settings.file_error")}`);
       }
     },
     action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     customRequest({ file, onSuccess }) {
-      onSuccess(() => console.log("work"));
+      onSuccess();
       const imageRef = ref(storage, `images/${userData.nickname}`);
       uploadBytesResumable(imageRef, file).then(async (uploadResult) => {
         const photoURL = await getDownloadURL(uploadResult.ref);
@@ -150,7 +139,7 @@ const Settings = () => {
 
   return (
     <div className={`${styles["settings-page"]} settingsRoot`}>
-      <h2 className={"my-account-title"}>Настройки</h2>
+      <h2 className={"my-account-title"}>{t("settings.title")}</h2>
       <Form
         form={form}
         onFinish={onFinish}
@@ -181,36 +170,36 @@ const Settings = () => {
                 style={{ objectFit: "cover", marginBottom: 30 }}
               />
             ) : (
-              "Загрузка..."
+              `${t("settings.loading")}`
             )}
             <Form.Item name="avatar" className={styles["upload-button"]} valuePropName={"file"}>
               <Upload {...props}>
-                <Button icon={<UploadOutlined />}>Загрузить</Button>
+                <Button icon={<UploadOutlined />}>{t("settings.upload")}</Button>
               </Upload>
             </Form.Item>
           </div>
 
           <div className={styles["personal-information"]}>
-            <h3>Личная информация</h3>
-            <Form.Item name="nickname" label={"Никнейм"}>
+            <h3>{t("settings.personal_info")}</h3>
+            <Form.Item name="nickname" label={t("settings.nickname")}>
               <Input />
             </Form.Item>
             <Form.Item name="email" label={"Email"}>
               <Input type={"email"} />
             </Form.Item>
-            <Form.Item name="phone" label={"Номер телефона"}>
+            <Form.Item name="phone" label={t("settings.phone_number")}>
               <Input type={"phone"} />
             </Form.Item>
-            <Form.Item name="password" label={"Пароль"}>
+            <Form.Item name="password" label={t("settings.password")}>
               <Input.Password />
             </Form.Item>
-            <Form.Item name="confirm-password" label={"Подтвердить пароль"}>
+            <Form.Item name="confirm-password" label={t("settings.confirm_password")}>
               <Input.Password />
             </Form.Item>
           </div>
         </div>
         <div className={styles["wallets-wrapper"]}>
-          <h3 className={styles["wallets-title"]}>Кошельки</h3>
+          <h3 className={styles["wallets-title"]}>{t("settings.wallets")}</h3>
           <div className={styles["wallets"]}>
             <Form.Item label={"Perfect Money"} name={PERFECT_MONEY}>
               <Input placeholder={"U123456789"} />
@@ -239,7 +228,7 @@ const Settings = () => {
           </div>
         </div>
         <Button type="primary" htmlType="submit" className={styles["submit-settings"]}>
-          Сохранить
+          {t("settings.save")}
         </Button>
       </Form>
       <>{contextHolder}</>

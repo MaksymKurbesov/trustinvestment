@@ -1,10 +1,15 @@
-import { Button, Checkbox, Form, Input } from "antd";
+import Button from "antd/lib/button";
+import Checkbox from "antd/lib/checkbox";
+import Form from "antd/lib/form";
+import Input from "antd/lib/input";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import styles from "./Login-Form.module.css";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const LoginForm = ({ handleClick, resetPassword }) => {
   const [email, setEmail] = useState("");
+  const { t } = useTranslation();
 
   const onFinish = ({ email, password }) => {
     handleClick(email, password);
@@ -30,7 +35,7 @@ const LoginForm = ({ handleClick, resetPassword }) => {
         rules={[
           {
             required: true,
-            message: "Введите ваш email адрес!",
+            message: t("registration.email_warning"),
           },
         ]}
       >
@@ -41,7 +46,7 @@ const LoginForm = ({ handleClick, resetPassword }) => {
         rules={[
           {
             required: true,
-            message: "Введите ваш пароль!",
+            message: t("registration.password_warning"),
           },
         ]}
         className={styles["password"]}
@@ -49,27 +54,32 @@ const LoginForm = ({ handleClick, resetPassword }) => {
         <Input
           prefix={<LockOutlined className={styles["site-form-item-icon"]} />}
           type="password"
-          placeholder="Пароль"
+          placeholder={t("registration.password")}
         />
       </Form.Item>
       <Form.Item name="remember" valuePropName="checked">
-        <Checkbox>Запомнить меня</Checkbox>
+        <Checkbox>{t("sign_in.remember_me")}</Checkbox>
       </Form.Item>
       <Form.Item>
         <button onClick={() => setActiveClass("active")} className={styles["reset-password-button"]} href="">
-          Забыл пароль
+          {t("sign_in.forgot_password")}
         </button>
         <div className={`${styles[`reset-password-wrapper`]} ${styles[activeClass]}`}>
-          <Input className={styles["reset-password-input"]} value={email} onChange={onChange} />
+          <Input
+            placeholder={t("sign_in.enter_email")}
+            className={styles["reset-password-input"]}
+            value={email}
+            onChange={onChange}
+          />
           <Button onClick={() => resetPassword(email)} className={`${styles[`send-button`]} ${styles[activeClass]}`}>
-            Отправить
+            {t("sign_in.forgot_password")}
           </Button>
         </div>
       </Form.Item>
 
       <Form.Item>
         <Button type="primary" htmlType="submit" className={styles["login-form-button"]}>
-          Войти
+          {t("sign_in.sign_in_button")}
         </Button>
       </Form.Item>
     </Form>

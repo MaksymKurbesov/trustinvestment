@@ -69,6 +69,11 @@
 
 .text {
   flex-direction: row-reverse;
+  /*line-height: 1.4;*/
+}
+
+.about-company-text {
+  line-height: 1.4;
 }
 
 .about-company-text > div b {

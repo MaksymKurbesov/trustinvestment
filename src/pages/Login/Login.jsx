@@ -1,4 +1,4 @@
-import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from "firebase/auth";
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
@@ -6,33 +6,44 @@ import signInAnimation from "assets/lottie-animations/signIn-animation.json";
 import useLottie from "lottie-react";
 import { LoginForm } from "../../components/Login-Form/Login-Form";
 import AuthContext from "../../components/Auth-Provider/AuthContext";
-import { notification } from "antd";
+import notification from "antd/lib/notification";
+import { useTranslation } from "react-i18next";
+
+const FEBRUARY_21_2022 = 1676967299257;
 
 const Login = () => {
   const auth = getAuth();
   const navigate = useNavigate();
   const { currentUser } = useContext(AuthContext);
+  const { t } = useTranslation();
 
   const [api, notificationContextHolder] = notification.useNotification();
+
+  const confirmEmailNotification = () => {
+    api["error"]({
+      message: t("sign_in.error"),
+      description: t("sign_in.confirm_email"),
+    });
+  };
+
   const errorNotification = () => {
     api["error"]({
-      message: "Ошибка!",
-      description: "Неверный логин или пароль. Проверьте пожалуйста правильность данных.",
+      message: t("sign_in.error"),
+      description: t("sign_in.wrong_password"),
     });
   };
 
   const successForgetPasswordNotification = () => {
     api["success"]({
-      message: "Выполнено!",
-      description:
-        "Ссылка для изменения пароля отправлена вам на почту. (Если не найдете письмо, проверьте папку 'спам'",
+      message: t("sign_in.success"),
+      description: t("sign_in.forgot_password_notification"),
     });
   };
 
   const errorForgetPasswordNotification = () => {
     api["error"]({
-      message: "Ошибка!",
-      description: "Такого пользователя не существует.",
+      message: t("sign_in.error"),
+      description: t("sign_in.user_not_exist"),
     });
   };
 
@@ -49,7 +60,7 @@ const Login = () => {
       .then(() => {
         successForgetPasswordNotification();
       })
-      .catch((e) => {
+      .catch(() => {
         errorForgetPasswordNotification();
       });
   };
@@ -57,28 +68,31 @@ const Login = () => {
   const handleLogin = (email, pass) => {
     signInWithEmailAndPassword(auth, email, pass)
       .then((userCredential) => {
-        sessionStorage.setItem("Auth Token", userCredential._tokenResponse.refreshToken);
-        if (auth.currentUser) {
+        if (!userCredential.user.emailVerified && !(userCredential.user.metadata.createdAt < FEBRUARY_21_2022)) {
+          confirmEmailNotification();
+          auth.signOut();
+          return;
+        } else {
+          sessionStorage.setItem("Auth Token", userCredential._tokenResponse.refreshToken);
           navigate("/my-account");
         }
       })
       .catch((e) => {
-        console.log(e, "e");
         errorNotification();
       });
   };
 
-  useEffect(() => {
-    if (currentUser) {
-      navigate("/my-account");
-    }
-  }, [currentUser]);
+  // useEffect(() => {
+  //   if (currentUser) {
+  //     // navigate("/my-account");
+  //   }
+  // }, []);
 
   return (
     <div className={`${styles["login-page"]} devtools`}>
       <div className={`${styles["login-container"]} container`}>
-        <h2>Вход в личный кабинет</h2>
-        <p>Новое продуктивное путешествие начинается прямо здесь</p>
+        <h2>{t("sign_in.title")}</h2>
+        <p>{t("sign_in.subtitle")}</p>
         <div className={styles["login-page__wrapper"]}>
           <div className={styles["login-page__description"]}>{SignInAnimation}</div>
           <div className={styles["login-page__form"]}>

@@ -6,12 +6,7 @@
 .my-account-wrapper {
   width: 100%;
   padding: 50px;
-  /*padding-left: 260px;*/
 }
-
-/*.header {*/
-/*  padding-inline: 35px !important;*/
-/*}*/
 
 .my-account footer {
   text-align: center;
@@ -35,12 +30,32 @@
 }
 
 .left-sider {
-  /*height: 100%;*/
-  /*width: 150px !important;*/
-  /*max-width: 150px !important;*/
   z-index: 10;
-  /*position: fixed !important;*/
-  /*padding-top: 90px;*/
+  padding-top: 100px;
+  margin-top: -100px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.choose-language {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.choose-language span {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.choose-language button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.choose-language button:not(:last-child) {
+  margin-bottom: 15px;
 }
 
 .active {
@@ -55,25 +70,17 @@
 @media screen and (max-width: 1200px) {
   .my-account-wrapper {
     width: 100%;
-    /*margin-left: 80px;*/
     padding: 50px 20px 0 100px;
   }
 
   .left-sider {
     position: fixed !important;
     height: 100vh;
-    /*overflow: hidden;*/
   }
 
   .right-sider {
     display: none;
   }
-
-  /*.logotype {*/
-  /*  position: absolute;*/
-  /*  top: 0;*/
-  /*  left: 0;*/
-  /*}*/
 }
 
 @media screen and (max-width: 561px) {

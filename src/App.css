@@ -2,11 +2,16 @@
   font-family: Rothek, "sans-serif";
   src: local("Rotnek"), url("assets/fonts/RothekBold.otf") format("opentype");
 }
+@import "./Ant-Custom.css";
 
-/**, *::before, *::after {*/
-/*  outline: 1px solid red;*/
-/*  z-index: 999;*/
-/*}*/
+[data-aos="new-animation"] {
+  opacity: 0;
+  transition-property: transform, opacity;
+}
+
+[data-aos="new-animation"].aos-animate {
+  opacity: 0.1;
+}
 
 :root {
   --blue: #1677ff;
@@ -29,8 +34,6 @@ body {
   background-color: #efefef;
   color: var(--black);
   counter-reset: section;
-
-  /*height: 100%;*/
 }
 
 a {
@@ -73,10 +76,20 @@ ol {
   overflow: hidden;
 }
 
+.affilate-roadmap-wrapper {
+  background-image: url("assets/images/roadmap.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  margin: 0 -50px;
+  padding-bottom: 50px;
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
+}
+
 .container {
   max-width: 1440px;
   margin: 0 auto;
-  /*padding: 0 20px;*/
 }
 
 h3 {
@@ -86,31 +99,28 @@ h3 {
 .section-title {
   font-size: clamp(10px, 8.5vw, 60px);
   font-weight: 600;
-  margin-bottom: 40px;
   text-transform: uppercase;
+  position: relative;
+  max-width: 100%;
+  margin: 0 auto;
+  color: var(--dark-blue);
+  /*margin-bottom: 40px;*/
 }
 
 .slick-slide > div {
   margin-left: 10px !important;
   margin-right: 10px !important;
-  /*height: 230px;*/
 }
 
 .accountRoot .slick-slide > div {
-  /*margin-right: 20px !important;*/
   height: 230px;
   padding-top: 15px;
   padding-bottom: 15px;
-
-  /*height: 200px;*/
 }
 
 .accountRoot .slick-dots li {
   width: 100%;
-  /*height: 30px;*/
-  /*border-radius: 50%;*/
   margin: 0;
-  /*height: 5px;*/
 }
 
 .accountRoot .slick-dots li button:before {
@@ -150,203 +160,17 @@ h3 {
   height: 100%;
 }
 
-.plans-listRoot .ant-card-head {
-  background: var(--blue) !important;
-  border-radius: 0px !important;
-  border-top-left-radius: 8px !important;
-  border-top-right-radius: 8px !important;
-
-  color: white !important;
-  border-bottom: none !important;
-}
-
-.plans-listRoot .ant-card-body {
-  width: 100% !important;
-  display: grid;
-  grid-template-columns: 0 1fr 1fr repeat(2, 1fr);
-  grid-template-rows: 1fr;
-  column-gap: 10px;
-}
-
-.plans-listRoot .ant-list-item {
-  padding: 0;
-}
-
-.transactionsListRoot .anticon {
-  color: rgba(0, 0, 0, 0.5);
-}
-
-.transactionsListRoot .ant-table.ant-table-small {
-  font-size: 13px;
-}
-
-.transactionsListRoot .ant-badge-status {
-  width: 100%;
-}
-
-.transactionsListRoot .ant-list-item {
-  padding: 12px;
-}
-
-.settingsRoot .ant-row {
-  display: block;
-}
-
-.settingsRoot input {
-  max-width: 500px;
-}
-
-.settingsRoot .ant-input-affix-wrapper {
-  max-width: 500px;
-}
-
-.settingsRoot .ant-form-horizontal .ant-form-item-label {
-  flex-grow: 0;
-  text-align: initial;
-}
-
-.settingsRoot .anticon {
-  color: rgba(0, 0, 0, 0.5);
-}
-
-.settingsRoot label {
-  color: white !important;
-}
-
-.replenishment-modal .ant-modal-footer {
-  display: none;
-}
-
-.contact-usRoot form {
-  width: 50%;
-}
-
 .slick-track {
   display: flex !important;
 }
 
-#normal_login .anticon {
-  color: rgba(0, 0, 0, 0.25);
-}
-
-.container .ant-menu-horizontal {
-  line-height: 63px !important;
-}
-
-.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item:not(.ant-menu-item-selected):hover {
-  background-color: var(--alpha-blue);
-}
-
-.ant-menu-dark.ant-menu-horizontal > .ant-menu-item-selected {
-  border-bottom: none !important;
-  color: rgba(255, 255, 255, 0.65) !important;
-}
-
-.ant-menu-dark.ant-menu-horizontal > .active-main-header {
-  border-bottom: 5px solid var(--blue) !important;
-  color: rgba(255, 255, 255, 1) !important;
-}
-
-.ant-menu-dark.ant-menu-horizontal > .ant-menu-item-selected {
-  background-color: transparent;
-  border-bottom: 5px solid var(--blue);
-}
-
-.ant-form-item {
-  margin-bottom: 5px;
-}
-
-.ant-layout {
-  background: none;
-  /*padding-top: 95px;*/
-}
-
-.ant-tabs-content-holder {
-  min-height: initial;
-}
-
-.ant-statistic-title,
-.ant-statistic-content-value {
-  color: white !important;
-}
-
-.ant-card-bordered {
-  border: none !important;
-}
-
-.ant-layout .ant-layout-sider-zero-width-trigger {
-  top: 50%;
-  transform: translateY(-50%);
-  width: 30px;
-  height: 30px;
-  inset-inline-end: -30px;
-}
-
-.ant-switch-inner {
-  background: #4096ff;
-}
-
-#components-form-demo-normal-login .login-form {
-  max-width: 300px;
-}
-#components-form-demo-normal-login .login-form-forgot {
-  float: right;
-}
-#components-form-demo-normal-login .ant-col-rtl .login-form-forgot {
-  float: left;
-}
-#components-form-demo-normal-login .login-form-button {
-  width: 100%;
-}
-
-.anticon {
-  color: white;
-}
-
-.payment-select .anticon {
-  color: rgba(0, 0, 0, 0.4);
-}
-
-.anticon-ellipsis {
-  color: white;
-}
-
-.depositRoot .ant-table-cell {
-  text-align: center !important;
-}
-
-.depositRoot .ant-table-cell:nth-child(2) {
-  padding-right: 25px !important;
-}
-
-.depositRoot .ant-tabs-nav-wrap {
-  padding: 0 20px;
-}
-
-.levelsRoot .ant-collapse-item:not(:last-child) {
-  margin-bottom: 24px !important;
-}
-
-.levelsRoot .ant-collapse-item:last-child {
-  margin-bottom: 0 !important;
-}
-
-.levelsRoot .ant-collapse > .ant-collapse-item > .ant-collapse-header {
-  align-items: center !important;
-}
-
-.levelsRoot .ant-collapse-item .ant-collapse-arrow {
-  color: white !important;
-}
-
-.registerFormRoot .ant-col-sm-8 {
-  flex: 0 0 50% !important;
-  max-width: 50% !important;
-}
 @media screen and (max-width: 1000px) {
   .plans-listRoot .ant-card-body {
     padding: 15px;
     gap: 0;
+  }
+  .affilate-roadmap-wrapper {
+    padding-bottom: 0;
   }
 }
 

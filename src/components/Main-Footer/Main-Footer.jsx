@@ -1,4 +1,4 @@
-import { Layout } from "antd";
+import Layout from "antd/lib/layout";
 import styles from "./Main-Footer.module.css";
 import { useRef } from "react";
 import { useIntersectionObserver } from "../../hooks/useIntersectionObserver";

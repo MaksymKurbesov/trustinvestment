@@ -1,5 +1,8 @@
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
-import { Button, Form, Input, Modal, Result } from "antd";
+import Button from "antd/lib/button";
+import Form from "antd/lib/form";
+import Input from "antd/lib/input";
+import Modal from "antd/lib/modal";
 import styles from "./Replenishment.module.css";
 import { useContext, useEffect, useState } from "react";
 import { addDoc, collection } from "firebase/firestore";
@@ -8,11 +11,12 @@ import { getRandomArbitrary } from "../../utils/helpers";
 import { ConfirmedWindow } from "../../components/ConfirmedWindow/ConfirmedWindow";
 import { useForm } from "@formspree/react";
 import { WALLETS } from "../../utils/consts";
-import AuthContext from "../../components/Auth-Provider/AuthContext";
+import { useTranslation } from "react-i18next";
 
 const Replenishment = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [transactionID, setTransactionID] = useState(null);
+  const { t, i18n } = useTranslation();
 
   const { userData } = useOutletContext();
   const location = useLocation();
@@ -33,8 +37,6 @@ const Replenishment = () => {
   const handleOk = () => {
     setIsModalOpen(false);
   };
-
-  console.log(data.paymentMethod);
 
   const onFinish = (value) => {
     form.validateFields().then((values) => {
@@ -66,23 +68,23 @@ const Replenishment = () => {
 
   return (
     <div className={`${styles["replenishment"]} replenishmentRoot`}>
-      <h2 className={"my-account-title"}>Пополнение</h2>
+      <h2 className={"my-account-title"}>{t("replenishment.title")}</h2>
       <table className={styles["bill"]}>
         <thead>
           <tr>
-            <td>План</td>
+            <td>{t("replenishment.plan")}</td>
             <td>{data.tariffPlan.title}</td>
           </tr>
           <tr>
-            <td>Способ оплаты</td>
+            <td>{t("replenishment.payment_method")}</td>
             <td>{data.paymentMethod}</td>
           </tr>
           <tr>
-            <td>Сумма</td>
+            <td>{t("replenishment.amount")}</td>
             <td>{data.amount} USD</td>
           </tr>
           <tr>
-            <td>Кошелёк для оплаты</td>
+            <td>{t("replenishment.wallet_for_pay")}</td>
             <td>
               {WALLETS[data.paymentMethod]}
               <Button
@@ -91,12 +93,12 @@ const Replenishment = () => {
                 }}
                 className={styles["copy-button"]}
               >
-                Копировать
+                {t("replenishment.copy")}
               </Button>
             </td>
           </tr>
           <tr>
-            <td>Дата</td>
+            <td>{t("replenishment.date")}</td>
             <td>{data.date}</td>
           </tr>
         </thead>
@@ -110,16 +112,16 @@ const Replenishment = () => {
           rules={[
             {
               required: true,
-              message: "Введите пожалуйста номер транзакции!",
+              message: `${t("replenishment.transaction_warning")}`,
             },
           ]}
         >
-          <Input className={styles["input"]} addonBefore={"Номер/хеш транзакции"} />
+          <Input className={styles["input"]} addonBefore={`${t("replenishment.transaction_number")}`} />
         </Form.Item>
         <Form.Item>
           <Input
             className={styles["input"]}
-            addonBefore={"Примечание"}
+            addonBefore={`${t("replenishment.note")}`}
             disabled
             value={`invoice #${transactionID}, ${userData.nickname}`}
           />
@@ -131,10 +133,10 @@ const Replenishment = () => {
               navigate(-1);
             }}
           >
-            Назад
+            {t("replenishment.back")}
           </Button>
           <Button type="primary" key={"submit"} onClick={onFinish}>
-            Подтвердить
+            {t("replenishment.confirm")}
           </Button>
         </Form.Item>
       </Form>
