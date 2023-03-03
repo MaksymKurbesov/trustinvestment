@@ -6,8 +6,10 @@ import { useTranslation } from "react-i18next";
 
 const DAY_IN_MS = 86400 * 1000;
 
-const TimeToPayment = ({ nearestAccrual }) => {
+const TimeToPayment = ({ nearestAccrual, depositsIsEmpty }) => {
   const { t, i18n } = useTranslation();
+
+  console.log(depositsIsEmpty, "depositsIsEmpty");
 
   const WaitAnimation = useLottie({
     animationData: waitAnimation,
@@ -19,7 +21,11 @@ const TimeToPayment = ({ nearestAccrual }) => {
         {WaitAnimation}
         <div className={styles["next-accrual"]}>
           <p>{t("personal_area.next_accrual_in")}</p>
-          {nearestAccrual ? <CountdownTimer targetDate={nearestAccrual + DAY_IN_MS} /> : t("personal_area.loading")}
+          {nearestAccrual || depositsIsEmpty ? (
+            <CountdownTimer targetDate={nearestAccrual + DAY_IN_MS} />
+          ) : (
+            t("personal_area.loading")
+          )}
         </div>
       </div>
     </div>

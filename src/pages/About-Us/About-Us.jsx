@@ -1,105 +1,31 @@
 import styles from "./About-Us.module.css";
 import AboutCompanyImage from "assets/images/about-company-image.svg";
 import AboutCompanyImage2 from "assets/images/about-company-image2.svg";
-import TeamMember1 from "assets/images/team-members/1.png";
-import TeamMember2 from "assets/images/team-members/2.png";
-import TeamMember3 from "assets/images/team-members/3.png";
-import TeamMember4 from "assets/images/team-members/4.png";
-import TeamMember5 from "assets/images/team-members/5.png";
-import TeamMember6 from "assets/images/team-members/6.png";
 import Slider from "react-slick";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { useRef } from "react";
-import { useTranslation, Trans, Translation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
+import { MEMBERS_LIST } from "../../utils/consts";
 
-const MEMBERS_LIST = [
-  {
-    name: "Arif Mohd Al Alawi",
-    image: TeamMember2,
-    position: "CEO",
-    links: {
-      facebook: "",
-      twitter: "",
-      linkedin: "https://www.linkedin.com/in/arif-mohd-al-alawi-0601321a/",
-      email: "arif@dubaicultiv8.ae",
+const settings = {
+  speed: 500,
+  infinite: false,
+  arrows: false,
+  slidesToShow: 4,
+  slidesToScroll: 1,
+  responsive: [
+    {
+      breakpoint: 800,
+      settings: {
+        slidesToShow: 3,
+      },
     },
-  },
-  {
-    name: "Vadym Shkarupeta",
-    image: TeamMember3,
-    position: "CTO",
-    links: {
-      facebook: "",
-      twitter: "",
-      linkedin: "https://www.linkedin.com/in/vadym-shkarupeta-37808a1a3/",
-      email: "",
-    },
-  },
-  {
-    name: "Yousaf Abbasi",
-    image: TeamMember1,
-    position: "Project Financing",
-    links: {
-      facebook: "",
-      twitter: "https://twitter.com/yousafabbasi",
-      linkedin: "https://www.linkedin.com/in/yousafabbasi/",
-      email: "",
-    },
-  },
-  {
-    name: "Volodymyr Derunov",
-    image: TeamMember4,
-    position: "Frontend Developer",
-    links: {
-      facebook: "",
-      twitter: "",
-      linkedin: "https://www.linkedin.com/in/vderunov/",
-      email: "",
-    },
-  },
-  {
-    name: "Mykola Siutkin",
-    image: TeamMember5,
-    position: "Co-founder",
-    links: {
-      facebook: "",
-      twitter: "",
-      linkedin: "linkedin.com/in/siutkin",
-      email: "",
-    },
-  },
-  {
-    name: "Victor Guixer",
-    image: TeamMember6,
-    position: "Co-founder",
-    links: {
-      facebook: "",
-      twitter: "https://twitter.com/victorguixer",
-      linkedin: "linkedin.com/in/victorguixer",
-      email: "arif@dubaicultiv8.ae",
-    },
-  },
-];
+  ],
+};
 
 const AboutUs = () => {
   const sliderRef = useRef(null);
-  const { t, i18n } = useTranslation();
-
-  const settings = {
-    speed: 500,
-    infinite: false,
-    arrows: false,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 800,
-        settings: {
-          slidesToShow: 3,
-        },
-      },
-    ],
-  };
+  const { t } = useTranslation();
 
   return (
     <div className={`${styles["about-us"]}`}>
@@ -175,7 +101,6 @@ const AboutUs = () => {
                       <div>
                         <p>{member.name}</p>
                         <p>{member.position}</p>
-                        {/*<p>{member.}</p>*/}
                       </div>
                     </div>
                   );

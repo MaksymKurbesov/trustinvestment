@@ -6,22 +6,22 @@ import { useTranslation } from "react-i18next";
 
 const DepositsStatus = ({ deposits }) => {
   const [activeDeposits, setActiveDeposits] = useState([]);
-  const [inactiveDeposits, setInactiveDeposits] = useState([]);
+  const [completedDeposits, setCompletedDeposits] = useState([]);
   const { t, i18n } = useTranslation();
 
   useEffect(() => {
     const activeArr = [];
-    const inactiveArr = [];
+    const completedArr = [];
 
     deposits.forEach((deposit) => {
       if (deposit.status === "active") {
         activeArr.push(deposit);
       } else {
-        inactiveArr.push(deposit);
+        completedArr.push(deposit);
       }
 
       setActiveDeposits(activeArr);
-      setInactiveDeposits(inactiveArr);
+      setCompletedDeposits(completedArr);
     });
   }, [deposits]);
 
@@ -34,7 +34,7 @@ const DepositsStatus = ({ deposits }) => {
     {
       key: "2",
       label: t("personal_area.completed_deposits"),
-      children: <DepositsList deposits={inactiveDeposits} />,
+      children: <DepositsList deposits={completedDeposits} />,
     },
   ];
 

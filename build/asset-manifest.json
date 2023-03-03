@@ -1,11 +1,12 @@
 {
   "files": {
-    "main.css": "/static/css/main.5e3dca0a.css",
-    "main.js": "/static/js/main.f36f7c33.js",
+    "main.css": "/static/css/main.5226df1a.css",
+    "main.js": "/static/js/main.295f3aa3.js",
+    "static/media/roadmap.png": "/static/media/roadmap.78f09cf84b7347c12b4b.png",
     "static/media/hero-banner-bg.png": "/static/media/hero-banner-bg.5cb7359aca18637bb444.png",
+    "static/media/coins.png": "/static/media/coins.36afb260aeec4de27cf4.png",
     "static/media/tether.png": "/static/media/tether.ebe816e536abe9779812.png",
     "static/media/hero-banner2.webp": "/static/media/hero-banner2.5de75d978be16720c8dc.webp",
-    "static/media/roadmap.webp": "/static/media/roadmap.abf1ffde238fbd2b8757.webp",
     "static/media/Asset 2.svg": "/static/media/Asset 2.212419d3af0d4a67849c61d2c8ae5df4.svg",
     "static/media/1.png": "/static/media/1.2e5fc8a7286357569f2f.png",
     "static/media/company1.webp": "/static/media/company1.a118f712e24b675130fa.webp",
@@ -16,7 +17,6 @@
     "static/media/4.png": "/static/media/4.ff07c6d55dd82c1afaed.png",
     "static/media/company2.webp": "/static/media/company2.2108d7a3da90d8838ce6.webp",
     "static/media/2.png": "/static/media/2.96ff34a6a54b45c8ed9d.png",
-    "static/media/coins.webp": "/static/media/coins.18c1991b3348669b5d9c.webp",
     "static/media/polkadot-logo.png": "/static/media/polkadot-logo.8bbd1a4e0076dc37220f.png",
     "static/media/RothekBold.otf": "/static/media/RothekBold.52f80c10c0593ccbf72f.otf",
     "static/media/4.webp": "/static/media/4.bce1ec8649d1c3f7973c.webp",
@@ -37,7 +37,6 @@
     "static/media/affiliate-image.png": "/static/media/affiliate-image.805adedd83fe1d7a4c7d.png",
     "static/media/bitcoin.png": "/static/media/bitcoin.8ab89a6822692b9f9ff6.png",
     "static/media/logo.png": "/static/media/logo.80732ba3c344938f3765.png",
-    "static/media/main-bg.svg": "/static/media/main-bg.4a41b15fe83bce99789a9a32a80a801b.svg",
     "static/media/telegram.png": "/static/media/telegram.e60d4316cf1ae067896c.png",
     "static/media/Asset 6.svg": "/static/media/Asset 6.502b2d2aa7a653a8adc7384a7e1d23fc.svg",
     "static/media/mail.png": "/static/media/mail.5d83fa9003ef4c31c51f.png",
@@ -62,12 +61,13 @@
     "index.html": "/index.html",
     "static/media/index.cjs": "/static/media/index.bab733886d4c9bd36de5.cjs",
     "static/media/section-title.svg": "/static/media/section-title.81666729911a1dd82ea8.svg",
+    "static/media/getFetch.cjs": "/static/media/getFetch.40f37ddea2378391108f.cjs",
     "static/media/rus-lang.svg": "/static/media/rus-lang.b41328698709cf180d8d19cd65d03050.svg",
-    "main.5e3dca0a.css.map": "/static/css/main.5e3dca0a.css.map",
-    "main.f36f7c33.js.map": "/static/js/main.f36f7c33.js.map"
+    "main.5226df1a.css.map": "/static/css/main.5226df1a.css.map",
+    "main.295f3aa3.js.map": "/static/js/main.295f3aa3.js.map"
   },
   "entrypoints": [
-    "static/css/main.5e3dca0a.css",
-    "static/js/main.f36f7c33.js"
+    "static/css/main.5226df1a.css",
+    "static/js/main.295f3aa3.js"
   ]
 }

@@ -48,7 +48,7 @@
   "tariffs": {
     "title": "TARIFF PLANS",
     "plan": "Plan",
-    "in_day": "in day",
+    "in_day": "in a day",
     "days": "days",
     "min": "Min. deposit",
     "max": "Max. deposit",
@@ -317,7 +317,8 @@
     "total_income": "Total income",
     "error": "Insufficient funds. Please replenish your wallet.",
     "enter_amount_warning": "Please enter the amount",
-    "incorrect_amount": "Incorrect amount"
+    "incorrect_amount": "Incorrect amount",
+    "cancel": "Cancel"
   },
   "replenishment": {
     "title": "Replenishment",

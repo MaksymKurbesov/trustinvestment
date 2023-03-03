@@ -19,7 +19,7 @@ import CompanyImage4 from "assets/images/company-photos/company4.webp";
 import { useTranslation } from "react-i18next";
 
 const Contacts = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <div className={styles["contacts"]}>
@@ -53,10 +53,7 @@ const Contacts = () => {
               <Button htmlType={"submit"} type={"primary"} className={styles["submit-button"]}>
                 {t("fill_form.Send")}
               </Button>
-              <Checkbox>
-                {t("contact_us.policy")}
-                {/*Я ознакомлен с политикой конфиденциальности и даю согласие на обработку моих персональных данных*/}
-              </Checkbox>
+              <Checkbox>{t("contact_us.policy")}</Checkbox>
             </Form>
           </div>
           <div className={styles["company-photos"]}>

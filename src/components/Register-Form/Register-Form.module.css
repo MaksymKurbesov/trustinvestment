@@ -1,3 +1,22 @@
 .agreement-link {
-    color: var(--blue);
+  color: var(--blue);
+}
+
+.agree-link {
+  width: 300px;
+  margin: 15px 0;
+}
+
+.policy b {
+  font-weight: 600;
+  display: block;
+  font-size: 20px;
+  margin-bottom: 30px;
+}
+
+.policy span {
+  display: block;
+  font-weight: 600;
+  font-size: 14px;
+  margin-top: 20px;
 }

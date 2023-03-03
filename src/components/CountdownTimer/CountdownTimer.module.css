@@ -15,6 +15,10 @@
   margin-right: 15px;
 }
 
+.success {
+  text-align: center;
+}
+
 @media screen and (max-width: 525px) {
   .countdown {
     grid-template-columns: 80px 80px 80px;

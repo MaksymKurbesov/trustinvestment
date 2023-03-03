@@ -225,11 +225,11 @@
     "title": "Регистрация",
     "subtitle": "Создавайте аккаунт и присоединяйтесь к нашему комьюнити",
     "password": "Пароль",
-    "сonfirm_password": "Подтвердите пароль",
+    "confirm_password": "Подтвердите пароль",
     "nickname": "Никнейм",
     "phone_number": "Номер телефона",
     "nickname_referral": "Ник реферала",
-    "agree": "Я согласен с <link>этими правилами<link/>",
+    "agree": "Я согласен с <button>этими правилами</button>",
     "agree_warning": "Следует принять соглашение",
     "notification": {
       "title": "Поздравляем, вы успешно зарегистрированы!",
@@ -317,7 +317,8 @@
     "total_income": "Общий доход",
     "error": "Недостаточно средст. Пополните пожалуйста кошелёк.",
     "enter_amount_warning": "Введите пожалуйста сумму",
-    "incorrect_amount": "Некорректная сумма"
+    "incorrect_amount": "Некорректная сумма",
+    "cancel": "Cancel"
   },
   "replenishment": {
     "title": "Пополнение",

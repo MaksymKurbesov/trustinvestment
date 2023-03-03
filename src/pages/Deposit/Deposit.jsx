@@ -107,8 +107,6 @@ const Deposit = () => {
           invested: increment(amount),
         });
 
-        // const depositsCount = queryCount.data().count > 9 ? `${queryCount.data().count}`
-
         const depositID = `900${queryCount.data().count}`;
 
         await setDoc(doc(firestore, "users", userData.email, "deposits", depositID), {
@@ -255,16 +253,16 @@ const Deposit = () => {
           </p>
         </div>
       </Modal>
-      {/*<Modal*/}
-      {/*  open={isConfirmedModalOpen}*/}
-      {/*  onOk={handleConfirmedOk}*/}
-      {/*  onCancel={handleConfirmedCancel}*/}
-      {/*  cancelText={"Отмена"}*/}
-      {/*  title={<p className={styles["title-modal"]}>Подтверждение вывода</p>}*/}
-      {/*  footer={null}*/}
-      {/*>*/}
-      {/*  <ConfirmedWindow transactionID={getRandomArbitrary()} />*/}
-      {/*</Modal>*/}
+      <Modal
+        open={isConfirmedModalOpen}
+        onOk={handleConfirmedOk}
+        onCancel={handleConfirmedCancel}
+        cancelText={t("make_deposit.cancel")}
+        title={<p className={styles["title-modal"]}>{t("make_deposit.title")}</p>}
+        footer={null}
+      >
+        <ConfirmedWindow transactionID={getRandomArbitrary()} />
+      </Modal>
     </div>
   );
 };

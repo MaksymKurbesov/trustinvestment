@@ -7,10 +7,13 @@ import { secondsToStringDays } from "../../utils/helpers";
 import { STATUS_MAPLIST } from "../../utils/consts";
 import styles from "./Transactions.module.css";
 import { useTranslation } from "react-i18next";
+import { useQueryClient } from "react-query";
+import { useEffect } from "react";
 
 const TransactionsTable = ({ transactions, totalTransactions, showPrevious, showNext, loading }) => {
   const windowSize = useWindowSize();
   const { t, i18n } = useTranslation();
+  const queryClient = useQueryClient();
 
   const columns = [
     {
@@ -32,8 +35,7 @@ const TransactionsTable = ({ transactions, totalTransactions, showPrevious, show
         return (
           <Tooltip title={text}>
             <Tag color={tag.color} icon={tag.icon}>
-              {/*{text}*/}
-              {i18n.language === "ru" ? { text } : `${t(`transactions.${text}`)}`}
+              {i18n.language === "ru" ? `${text}` : `${t(`transactions.${text}`)}`}
             </Tag>
           </Tooltip>
         );
@@ -88,6 +90,10 @@ const TransactionsTable = ({ transactions, totalTransactions, showPrevious, show
     },
   ];
 
+  useEffect(() => {
+    queryClient.invalidateQueries("transactions");
+  }, []);
+
   const itemRender = (_, type, originalElement) => {
     if (type === "prev") {
       return (
@@ -97,10 +103,12 @@ const TransactionsTable = ({ transactions, totalTransactions, showPrevious, show
       );
     }
     if (type === "next") {
-      return <a onClick={() => showNext({ item: transactions[transactions.length - 1] })}>{t("transactions.next")}</a>;
+      return <a onClick={() => showNext()}>{t("transactions.next")}</a>;
     }
     return originalElement;
   };
+
+  console.log(transactions, "transactions from table");
 
   return (
     <Table

@@ -8,7 +8,7 @@ import { TimeToPayment } from "components/Time-To-Payment/Time-To-Payment";
 import { UserWallets } from "components/Wallets/UserWallets";
 import { useContext, useEffect, useState } from "react";
 import { FirebaseContext } from "../../index";
-import { collection, query, getDocs, where, onSnapshot } from "firebase/firestore";
+import { collection, query, getDocs, onSnapshot } from "firebase/firestore";
 import { useOutletContext } from "react-router-dom";
 import { getNextAccrual } from "../../utils/helpers";
 import { useTranslation } from "react-i18next";
@@ -18,37 +18,43 @@ const PersonalArea = () => {
   const { userData } = useOutletContext();
   const [depositsList, setDepositsList] = useState([]);
   const [nearestAccrual, setNearestAccrual] = useState(null);
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!userData) return;
 
     const getDeposits = async () => {
-      const q = query(collection(firestore, "users", userData.email, "deposits"), where("status", "==", "active"));
+      const q = query(collection(firestore, "users", userData.email, "deposits"));
 
       onSnapshot(q, async (snapshot) => {
         await getDocs(q).then((snap) => {
           const depositsArr = [];
+          let nextAccrual;
 
           if (snap.docs.length === 0) return;
+          const deposit = snap.docs[snap.docs.length - 1].data();
 
-          let nextAccrual = getNextAccrual(snap.docs[0].data());
+          if (deposit.status === "active") {
+            nextAccrual = getNextAccrual(deposit);
+          }
 
           snap.docs.map((item, index) => {
             const data = item.data();
+            const depositIsActive = data.status === "active";
 
-            if (getNextAccrual(data) < nextAccrual) {
+            if (getNextAccrual(data) < nextAccrual && depositIsActive) {
               nextAccrual = getNextAccrual(data);
             }
 
             depositsArr.push({
               ...data,
               key: item.id,
-              nextAccrual: getNextAccrual(data),
+              nextAccrual: data.charges < data.days ? getNextAccrual(data) : "",
               executor: userData.nickname,
             });
             setDepositsList(depositsArr);
           });
+
           setNearestAccrual(nextAccrual);
         });
       });
@@ -97,7 +103,7 @@ const PersonalArea = () => {
           </div>
         </div>
         <DepositsStatus deposits={depositsList} />
-        <TimeToPayment nearestAccrual={nearestAccrual} />
+        <TimeToPayment nearestAccrual={nearestAccrual} depositsIsEmpty={depositsList.length === 0} />
       </div>
     </div>
   );

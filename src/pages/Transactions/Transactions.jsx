@@ -15,76 +15,97 @@ import { getAuth } from "firebase/auth";
 import { useContext, useEffect, useState } from "react";
 import { FirebaseContext } from "../../index";
 import { useTranslation } from "react-i18next";
+import { useQuery, useQueryClient } from "react-query";
+import { fetchTransaction, showNext } from "../../services/TransactionsService";
+import { useTransactionsQuery } from "../../services/useTransactionsQuery";
 
 const Transactions = () => {
   const auth = getAuth();
-  const [transactions, setTransactions] = useState([]);
-  const [totalTransactions, setTotalTransactions] = useState(null);
+  const [totalTransactions, setTotalTransactions] = useState(0);
   const { firestore } = useContext(FirebaseContext);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
+  const [lastTransaction, setLastTransaction] = useState(null);
+  const queryClient = useQueryClient();
 
   const transactionsCollection = query(
     collection(firestore, "transactions"),
     where("account_id", "==", auth.currentUser.uid)
   );
 
+  const {
+    data: transactions,
+    isLoading,
+    refetch,
+  } = useQuery(
+    ["transactions"],
+    () => {
+      return fetchTransaction();
+    },
+    {
+      enabled: false,
+      // refetchOnWindowFocus: false,
+      onSuccess: (data) => {
+        setLastTransaction(data[data.length - 1]);
+      },
+    }
+  );
+
+  // const { data: transactions, refetch } = useTransactionsQuery();
+
+  console.log(transactions, "transactions arr");
+
   useEffect(() => {
-    if (!auth.currentUser) return;
-    const getTransactions = async () => {
-      setLoading(true);
-      await getCountFromServer(transactionsCollection).then((coll) => {
-        setTotalTransactions(coll.data().count);
-      });
-
-      const transactionsDocRef = query(
-        collection(firestore, "transactions"),
-        where("account_id", "==", auth.currentUser.uid),
-        orderBy("date", "desc"),
-        limit(10)
-      );
-
-      await getDocs(transactionsDocRef).then((transaction) => {
-        const arr = [];
-
-        transaction.docs.map((item, index) => {
-          arr.push({ ...item.data(), key: index, id: item.id.slice(0, 5) });
-          setTransactions(arr);
-        });
-      });
-    };
-
-    getTransactions().then(() => setLoading(false));
+    refetch();
   }, []);
 
-  const showNext = ({ item }) => {
-    if (transactions.length === 0) {
-      return;
-    } else {
-      const fetchNextData = async () => {
-        setLoading(true);
-        const transactionsDocRef = query(
-          collection(firestore, "transactions"),
-          where("account_id", "==", auth.currentUser.uid),
-          orderBy("date", "desc"),
-          limit(10),
-          startAfter(item.date)
-        );
+  useEffect(() => {
+    if (!lastTransaction) return;
 
-        await getDocs(transactionsDocRef).then((transaction) => {
-          const arr = [];
+    showNext(lastTransaction);
+    // queryClient.prefetchQuery(["transactions", lastTransaction], () => {
+    //   return showNext(lastTransaction);
+    // });
+  }, [lastTransaction]);
 
-          transaction.docs.map((item, index) => {
-            arr.push({ ...item.data(), key: index, id: item.id.slice(0, 5) });
-            setTransactions(arr);
-            setPage(page + 1);
-          });
-        });
-      };
-      fetchNextData().then(() => setLoading(false));
-    }
-  };
+  console.log(lastTransaction, "lastTransaction");
+
+  useEffect(() => {
+    if (!auth.currentUser) return;
+
+    getCountFromServer(transactionsCollection).then((coll) => {
+      setTotalTransactions(coll.data().count);
+    });
+  }, []);
+
+  // const showNext = ({ item, setPageHandler }) => {
+  //   if (transactions.data.length === 0) {
+  //     return;
+  //   } else {
+  //     const fetchNextData = async () => {
+  //       setLoading(true);
+  //       const transactionsDocRef = query(
+  //         collection(firestore, "transactions"),
+  //         where("account_id", "==", auth.currentUser.uid),
+  //         orderBy("date", "desc"),
+  //         limit(10),
+  //         startAfter(item.date)
+  //       );
+  //
+  //       await getDocs(transactionsDocRef).then((transaction) => {
+  //         const arr = [];
+  //
+  //         transaction.docs.map((item, index) => {
+  //           arr.push({ ...item.data(), key: index, id: item.id.slice(0, 5) });
+  //           // setTransactions(arr);
+  //           setPage(page + 1);
+  //         });
+  //       });
+  //     };
+  //     fetchNextData().then(() => setLoading(false));
+  //   }
+  // };
 
   const showPrevious = ({ item }) => {
     const fetchPreviousData = async () => {
@@ -102,7 +123,7 @@ const Transactions = () => {
 
         transaction.docs.map((item, index) => {
           arr.push({ ...item.data(), key: index, id: item.id.slice(0, 5) });
-          setTransactions(arr);
+          // setTransactions(arr);
           setPage(page - 1);
         });
       });
@@ -117,7 +138,10 @@ const Transactions = () => {
       <TransactionsTable
         transactions={transactions}
         totalTransactions={totalTransactions}
-        showNext={showNext}
+        showNext={() => {
+          showNext(lastTransaction);
+          // refetch();
+        }}
         showPrevious={showPrevious}
         loading={loading}
       />

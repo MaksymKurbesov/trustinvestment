@@ -9,6 +9,7 @@ import "aos/dist/aos.css";
 import { ScrollToTop } from "./components/Scroll-To-Top/Scroll-To-Top";
 import { AuthProvider } from "./components/Auth-Provider/Auth-Provider";
 import "./i18n.js";
+import { QueryClientProvider, QueryClient } from "react-query";
 
 const firebaseApp = initializeApp({
   apiKey: "AIzaSyBRYVcyjt0EBhRzmd5SKdvoSeA6j6941PY",
@@ -21,7 +22,9 @@ const firebaseApp = initializeApp({
 
 AOS.init();
 
-const firestore = getFirestore(firebaseApp);
+const queryClient = new QueryClient();
+
+export const firestore = getFirestore(firebaseApp);
 
 export const FirebaseContext = createContext(null);
 
@@ -37,7 +40,9 @@ root.render(
           }}
         >
           <AuthProvider>
-            <App />
+            <QueryClientProvider client={queryClient}>
+              <App />
+            </QueryClientProvider>
           </AuthProvider>
         </FirebaseContext.Provider>
       </ScrollToTop>
