@@ -36,6 +36,10 @@
   color: rgba(255, 255, 255, 0.5);
 }
 
+.left-sider ul li span > a {
+  display: initial !important;
+}
+
 .choose-language {
   display: flex;
   flex-direction: column;
