@@ -192,6 +192,11 @@
   width: 50%;
 }
 
+.ant-menu-item a {
+  display: block !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
 @media screen and (max-width: 1000px) {
   .ant-menu-item a {
     /*display: block;*/

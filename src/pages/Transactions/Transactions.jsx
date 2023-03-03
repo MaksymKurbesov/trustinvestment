@@ -29,6 +29,8 @@ const Transactions = () => {
   const [lastTransaction, setLastTransaction] = useState(null);
   const queryClient = useQueryClient();
 
+  const [currentTransactions, setCurrentTransactions] = useState(null);
+
   const transactionsCollection = query(
     collection(firestore, "transactions"),
     where("account_id", "==", auth.currentUser.uid)
@@ -47,6 +49,7 @@ const Transactions = () => {
       enabled: false,
       // refetchOnWindowFocus: false,
       onSuccess: (data) => {
+        setCurrentTransactions(data);
         setLastTransaction(data[data.length - 1]);
       },
     }
@@ -54,22 +57,11 @@ const Transactions = () => {
 
   // const { data: transactions, refetch } = useTransactionsQuery();
 
-  console.log(transactions, "transactions arr");
+  console.log(currentTransactions, "currentTransactions");
 
   useEffect(() => {
     refetch();
   }, []);
-
-  useEffect(() => {
-    if (!lastTransaction) return;
-
-    showNext(lastTransaction);
-    // queryClient.prefetchQuery(["transactions", lastTransaction], () => {
-    //   return showNext(lastTransaction);
-    // });
-  }, [lastTransaction]);
-
-  console.log(lastTransaction, "lastTransaction");
 
   useEffect(() => {
     if (!auth.currentUser) return;
@@ -79,33 +71,33 @@ const Transactions = () => {
     });
   }, []);
 
-  // const showNext = ({ item, setPageHandler }) => {
-  //   if (transactions.data.length === 0) {
-  //     return;
-  //   } else {
-  //     const fetchNextData = async () => {
-  //       setLoading(true);
-  //       const transactionsDocRef = query(
-  //         collection(firestore, "transactions"),
-  //         where("account_id", "==", auth.currentUser.uid),
-  //         orderBy("date", "desc"),
-  //         limit(10),
-  //         startAfter(item.date)
-  //       );
-  //
-  //       await getDocs(transactionsDocRef).then((transaction) => {
-  //         const arr = [];
-  //
-  //         transaction.docs.map((item, index) => {
-  //           arr.push({ ...item.data(), key: index, id: item.id.slice(0, 5) });
-  //           // setTransactions(arr);
-  //           setPage(page + 1);
-  //         });
-  //       });
-  //     };
-  //     fetchNextData().then(() => setLoading(false));
-  //   }
-  // };
+  const showNext = ({ item, setPageHandler }) => {
+    if (currentTransactions.length === 0) {
+      return;
+    } else {
+      const fetchNextData = async () => {
+        setLoading(true);
+        const transactionsDocRef = query(
+          collection(firestore, "transactions"),
+          where("account_id", "==", auth.currentUser.uid),
+          orderBy("date", "desc"),
+          limit(10),
+          startAfter(item.date)
+        );
+
+        await getDocs(transactionsDocRef).then((transaction) => {
+          const arr = [];
+
+          transaction.docs.map((item, index) => {
+            arr.push({ ...item.data(), key: index, id: item.id.slice(0, 5) });
+            setCurrentTransactions(arr);
+            setPage(page + 1);
+          });
+        });
+      };
+      fetchNextData().then(() => setLoading(false));
+    }
+  };
 
   const showPrevious = ({ item }) => {
     const fetchPreviousData = async () => {
@@ -123,7 +115,7 @@ const Transactions = () => {
 
         transaction.docs.map((item, index) => {
           arr.push({ ...item.data(), key: index, id: item.id.slice(0, 5) });
-          // setTransactions(arr);
+          setCurrentTransactions(arr);
           setPage(page - 1);
         });
       });
@@ -136,12 +128,9 @@ const Transactions = () => {
     <div>
       <h3 className={"my-account-title"}>{t("transactions.title")}</h3>
       <TransactionsTable
-        transactions={transactions}
+        transactions={currentTransactions}
         totalTransactions={totalTransactions}
-        showNext={() => {
-          showNext(lastTransaction);
-          // refetch();
-        }}
+        showNext={showNext}
         showPrevious={showPrevious}
         loading={loading}
       />

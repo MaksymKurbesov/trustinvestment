@@ -103,7 +103,7 @@ const TransactionsTable = ({ transactions, totalTransactions, showPrevious, show
       );
     }
     if (type === "next") {
-      return <a onClick={() => showNext()}>{t("transactions.next")}</a>;
+      return <a onClick={() => showNext({ item: transactions[transactions?.length - 1] })}>{t("transactions.next")}</a>;
     }
     return originalElement;
   };
