@@ -1,0 +1,271 @@
+.contacts {
+  display: grid;
+  padding: 75px;
+  padding-bottom: 0;
+  grid-template-columns: 1fr 240px;
+  /*column-gap: 50px;*/
+}
+
+.contacts h2 {
+  font-size: clamp(40px, 5vw, 60px);
+  font-weight: 500;
+  margin-bottom: 100px;
+}
+
+.content-wrapper {
+  display: grid;
+  grid-template-columns: 43% 57%;
+}
+
+.left-row {
+  padding-bottom: 75px;
+  padding-right: 25px;
+}
+
+.form-information {
+  display: flex;
+  margin-bottom: 50px;
+  align-items: center;
+}
+
+.form-information p {
+  max-width: 400px;
+  margin-right: 30px;
+}
+
+.form-information span {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.form-information span:before {
+  content: "→";
+  position: absolute;
+  top: 45%;
+  transform: translateY(-54%);
+  left: 210px;
+  font-size: 30px;
+}
+
+.submit-button {
+  margin: 25px 0;
+}
+
+.where-are-we {
+  grid-column: auto / span 2;
+}
+
+.where-are-we h3 {
+  font-size: clamp(20px, 5vw, 34px);
+  font-weight: 500;
+  margin-bottom: 35px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.where-are-we h3 img {
+  margin-right: 15px;
+}
+
+.where-are-we p {
+  line-height: 1.4;
+}
+
+.where-are-we p:nth-child(2) {
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.map-container {
+  width: 100%;
+  height: 400px;
+  grid-column: auto / span 2;
+}
+
+.map {
+  margin-top: 50px;
+  width: 100%;
+}
+
+.right-row {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+  padding-left: 15px;
+  margin-left: auto;
+}
+
+.right-row > div {
+  margin-bottom: 35px;
+}
+
+.right-row > div h3 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-weight: 500;
+  position: relative;
+}
+
+.right-row > div h3::before {
+  content: "";
+  width: 3px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: -18px;
+  background: var(--blue);
+}
+
+.contacts-list a:not(last:last-child) {
+  margin-right: 10px;
+}
+
+.contacts-list {
+  margin-bottom: 30px;
+}
+
+.address p {
+  margin-bottom: 20px;
+}
+
+.address > p:first-child h3 {
+  padding-left: 50px;
+}
+
+.address-title img {
+  margin-bottom: 15px;
+}
+
+.time-work {
+  margin-bottom: 45px;
+}
+
+.time-work div:nth-child(1) {
+  margin-bottom: 45px;
+}
+
+.company-photos-list {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template:
+    "a b"
+    "a c"
+    "a d";
+  margin-left: 40px;
+  padding-left: 50px;
+}
+
+.company-photos-list li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.company-photos-list li:nth-child(2) {
+  position: relative;
+  top: 50px;
+  right: 50px;
+  transform: rotate(10deg);
+  height: 70%;
+}
+
+.company-photos-list li:nth-child(3) {
+  position: relative;
+  top: -50px;
+  right: 50px;
+  transform: rotate(-5deg);
+}
+
+.company-photos-list li:nth-child(4) {
+  position: relative;
+  top: -50px;
+  right: 50px;
+  transform: rotate(5deg);
+}
+
+.company-photos-list li img {
+  object-fit: contain;
+}
+
+.company-photos-list li:before {
+  content: "";
+  position: absolute;
+  top: -5%;
+  left: -5%;
+  background-color: var(--blue);
+  width: 110%;
+  height: 110%;
+  z-index: -1;
+}
+
+@media screen and (max-width: 1600px) {
+  .form-information {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+
+  .decorate-image-container {
+    margin-bottom: 25px;
+  }
+}
+
+@media screen and (max-width: 1385px) {
+  .contacts {
+    padding: 50px 30px 0 30px;
+  }
+
+  .left-row {
+    padding-right: 30px;
+  }
+}
+
+@media screen and (max-width: 950px) {
+  .contacts {
+    grid-template-columns: 1fr;
+    padding: 100px 20px 0 50px;
+  }
+
+  .contacts h2 {
+    margin-bottom: 50px;
+  }
+
+  .form-wrapper {
+    margin-bottom: 35px;
+  }
+
+  .right-row {
+    margin-left: initial;
+    border-left: none;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .contacts {
+    grid-template-columns: 100%;
+    padding: 50px 15px 0 15px;
+  }
+
+  .content-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+  .company-photos {
+    display: none;
+  }
+
+  .form-wrapper {
+    margin-bottom: 50px;
+    margin-right: 0;
+  }
+
+  .left-row {
+    padding-right: 0;
+  }
+
+  .decorate-image-container {
+    margin: 0 auto 50px auto;
+    width: 280px;
+  }
+}

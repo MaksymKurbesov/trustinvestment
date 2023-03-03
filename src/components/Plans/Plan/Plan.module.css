@@ -1,76 +1,88 @@
 .plans-list__item {
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    border-radius: 10px;
-    min-height: 450px;
-    max-width: 400px;
-    filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.1));
-    position: relative;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  min-height: 450px;
+  max-width: 400px;
+  filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.1));
+  position: relative;
 }
 
-.plans-list__item::before {
-    content: "План " counter(section);
-    padding: 10px 0 6px 0;
-    width: 120px;
-    height: 25px;
-    background-color: var(--blue);
-    position: absolute;
-    top: 0;
-    left: 0;
-    border-top-left-radius: 10px;
-    counter-increment: section;
-    color: white;
-    font-weight: 600;
+.plan-count {
+  /*content: "План " counter(section);*/
+  /*padding: 10px 0 10px 0;*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 40px;
+  background-color: var(--blue);
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-top-left-radius: 10px;
+  counter-increment: section;
+  color: white;
+  font-weight: 600;
 }
 
 .plans-list__item img {
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    object-fit: cover;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  object-fit: cover;
 }
 
 .description {
-    font-size: 18px;
-    height: 200px;
+  font-size: 18px;
+  height: 200px;
 }
 
 .description li {
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-size: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
 }
 
 .description ul {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  height: 100%;
+}
+
+.plan-percent {
+  grid-column: auto / span 2;
+}
+
+.plan-percent p {
+  font-size: 24px;
+  font-weight: 600;
 }
 
 .description span {
-    font-size: 24px;
-    font-weight: 600;
-    color: var(--blue);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--blue);
 }
 
 .description p:not(:last-child) {
-    margin-bottom: 7px;
+  margin-bottom: 7px;
 }
 
-.description p:last-child {
-    margin-top: 30px;
-}
+/*.description p:last-child {*/
+/*  margin-top: 30px;*/
+/*}*/
 
 @media screen and (max-width: 600px) {
-    .plans-list__item {
-        max-width: initial;
-    }
+  .plans-list__item {
+    max-width: initial;
+  }
 
-    .description span {
-        font-size: 20px;
-    }
+  .description span {
+    font-size: 20px;
+  }
 }

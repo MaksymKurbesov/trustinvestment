@@ -1,0 +1,242 @@
+.about-us {
+  padding-top: 50px;
+  background-image: url("../../assets/images/about-us-background2.svg");
+  min-height: 1000px;
+  background-repeat: no-repeat;
+  background-size: 1200px;
+  background-position: center top 322px;
+}
+
+.about-us__container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.about-us__title {
+  font-size: clamp(40px, 8vw, 60px);
+  text-align: center;
+  margin-bottom: 25px;
+  font-weight: 500;
+  color: var(--blue);
+}
+
+.about-us__subtitle {
+  max-width: 600px;
+  margin: 0 auto 500px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.features-list {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 200px;
+}
+
+.features-list li {
+  background: white;
+  padding: 35px;
+  font-size: 20px;
+  font-weight: 500;
+  width: 100%;
+}
+
+.features-list li span {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--blue);
+}
+
+.about-company-wrapper {
+  gap: 70px;
+  margin-bottom: 150px;
+}
+
+.about-company-text {
+  display: flex;
+  align-items: center;
+  margin-bottom: 75px;
+  gap: 50px;
+}
+
+.about-company-text > div p:not(:last-child) {
+  margin-bottom: 30px;
+}
+
+.text {
+  flex-direction: row-reverse;
+  /*line-height: 1.4;*/
+}
+
+.about-company-text {
+  line-height: 1.4;
+}
+
+.about-company-text > div b {
+  font-weight: 600;
+  color: var(--blue);
+  font-size: 20px;
+}
+
+.about-company-title {
+  font-weight: 600;
+  margin-bottom: 20px;
+  font-size: clamp(35px, 4vw, 60px);
+  align-self: center;
+}
+
+.team-members {
+  gap: 35px;
+  margin-bottom: 100px;
+  width: 100%;
+}
+
+.member-slide {
+  /*width: 250px !important;*/
+}
+
+.member-slide img {
+  margin-bottom: 20px;
+}
+
+.member-slide p:first-child {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.custom-arrows {
+  text-align: right;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.custom-arrows button:first-child {
+  margin-right: 10px;
+}
+
+.custom-arrows button {
+  background: var(--blue);
+  border: none;
+  padding: 15px;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 1200px) {
+  .about-us {
+    padding-top: 75px;
+    background-size: 1000px;
+    background-position: center top 186px;
+  }
+
+  .about-us__subtitle {
+    margin: 0 auto 275px;
+  }
+
+  .about-company-wrapper {
+    margin-bottom: 80px;
+    gap: 40px;
+    row-gap: 100px;
+  }
+
+  .features-list {
+    margin-bottom: 100px;
+  }
+
+  .features-list li {
+    /*width: 70%;*/
+    padding: 20px;
+    font-size: 18px;
+  }
+
+  .features-list li span {
+    font-size: 24px;
+  }
+
+  .team-members {
+    margin-bottom: 10px;
+  }
+
+  .member-slide img {
+    /*max-width: 200px;*/
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .about-us {
+    background-size: 800px;
+  }
+
+  .about-us__subtitle {
+    margin: 0 auto 218px;
+  }
+
+  .about-company-wrapper {
+    display: flex;
+    flex-direction: column;
+    row-gap: 40px;
+  }
+
+  .decorate-image1 {
+    float: right;
+    margin-left: 20px;
+    margin-bottom: 20px;
+  }
+
+  .decorate-image2 {
+    float: left;
+    margin-right: 20px;
+    margin-bottom: 20px;
+  }
+
+  .about-company-text {
+    margin-bottom: 0;
+    align-items: flex-start;
+    display: block;
+  }
+
+  .features-list li {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .about-us {
+    padding: 40px 0;
+    background-position: center top 120px;
+    background-size: 600px;
+  }
+
+  .about-company-text {
+    font-size: 14px;
+  }
+
+  .about-us__subtitle {
+    margin: 0 auto 120px;
+    font-size: 14px;
+  }
+
+  .features-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 50px;
+  }
+
+  .features-list li {
+    padding: 12px;
+  }
+
+  .member-slide {
+    font-size: 12px;
+  }
+
+  .custom-arrows {
+    margin-top: 0;
+    text-align: center;
+  }
+}

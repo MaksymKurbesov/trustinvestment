@@ -3,12 +3,12 @@ import "./utils/libs/slick/slick.css";
 import "./utils/libs/slick/slick-theme.css";
 import { Index } from "./pages/Index/Index";
 
-import { Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Switch } from "react-router-dom";
 import { HomeLayout } from "./components/Layouts/Home-Layout";
 import { Login } from "./pages/Login/Login";
 import { Register } from "./pages/Register/Register";
 import { MyAccountLayout } from "./components/My-Account-Layout/My-Account-Layout";
-import { Investments } from "./pages/Investments/Investments";
+import { Faq } from "./pages/Faq/Faq";
 import { PartnersProgram } from "./pages/Partners-Program/Partners-Program";
 import { AboutUs } from "./pages/About-Us/About-Us";
 import { Contacts } from "./pages/Contacts/Contacts";
@@ -28,11 +28,12 @@ function App() {
           <Route index element={<Index />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/investments" element={<Investments />} />
+          <Route path="/faq" element={<Faq />} />
           <Route path="/partners" element={<PartnersProgram />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contacts" element={<Contacts />} />
         </Route>
+
         <Route path="/my-account" element={<MyAccountLayout />}>
           <Route index element={<PersonalArea />} />
           <Route path="deposit" element={<Deposit />} />

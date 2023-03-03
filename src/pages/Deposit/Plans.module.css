@@ -11,6 +11,7 @@
 
 .plan-card-info {
   display: flex;
+  font-size: 12px;
   flex-direction: column;
   border-bottom: 2px solid var(--alpha-blue);
 }

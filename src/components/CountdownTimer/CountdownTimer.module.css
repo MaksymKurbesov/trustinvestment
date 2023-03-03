@@ -1,26 +1,23 @@
 .countdown {
-    display: flex;
-    font-size: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  text-align: center;
 }
 
-.countdown-wrapper {
-    /*min-width: 400px;*/
-}
-
-.countdown-wrapper p {
-    margin-bottom: 10px;
+.hours span,
+.minutes span,
+.seconds span {
+  font-weight: 600;
 }
 
 .countdown div:not(:last-child) {
-    margin-right: 15px;
+  margin-right: 15px;
 }
 
-@media screen and (max-width: 1700px) {
-    .countdown-wrapper p {
-        font-size: 18px;
-    }
-
-    .countdown div:not(:last-child) {
-        margin-right: 5px;
-    }
+@media screen and (max-width: 525px) {
+  .countdown {
+    grid-template-columns: 80px 80px 80px;
+    /*justify-content: space-between;*/
+  }
 }

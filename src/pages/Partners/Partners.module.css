@@ -1,0 +1,328 @@
+.referral-wrapper {
+  display: grid;
+  grid-template-areas:
+    "ref-info ref-info ref-info"
+    "status registered bought"
+    "percentage percentage percentage"
+    "levels levels levels";
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-rows: repeat(4, fit-content(100px));
+  gap: 70px;
+  color: white;
+  text-align: left;
+}
+
+.referral-wrapper span {
+  font-weight: 600;
+  font-size: 24px;
+}
+
+.referral-info,
+.status,
+.registered-clients,
+.deposits-bought,
+.levels,
+.partner-percentage,
+.your-sponsor-mobile {
+  background: var(--blue);
+  padding: 25px 50px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 7px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+
+.levels {
+  box-shadow: initial;
+}
+
+.your-sponsor-mobile {
+  grid-area: sponsorMobile;
+  display: none;
+}
+
+.referral-info {
+  grid-area: ref-info;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  grid-column: auto / span 6;
+  flex-direction: row;
+}
+
+.referral-info button span {
+  font-size: 14px;
+  font-weight: initial;
+}
+
+.referral-link {
+  width: 50%;
+}
+
+.referral-link p {
+  margin-bottom: 5px;
+}
+
+.status {
+  grid-area: status;
+  grid-column: auto / span 2;
+  position: relative;
+}
+
+.status p {
+  display: block;
+}
+
+.status::before,
+.registered-clients::before,
+.deposits-bought::before,
+.partner-percentage::before {
+  content: "";
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  top: -30px;
+  left: -30px;
+  background: white;
+  border-radius: 15px;
+  filter: drop-shadow(1px 1px 1px var(--black));
+  transform: rotate(45deg);
+}
+
+.icon {
+  position: absolute;
+  top: -15px;
+  left: -13px;
+  color: var(--blue);
+}
+
+span.icon {
+  font-size: 38px;
+}
+
+.registered-clients {
+  grid-area: registered;
+  grid-column: auto / span 2;
+  flex-direction: column;
+  position: relative;
+}
+
+.registered-clients div p {
+  margin-right: 15px;
+  display: inline-block;
+}
+
+.deposits-bought {
+  grid-area: bought;
+  grid-column: auto / span 2;
+  position: relative;
+}
+
+.deposits-bought-info {
+  display: flex;
+  align-items: center;
+}
+
+.deposits-bought-info p {
+  margin-right: 15px;
+}
+
+.levels {
+  grid-area: levels;
+  grid-column: auto / span 6;
+  background: none;
+  padding: 0;
+}
+
+.partner-percentage {
+  grid-area: percentage;
+  grid-column: auto / span 6;
+  align-items: center;
+  position: relative;
+}
+
+.partner-percentage span {
+  font-size: clamp(24px, 2vw, 40px);
+}
+
+.partner-percentage span.icon {
+  font-size: 38px;
+  top: -12px;
+}
+
+.your-referrals {
+  grid-area: ref-list;
+  grid-column: auto / span 6;
+}
+
+.level-wrapper {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+}
+
+.levels-list {
+  background-color: #efefef;
+  color: white;
+}
+
+.levels-list > div {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+
+.level-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  padding-right: 25px;
+  /*column-gap: 100px;*/
+}
+
+.level-header p:first-child {
+  font-weight: 600;
+}
+
+.level-header p:last-child {
+  flex-basis: 290px;
+}
+
+.level-header p span {
+  font-size: 18px;
+}
+
+@media screen and (max-width: 1500px) {
+  .referral-wrapper {
+    gap: 45px;
+  }
+
+  .referral-wrapper p {
+    font-size: clamp(12px, 1vw, 14px);
+  }
+
+  .status,
+  .registered-clients,
+  .deposits-bought,
+  .partner-percentage {
+    padding: 15px 10px 15px 37px;
+  }
+
+  .referral-info {
+    padding: 20px;
+  }
+
+  .partner-percentage {
+    padding: 15px;
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .referral-wrapper {
+    grid-template-areas:
+      "ref-info ref-info ref-info"
+      "status registered bought"
+      "percentage percentage percentage"
+      "levels levels levels"
+      "ref-list ref-list ref-list";
+  }
+
+  .partner-percentage,
+  .levels {
+    grid-column: auto / span 6;
+  }
+}
+
+@media screen and (max-width: 830px) {
+  .referral-wrapper {
+    gap: 15px;
+  }
+
+  .status,
+  .registered-clients,
+  .deposits-bought,
+  .partner-percentage,
+  .your-sponsor-mobile {
+    padding: 15px;
+  }
+
+  .status::before,
+  .registered-clients::before,
+  .deposits-bought::before,
+  .partner-percentage::before,
+  .icon {
+    display: none;
+  }
+
+  .registered-clients div p,
+  .deposits-bought-info p {
+    margin-right: 5px;
+  }
+
+  .level-header p:last-child {
+    flex-basis: 240px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .referral-wrapper {
+    grid-template-areas:
+      "ref-info ref-info ref-info"
+      "status status sponsorMobile"
+      "bought bought registered "
+      "percentage percentage percentage"
+      "levels levels levels"
+      "ref-list ref-list ref-list";
+  }
+
+  .your-sponsor {
+    display: none;
+  }
+
+  .your-sponsor-mobile {
+    display: block;
+    grid-column: auto / span 3;
+  }
+
+  .referral-wrapper p {
+    font-size: 14px;
+  }
+
+  .referral-info {
+    align-items: flex-end;
+  }
+
+  .referral-link {
+    width: 100%;
+  }
+
+  .status,
+  .your-sponsor-mobile,
+  .deposits-bought,
+  .registered-clients {
+    grid-column: auto / span 3;
+  }
+
+  .partner-percentage {
+    grid-column: auto / span 6;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .referral-wrapper p {
+    font-size: 12px;
+  }
+
+  .referral-info {
+    flex-direction: column;
+    align-items: initial;
+  }
+
+  .registered-clients div p {
+    display: inline;
+  }
+}

@@ -1,70 +1,20 @@
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { Form } from "components/Login-Form/Login-Form";
-import { setDoc, doc } from "firebase/firestore";
-import { useContext, useEffect } from "react";
+import { setDoc, doc, collection, where, query, getDocs, updateDoc, arrayUnion } from "firebase/firestore";
+import { useContext } from "react";
 import { FirebaseContext } from "../../index";
-import { useNavigate } from "react-router-dom";
 import { RegisterForm } from "../../components/Register-Form/Register-Form";
 import styles from "./Register.module.css";
 import signUpAnimation from "assets/lottie-animations/signUp-animation.json";
 import useLottie from "lottie-react";
+import { setUserCustomFields } from "../../utils/helpers";
+import Modal from "antd/lib/modal";
+import { useTranslation } from "react-i18next";
 
-const setUserCustomFields = (uid, customFields) => {
-  return {
-    uid,
-    email: customFields.email,
-    nickname: customFields.nickname,
-    phoneNumber: customFields.phone,
-    earned: 0,
-    referals: 0,
-    withdrawn: 0,
-    partners: 0,
-    deposits: {
-      active: [],
-      inactive: [],
-    },
-    paymentMethods: [
-      {
-        name: "Perfect Money",
-        available: 0,
-        deposited: 0,
-        withdrawn: 0,
-        referals: 0,
-      },
-      {
-        name: "Visa",
-        available: 0,
-        deposited: 0,
-        withdrawn: 0,
-        referals: 0,
-      },
-      {
-        name: "TRC20 Tether",
-        available: 0,
-        deposited: 0,
-        withdrawn: 0,
-        referals: 0,
-      },
-      {
-        name: "Bitcoin",
-        available: 0,
-        deposited: 0,
-        withdrawn: 0,
-        referals: 0,
-      },
-      {
-        name: "Ethereum",
-        available: 0,
-        deposited: 0,
-        withdrawn: 0,
-        referals: 0,
-      },
-    ],
-  };
-};
+const REFERRALS_TOTAL_LEVELS = 6;
 
 const Register = () => {
-  const navigate = useNavigate();
+  const { t } = useTranslation();
   const { firestore } = useContext(FirebaseContext);
 
   const SignUpAnimation = useLottie({
@@ -72,41 +22,54 @@ const Register = () => {
     className: styles["signUpAnimation"],
   });
 
-  ////////////////////// dev tools //////////////////////
-
-  useEffect(() => {
-    function adjustViewHeight() {
-      document.querySelector(".devtools").style.height =
-        window.outerHeight - window.innerHeight - 70;
-    }
-
-    window.onresize = adjustViewHeight;
-
-    adjustViewHeight();
-  }, []);
-
   const handleRegister = async (user) => {
-    // console.log(user);
     const auth = getAuth();
-    await createUserWithEmailAndPassword(auth, user.email, user.password).then(
-      (userCredential) => {
-        // Signed in
-        const signedUpUser = userCredential.user;
-        console.log(signedUpUser);
-        setDoc(
-          doc(firestore, "users", signedUpUser.email),
-          setUserCustomFields(signedUpUser.uid, user)
-        );
-        navigate("/login");
-      }
-    );
+
+    await createUserWithEmailAndPassword(auth, user.email, user.password).then(async (userCredential) => {
+      const signedUpUser = userCredential.user;
+      sendEmailVerification(signedUpUser);
+      auth.signOut();
+      success();
+
+      const setReferrals = async (referredBy, limit) => {
+        if (referredBy && referredBy.trim() !== "" && --limit) {
+          const getReferral = async () => {
+            const q1 = query(collection(firestore, "users"), where("nickname", "==", referredBy));
+            await getDocs(q1).then(async (querySnap) => {
+              const referralLevel = querySnap.docs[0].data();
+
+              await updateDoc(doc(firestore, "users", referralLevel.email), {
+                [`referredTo.${REFERRALS_TOTAL_LEVELS - limit}`]: arrayUnion(user.nickname),
+              });
+
+              return setReferrals(referralLevel.referredBy, limit);
+            });
+          };
+
+          getReferral();
+        } else {
+          return null;
+        }
+      };
+
+      setDoc(doc(firestore, "users", signedUpUser.email), setUserCustomFields(signedUpUser, user)).then(() => {
+        setReferrals(user.referredBy, REFERRALS_TOTAL_LEVELS);
+      });
+    });
+  };
+
+  const success = () => {
+    Modal.success({
+      title: t("registration.notification.title"),
+      content: t("registration.notification.content"),
+    });
   };
 
   return (
     <div className={`${styles["register-page"]} devtools`}>
       <div className={`${styles["register-page-container"]} container`}>
-        <h2>Регистрация</h2>
-        <p>Создавайте аккаунт и присоединяйтесь к нашему комьюнити</p>
+        <h2>{t("registration.title")}</h2>
+        <p>{t("registration.subtitle")}</p>
         <div className={styles["register-form"]}>
           {SignUpAnimation}
           <RegisterForm handleClick={handleRegister} />

@@ -1,18 +1,38 @@
 .choose-payment-method {
-    margin-bottom: 60px;
-    max-width: 430px;
+  margin-bottom: 60px;
+  max-width: 430px;
 }
 
 .choose-payment-method h3 {
-    font-size: 22px;
-    display: flex;
-    align-items: center;
-    margin-bottom: 30px;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
 }
 
 .choose-payment-method h3 span {
-    font-size: 40px;
-    font-weight: 600;
-    color: var(--blue);
-    margin-right: 10px;
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--blue);
+  margin-right: 10px;
+}
+
+.switch-button {
+  margin-bottom: 30px;
+}
+
+.error {
+  opacity: 0;
+  transition: 0.2s;
+}
+
+.active-error {
+  opacity: 1;
+  color: #ff3333;
+}
+
+@media screen and (max-width: 650px) {
+  .choose-payment-method {
+    margin-bottom: 20px;
+  }
 }

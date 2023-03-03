@@ -1,129 +1,74 @@
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import styles from "./My-Account-Layout.module.css";
-import { Layout, Menu } from "antd";
+import Layout from "antd/lib/layout";
 import MyAccountHeader from "../My-Account-Header/My-Account-Header";
+import { useContext, useEffect, useState } from "react";
+import { calculateUserBalance } from "../../utils/helpers";
 
-import {
-  BarsOutlined,
-  CreditCardOutlined,
-  DollarCircleOutlined,
-  HomeOutlined,
-  ImportOutlined,
-  SettingOutlined,
-  UsergroupAddOutlined,
-} from "@ant-design/icons";
-import { useWindowSize } from "../../hooks/useWindowSize";
-import Logo from "../../assets/images/logo.png";
-import { useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
+import AuthContext from "../Auth-Provider/AuthContext";
 
-const { Content, Sider } = Layout;
+import MainSider from "./MainSider";
+import { FirebaseContext } from "../../index";
+import { collection, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
 
-const MENU_LIST = [
-  {
-    title: "Кабинет",
-    link: "/my-account",
-    icon: <HomeOutlined />,
-  },
-  {
-    title: "Сделать депозит",
-    link: "/my-account/deposit",
-    icon: <CreditCardOutlined />,
-  },
-  {
-    title: "Вывод cредств",
-    link: "/my-account/withdraw",
-    icon: <DollarCircleOutlined />,
-  },
-  {
-    title: "Транзакции",
-    link: "/my-account/transactions",
-    icon: <BarsOutlined />,
-  },
-  {
-    title: "Партнёрам",
-    link: "/my-account/partners",
-    icon: <UsergroupAddOutlined />,
-  },
-  {
-    title: "Настройки",
-    link: "/my-account/settings",
-    icon: <SettingOutlined />,
-  },
-  {
-    title: "Выход",
-    link: "/logout",
-    icon: <ImportOutlined />,
-  },
-];
+const { Content } = Layout;
 
 const MyAccountLayout = () => {
-  const navigate = useNavigate();
-  const auth = getAuth();
-  const windowSize = useWindowSize();
-  const [currentUser, setCurrentUser] = useState();
+  const { signedInUser } = useContext(AuthContext);
+  const [collapsed, setCollapsed] = useState(false);
+  const { firestore } = useContext(FirebaseContext);
+  const [userData, setUserData] = useState(null);
 
-  const sideMenuList = MENU_LIST.map((item, index) => ({
-    key: String(index + 1),
-    label: <NavLink to={item.link}>{item.title}</NavLink>,
-    icon: item.icon,
-  }));
-
-  const signOutHandler = () => {
-    signOut(auth).then(() => {
-      navigate("/");
+  const getUserData = async () => {
+    await getDoc(doc(firestore, "users", signedInUser.email)).then((snap) => {
+      setUserData(snap.data());
     });
   };
 
   useEffect(() => {
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        setCurrentUser(user);
-      }
-    });
-  }, []);
+    if (signedInUser) getUserData();
+  }, [signedInUser]);
+
+  if (!signedInUser || !userData) {
+    return null;
+  }
 
   return (
     <div className={styles["my-account"]}>
       <Layout className={styles["my-account-layout"]}>
-        <Sider
-          className={styles["left-sider"]}
-          breakpoint="xl"
-          collapsible={windowSize.width < 1200 && windowSize.width > 560}
-        >
-          {windowSize.width > 560 ? (
-            <Link to={"/"} className={styles["logotype"]}>
-              <img src={Logo} width={170} alt={""} />
-            </Link>
-          ) : (
-            ""
-          )}
-          <Menu
-            disabledOverflow={false}
-            theme="dark"
-            defaultSelectedKeys={["1"]}
-            mode={windowSize.width < 561 ? "horizontal" : "inline"}
-            items={sideMenuList}
-            onClick={(e) => {
-              if (e.key === "7") {
-                signOutHandler();
-              }
-            }}
-          />
-        </Sider>
-        <Layout className="site-layout">
-          <MyAccountHeader username={currentUser ? currentUser.email : ""} />
+        <MyAccountHeader
+          username={signedInUser ? userData.nickname : ""}
+          balance={calculateUserBalance(userData)}
+          avatar={signedInUser.photoURL ? signedInUser.photoURL : ""}
+          siderCollapsed={collapsed}
+        />
+
+        <Layout className="site-layout" hasSider>
+          <MainSider setCollapsed={setCollapsed} collapsed={collapsed} />
           <Content className={styles["my-account-wrapper"]}>
-            <Outlet />
+            <Outlet context={{ userData }} />
           </Content>
         </Layout>
-        <Sider className={styles["right-sider"]}>
-          <p>Последние операции</p>
-        </Sider>
       </Layout>
     </div>
   );
 };
 
 export { MyAccountLayout };
+
+const addWallet = async (firestore) => {
+  await getDocs(collection(firestore, "users")).then((snap) => {
+    snap.forEach((item) => {
+      updateDoc(doc(firestore, "users", item.data().email), {
+        [`paymentMethods.QIWI`]: {
+          available: 0,
+          deposited: 0,
+          number: "",
+          referrals: 0,
+          withdrawn: 0,
+        },
+      });
+    });
+    // setUserData(snap.data());
+  });
+};

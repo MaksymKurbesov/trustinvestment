@@ -2,11 +2,16 @@
   font-family: Rothek, "sans-serif";
   src: local("Rotnek"), url("assets/fonts/RothekBold.otf") format("opentype");
 }
+@import "./Ant-Custom.css";
 
-/**, *::before, *::after {*/
-/*  outline: 1px solid red;*/
-/*  z-index: 999;*/
-/*}*/
+[data-aos="new-animation"] {
+  opacity: 0;
+  transition-property: transform, opacity;
+}
+
+[data-aos="new-animation"].aos-animate {
+  opacity: 0.1;
+}
 
 :root {
   --blue: #1677ff;
@@ -14,6 +19,7 @@
   --dark-blue: #001529;
   --no-active-blue: rgba(22, 119, 255, 0.25);
   --black: rgb(34, 34, 34);
+  --yellow: #f5e663;
 }
 
 * {
@@ -25,7 +31,7 @@
 }
 
 body {
-  background-color: #e7e7e7;
+  background-color: #efefef;
   color: var(--black);
   counter-reset: section;
 }
@@ -63,12 +69,27 @@ ol {
 .index-layout {
   padding: 50px;
   min-height: 380px;
+  background-image: url("./../src/assets/images/TEST.png"), url("./../src/assets/images/TEST.png");
+  background-repeat: no-repeat, no-repeat;
+  background-position: -400px 550px, right -300px top 1570px, left 0 top 2070px, left -400px top 3770px;
+  background-size: 800px, 800px;
+  overflow: hidden;
+}
+
+.affilate-roadmap-wrapper {
+  background-image: url("assets/images/roadmap.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  margin: 0 -50px;
+  padding-bottom: 50px;
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
 }
 
 .container {
   max-width: 1440px;
   margin: 0 auto;
-  /*padding: 0 20px;*/
 }
 
 h3 {
@@ -78,30 +99,53 @@ h3 {
 .section-title {
   font-size: clamp(10px, 8.5vw, 60px);
   font-weight: 600;
-  margin-bottom: 40px;
   text-transform: uppercase;
+  position: relative;
+  max-width: 100%;
+  margin: 0 auto;
+  color: var(--dark-blue);
+  /*margin-bottom: 40px;*/
 }
 
-.accountRoot .slick-slide {
-  margin-right: 20px !important;
-  height: 90%;
-  padding-top: 10px;
+.slick-slide > div {
+  margin-left: 10px !important;
+  margin-right: 10px !important;
+}
+
+.accountRoot .slick-slide > div {
+  height: 230px;
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
 
 .accountRoot .slick-dots li {
   width: 100%;
   margin: 0;
-  /*height: 5px;*/
+}
+
+.accountRoot .slick-dots li button:before {
+  border-radius: 50%;
+  height: 7px !important;
+  width: 7px !important;
+}
+
+.slick-dots li.slick-active button:before {
+  background: var(--blue) !important;
+}
+
+.accountRoot .slick-list {
+  left: -5px;
 }
 
 .accountRoot .slick-dots {
   display: grid !important;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(8, 1fr);
   gap: 5px;
-  bottom: -10px;
+  bottom: -32px;
   left: 50%;
   transform: translateX(-50%);
-  width: 80%;
+  width: 50%;
+  margin-bottom: 7px;
 }
 
 .accountRoot .slick-dots li button:before {
@@ -116,153 +160,17 @@ h3 {
   height: 100%;
 }
 
-.plans-listRoot .ant-card-head {
-  background: var(--blue) !important;
-  border-radius: 0px !important;
-  border-top-left-radius: 8px !important;
-  border-top-right-radius: 8px !important;
-
-  color: white !important;
-  border-bottom: none !important;
-}
-
-.plans-listRoot .ant-card-body {
-  width: 100% !important;
-  display: grid;
-  grid-template-columns: 0 1fr 1fr repeat(2, 1fr);
-  grid-template-rows: 1fr;
-  gap: 10px;
-}
-
-.plans-listRoot .ant-list-item {
-  padding: 0;
-}
-
-.transactionsListRoot .anticon {
-  color: rgba(0, 0, 0, 0.5);
-}
-
-.transactionsListRoot .ant-table.ant-table-small {
-  font-size: 13px;
-}
-
-.transactionsListRoot .ant-badge-status {
-  width: 100%;
-}
-
-.transactionsListRoot .ant-list-item {
-  padding: 12px;
-}
-
-.settingsRoot .ant-row {
-  display: block;
-}
-
-.settingsRoot input {
-  max-width: 500px;
-}
-
-.settingsRoot .ant-input-affix-wrapper {
-  max-width: 500px;
-}
-
-.settingsRoot .ant-form-horizontal .ant-form-item-label {
-  flex-grow: 0;
-  text-align: initial;
-}
-
-.ant-modal-footer {
-  display: none;
-}
-
-.contact-usRoot form {
-  width: 50%;
-}
-
 .slick-track {
   display: flex !important;
-  top: -10px !important;
-}
-
-.slick-list {
-  margin-right: -20px !important;
-  padding: 10px 0 10px 2px !important;
-  /*overflow: initial !important;*/
-  /*overflow-x: hidden !important;*/
-}
-
-#normal_login .anticon {
-  color: rgba(0, 0, 0, 0.25);
-}
-
-.ant-menu-dark.ant-menu-horizontal > .ant-menu-item-selected {
-  background-color: transparent;
-  border-bottom: 5px solid var(--blue);
-}
-
-.ant-form-item {
-  margin-bottom: 15px;
-}
-
-.ant-layout {
-  background: none;
-}
-
-.ant-tabs-content-holder {
-  min-height: initial;
-}
-
-.ant-statistic-title,
-.ant-statistic-content-value {
-  color: white !important;
-}
-
-.ant-card-bordered {
-  border: none !important;
-}
-
-#components-form-demo-normal-login .login-form {
-  max-width: 300px;
-}
-#components-form-demo-normal-login .login-form-forgot {
-  float: right;
-}
-#components-form-demo-normal-login .ant-col-rtl .login-form-forgot {
-  float: left;
-}
-#components-form-demo-normal-login .login-form-button {
-  width: 100%;
-}
-
-.anticon {
-  color: white;
-}
-
-.anticon-ellipsis {
-  color: white;
-}
-
-@media screen and (max-width: 1350px) {
-  .ant-table-wrapper .ant-table-thead > tr > th {
-    padding: 16px 13px !important;
-    font-size: 12px;
-  }
-}
-
-@media screen and (max-width: 1250px) {
-  /*.my-account-title {*/
-  /*  font-size: 40px;*/
-  /*}*/
-
-  .ant-table-wrapper .ant-table-thead > tr > th {
-    padding: 11px !important;
-  }
 }
 
 @media screen and (max-width: 1000px) {
   .plans-listRoot .ant-card-body {
     padding: 15px;
     gap: 0;
+  }
+  .affilate-roadmap-wrapper {
+    padding-bottom: 0;
   }
 }
 
@@ -273,19 +181,11 @@ h3 {
   }
 
   .accountRoot .slick-slide {
-    margin-right: 10px !important;
+    /*margin-right: 10px !important;*/
   }
 
   .accountRoot .slick-list {
     margin-right: -10px !important;
-  }
-
-  /*.my-account-title {*/
-  /*  font-size: 30px;*/
-  /*}*/
-
-  .depositRoot .ant-table.ant-table-small {
-    font-size: 12px !important;
   }
 
   .contact-usRoot form {
@@ -294,21 +194,7 @@ h3 {
 }
 
 @media screen and (max-width: 600px) {
-  .transactionsListRoot .ant-table.ant-table-small {
-    font-size: 12px;
-  }
-
-  .ant-table-wrapper .ant-table-thead > tr > th {
-    padding: 6px 2px !important;
-  }
-
-  .ant-table-tbody > tr > td {
-    padding: 6px 2px !important;
+  .ant-layout-header {
+    padding-inline: 20px !important;
   }
 }
-
-/*@media screen and (max-width: 400px) {*/
-/*  .plansRoot .slick-slide {*/
-/*    width: 255px !important;*/
-/*  }*/
-/*}*/

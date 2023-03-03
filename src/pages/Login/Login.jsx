@@ -1,34 +1,51 @@
-import {
-  getAuth,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-import { useEffect } from "react";
+import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from "firebase/auth";
+import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
 import signInAnimation from "assets/lottie-animations/signIn-animation.json";
 import useLottie from "lottie-react";
 import { LoginForm } from "../../components/Login-Form/Login-Form";
+import AuthContext from "../../components/Auth-Provider/AuthContext";
+import notification from "antd/lib/notification";
+import { useTranslation } from "react-i18next";
+
+const FEBRUARY_21_2022 = 1676967299257;
 
 const Login = () => {
-  const navigate = useNavigate();
   const auth = getAuth();
-  const user = auth.currentUser;
+  const navigate = useNavigate();
+  const { currentUser } = useContext(AuthContext);
+  const { t } = useTranslation();
 
-  ////////////////////// dev tools //////////////////////
+  const [api, notificationContextHolder] = notification.useNotification();
 
-  useEffect(() => {
-    function adjustViewHeight() {
-      if (!document.querySelector(".devtools")) return;
+  const confirmEmailNotification = () => {
+    api["error"]({
+      message: t("sign_in.error"),
+      description: t("sign_in.confirm_email"),
+    });
+  };
 
-      document.querySelector(".devtools").style.height =
-        window.outerHeight - window.innerHeight - 70;
-    }
+  const errorNotification = () => {
+    api["error"]({
+      message: t("sign_in.error"),
+      description: t("sign_in.wrong_password"),
+    });
+  };
 
-    window.onresize = adjustViewHeight;
+  const successForgetPasswordNotification = () => {
+    api["success"]({
+      message: t("sign_in.success"),
+      description: t("sign_in.forgot_password_notification"),
+    });
+  };
 
-    adjustViewHeight();
-  }, []);
+  const errorForgetPasswordNotification = () => {
+    api["error"]({
+      message: t("sign_in.error"),
+      description: t("sign_in.user_not_exist"),
+    });
+  };
 
   const SignInAnimation = useLottie({
     animationData: signInAnimation,
@@ -38,42 +55,52 @@ const Login = () => {
     className: styles["sign-in-animation"],
   });
 
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        navigate("/my-account");
-      }
-    });
-
-    if (user) {
-      navigate("/my-account");
-    }
-  });
+  const resetPassword = (email) => {
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        successForgetPasswordNotification();
+      })
+      .catch(() => {
+        errorForgetPasswordNotification();
+      });
+  };
 
   const handleLogin = (email, pass) => {
-    signInWithEmailAndPassword(auth, email, pass).then((userCredential) => {
-      navigate("/my-account");
-      sessionStorage.setItem(
-        "Auth Token",
-        userCredential._tokenResponse.refreshToken
-      );
-    });
+    signInWithEmailAndPassword(auth, email, pass)
+      .then((userCredential) => {
+        if (!userCredential.user.emailVerified && !(userCredential.user.metadata.createdAt < FEBRUARY_21_2022)) {
+          confirmEmailNotification();
+          auth.signOut();
+          return;
+        } else {
+          sessionStorage.setItem("Auth Token", userCredential._tokenResponse.refreshToken);
+          navigate("/my-account");
+        }
+      })
+      .catch((e) => {
+        errorNotification();
+      });
   };
+
+  // useEffect(() => {
+  //   if (currentUser) {
+  //     // navigate("/my-account");
+  //   }
+  // }, []);
 
   return (
     <div className={`${styles["login-page"]} devtools`}>
       <div className={`${styles["login-container"]} container`}>
-        <h2>Вход в личный кабинет</h2>
-        <p>Новое продуктивное путешествие начинается прямо здесь</p>
+        <h2>{t("sign_in.title")}</h2>
+        <p>{t("sign_in.subtitle")}</p>
         <div className={styles["login-page__wrapper"]}>
-          <div className={styles["login-page__description"]}>
-            {SignInAnimation}
-          </div>
+          <div className={styles["login-page__description"]}>{SignInAnimation}</div>
           <div className={styles["login-page__form"]}>
-            <LoginForm title={"Войти"} handleClick={handleLogin} />
+            <LoginForm title={"Войти"} handleClick={handleLogin} resetPassword={resetPassword} />
           </div>
         </div>
       </div>
+      <>{notificationContextHolder}</>
     </div>
   );
 };
