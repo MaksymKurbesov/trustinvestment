@@ -10,6 +10,7 @@ const DAY_IN_MS = 86400 * 1000;
 
 const DepositsList = ({ deposits }) => {
   const { t, i18n } = useTranslation();
+
   const monthNames = [
     t("personal_area.january"),
     t("personal_area.february"),
@@ -63,6 +64,9 @@ const DepositsList = ({ deposits }) => {
             receivedForDay={record.willReceived / record.days}
             nickname={record.executor}
             paymentMethod={record.paymentMethod}
+            totalDays={record.days}
+            charges={record.charges}
+            amount={record.amount}
           />
         );
       },

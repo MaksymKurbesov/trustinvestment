@@ -9,10 +9,19 @@ import { useTranslation } from "react-i18next";
 
 const SECONDS_IN_DAY = 86400;
 
-const CountdownTimer = ({ targetDate = 0, depositID, receivedForDay, nickname, paymentMethod }) => {
+const CountdownTimer = ({
+  targetDate = 0,
+  depositID,
+  receivedForDay,
+  nickname,
+  paymentMethod,
+  totalDays,
+  charges,
+  amount,
+}) => {
   const { signedInUser } = useContext(AuthContext);
   const { firestore } = useContext(FirebaseContext);
-  const [days, hours, minutes, seconds, timeLeft] = useCountdown(targetDate);
+  const [days, hours, minutes, seconds, timeLeft] = useCountdown(typeof targetDate === "number" ? targetDate : null);
   const countdownIsEnded = timeLeft <= 0;
   const { t, i18n } = useTranslation();
 
@@ -23,12 +32,23 @@ const CountdownTimer = ({ targetDate = 0, depositID, receivedForDay, nickname, p
 
   const setCharges = (days) => {
     const receivedByCharges = (receivedForDay * days).toFixed(2);
+    const lastCharge = charges + 1 >= totalDays;
 
     if (!receivedByCharges) return;
+
+    console.log(charges, "charges");
+    console.log(totalDays, "totalDays");
+
+    if (lastCharge) {
+      updateDoc(doc(firestore, "users", signedInUser.email), {
+        [`paymentMethods.${paymentMethod}.available`]: increment(amount),
+      });
+    }
 
     updateDoc(doc(firestore, "users", signedInUser.email, "deposits", `${depositID}`), {
       charges: increment(days),
       received: increment(+receivedByCharges),
+      status: lastCharge ? "completed" : "active",
     }).then(() => {
       addDoc(collection(firestore, "transactions"), {
         account_id: signedInUser.uid,
@@ -48,7 +68,9 @@ const CountdownTimer = ({ targetDate = 0, depositID, receivedForDay, nickname, p
   };
 
   useEffect(() => {
-    if (countdownIsEnded && receivedForDay) {
+    const depositIsNotEnded = countdownIsEnded && receivedForDay && charges < totalDays;
+
+    if (depositIsNotEnded) {
       setCharges(getElapsedDays(timeLeft));
     }
   }, [countdownIsEnded]);
@@ -72,26 +94,30 @@ const CountdownTimer = ({ targetDate = 0, depositID, receivedForDay, nickname, p
 
   return (
     <div className={styles["countdown-wrapper"]}>
-      <div className={styles["countdown"]}>
-        {days === -1 ? (
-          t("personal_area.loading")
-        ) : (
-          <>
-            <div className={styles["hours"]}>
-              <span>{hours}</span>
-              <p>{formattedHours}</p>
-            </div>
-            <div className={styles["minutes"]}>
-              <span>{minutes}</span>
-              <p>{formattedMinutes}</p>
-            </div>
-            <div className={styles["seconds"]}>
-              <span>{seconds}</span>
-              <p>{formattedSeconds}</p>
-            </div>
-          </>
-        )}
-      </div>
+      {hours < -1 ? (
+        <p className={styles["success"]}>Выполнено</p>
+      ) : (
+        <div className={styles["countdown"]}>
+          {days === -1 ? (
+            t("personal_area.loading")
+          ) : (
+            <>
+              <div className={styles["hours"]}>
+                <span>{hours}</span>
+                <p>{formattedHours}</p>
+              </div>
+              <div className={styles["minutes"]}>
+                <span>{minutes}</span>
+                <p>{formattedMinutes}</p>
+              </div>
+              <div className={styles["seconds"]}>
+                <span>{seconds}</span>
+                <p>{formattedSeconds}</p>
+              </div>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 };
