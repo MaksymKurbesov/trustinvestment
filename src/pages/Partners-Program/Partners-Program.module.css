@@ -9,7 +9,8 @@
 }
 
 .partner-program {
-  padding: 120px 20px;
+  /*padding: 120px 20px;*/
+  background-color: var(--dark-blue);
 }
 
 .main {

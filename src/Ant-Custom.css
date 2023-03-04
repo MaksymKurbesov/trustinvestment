@@ -81,11 +81,15 @@
 }
 
 .depositRoot .ant-table-cell:nth-child(2) {
-  padding-right: 25px !important;
+  /*padding-right: 25px !important;*/
 }
 
 .depositRoot .ant-tabs-nav-wrap {
   padding: 0 20px;
+}
+
+.depositRoot .anticon {
+  color: #52c41a;
 }
 
 .levelsRoot .ant-collapse-item:not(:last-child) {

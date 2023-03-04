@@ -34,8 +34,22 @@ export const normalizeDate = (date) => {
   });
 };
 
-export const ParseDate = (date, offset = 0) => {
+export const ParseDate = (date, offset = 0, monthNames) => {
   // const { t, i18n } = useTranslation();
+  // const monthNames = [
+  //   t("personal_area.january"),
+  //   t("personal_area.february"),
+  //   t("personal_area.march"),
+  //   t("personal_area.april"),
+  //   t("personal_area.may"),
+  //   t("personal_area.june"),
+  //   t("personal_area.july"),
+  //   t("personal_area.august"),
+  //   t("personal_area.september"),
+  //   t("personal_area.october"),
+  //   t("personal_area.november"),
+  //   t("personal_area.december"),
+  // ];
 
   const currentDate = new Date(date.seconds * 1000);
   currentDate.setDate(currentDate.getDate());
@@ -48,7 +62,15 @@ export const ParseDate = (date, offset = 0) => {
   const offsetDays = new Date(offsetDate).getDate();
   // const offsetMonth = monthNames[new Date(offsetDate).getMonth()];
 
-  return `${correctDays} ${new Date(currentDate).getMonth()} : ${offsetDays} ${new Date(offsetDate).getMonth()}`;
+  const test = `${correctDays} ${new Date(currentDate).getMonth()} : ${offsetDays} ${new Date(offsetDate).getMonth()}`;
+  const splittedText = test.split(":");
+  const correctOpeningDate = `${splittedText[0].split(" ")[0]} ${monthNames[+splittedText[0].split(" ")[1]]}`;
+  const correctClosingDate = `${splittedText[1].split(" ")[1]} ${monthNames[+splittedText[1].split(" ")[2]]}`;
+
+  return {
+    open: correctOpeningDate,
+    close: correctClosingDate,
+  };
 };
 
 export const getNextAccrual = (deposit) => {

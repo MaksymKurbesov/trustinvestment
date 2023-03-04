@@ -6,8 +6,6 @@ import styles from "./Deposits-Status.module.css";
 import { CountdownTimer } from "../CountdownTimer/CountdownTimer";
 import { useTranslation } from "react-i18next";
 
-const DAY_IN_MS = 86400 * 1000;
-
 const DepositsList = ({ deposits }) => {
   const { t, i18n } = useTranslation();
 
@@ -33,8 +31,7 @@ const DepositsList = ({ deposits }) => {
       key: "planNumber",
       render: (text) => <>{text}</>,
       align: "center",
-      fixed: "left",
-      width: 70,
+      width: "10%",
     },
     {
       title: t("personal_area.progress"),
@@ -43,19 +40,23 @@ const DepositsList = ({ deposits }) => {
       render: (text, record) => {
         return (
           <div className={styles["progress"]}>
-            <Progress percent={+((record.charges * 100) / record.days).toFixed(1)} showInfo={window.innerWidth > 800} />
+            <Progress
+              percent={+((record.charges * 100) / record.days).toFixed(1)}
+              showInfo={window.innerWidth > 1000}
+            />
             <p>
-              {window.innerWidth < 800 ? "" : `${t("personal_area.accruals")}`} {record.charges} / {record.days}
+              {window.innerWidth < 1000 ? "" : `${t("personal_area.accruals")}`} {record.charges} / {record.days}
             </p>
           </div>
         );
       },
-      width: window.innerWidth < 800 ? "12%" : "25%",
+      width: window.innerWidth < 768 ? "75%" : "25%",
     },
     {
       title: t("personal_area.next_accrual"),
       dataIndex: "nextAccrual",
       key: "nextAccrual",
+      responsive: ["sm"],
       render: (text, record) => {
         return (
           <CountdownTimer
@@ -70,49 +71,58 @@ const DepositsList = ({ deposits }) => {
           />
         );
       },
-      width: 250,
+      width: "20%",
     },
     {
       title: t("personal_area.deposit_amount"),
       dataIndex: "amount",
+      responsive: ["md"],
       key: "amount",
       render: (text) => <>{text.toFixed(2)} USD</>,
+      width: window.innerWidth < 1200 ? "15%" : "8%",
     },
     {
       title: t("personal_area.received"),
       dataIndex: "received",
+      responsive: ["md"],
       key: "received",
       render: (text) => <> {text.toFixed(2)} USD</>,
+      width: window.innerWidth < 1200 ? "15%" : "8%",
     },
     {
       title: t("personal_area.will_received"),
       dataIndex: "willReceived",
+      responsive: ["md"],
       key: "willReceived",
       render: (text) => <>{text.toFixed(2)} USD</>,
+      width: window.innerWidth < 1200 ? "18%" : "8%",
     },
     {
       title: t("personal_area.date"),
       dataIndex: "date",
+      responsive: ["xl"],
       key: "date",
       render: (text = "", record) => {
-        const date = ParseDate(text, record.days);
-        const splittedText = date.split(":");
+        const date = ParseDate(text, record.days, monthNames);
 
-        const correctOpeningDate = `${splittedText[0].split(" ")[0]} ${monthNames[+splittedText[0].split(" ")[1]]}`;
-        const correctClosingDate = `${splittedText[1].split(" ")[1]} ${monthNames[+splittedText[1].split(" ")[2]]}`;
+        // console.log(date, "date");
+        // const splittedText = date.split(":");
+        //
+        // const correctOpeningDate = `${splittedText[0].split(" ")[0]} ${monthNames[+splittedText[0].split(" ")[1]]}`;
+        // const correctClosingDate = `${splittedText[1].split(" ")[1]} ${monthNames[+splittedText[1].split(" ")[2]]}`;
 
         return (
           <>
             <div>
-              {t("personal_area.open")}: {correctOpeningDate}
+              {t("personal_area.open")}: {date.open}
             </div>
             <div>
-              {t("personal_area.close")}: {correctClosingDate}
+              {t("personal_area.close")}: {date.close}
             </div>
           </>
         );
       },
-      width: 200,
+      width: "20%",
     },
   ];
 
@@ -126,7 +136,26 @@ const DepositsList = ({ deposits }) => {
       }}
       locale={{ emptyText: <Empty description={`${t("personal_area.no_data")}`} /> }}
       size={window.innerWidth < 800 ? "small" : "middle"}
-      scroll={{ x: 1300 }}
+      // scroll={{ x: window.innerWidth < 1500 && window.innerWidth > 600 ? 1200 : "max-content" }}
+      expandable={{
+        expandedRowRender: (record) => {
+          const parsedDate = ParseDate(record.date, record.days, monthNames);
+
+          return (
+            <p
+              style={{
+                margin: 0,
+              }}
+            >
+              {/*<span>Дата</span>*/}
+              Open: {parsedDate.open}
+              Close: {parsedDate.close}
+            </p>
+          );
+        },
+        expandRowByClick: window.innerWidth < 1200,
+        showExpandColumn: window.innerWidth < 1200,
+      }}
     />
   );
 };
