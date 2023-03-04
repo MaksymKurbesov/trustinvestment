@@ -5,10 +5,13 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Select } from "antd";
 
+const RUB_CURRENCY = 75;
+const KZT_CURRENCY = 431;
+
 const EnterAmount = ({ stepNumber, amountHandler, min, max, test, paymentMethod }) => {
   const [value, setValue] = useState(null);
   const { t, i18n } = useTranslation();
-  const [currency, setCurrency] = useState(75);
+  const [currency, setCurrency] = useState(RUB_CURRENCY);
 
   console.log(currency, "currency");
 
@@ -52,7 +55,7 @@ const EnterAmount = ({ stepNumber, amountHandler, min, max, test, paymentMethod 
           <>
             <Form.Item>
               <Input
-                prefix={`${currency === 75 ? "₽" : "₸"}`}
+                prefix={`${currency === RUB_CURRENCY ? "₽" : "₸"}`}
                 // suffix={"RUB"}
                 // disabled={true}
                 value={value ? (value * currency).toFixed(2) : ""}
@@ -60,8 +63,8 @@ const EnterAmount = ({ stepNumber, amountHandler, min, max, test, paymentMethod 
                   <Select
                     defaultValue={"RUB"}
                     options={[
-                      { value: 75, label: "RUB" },
-                      { value: 431, label: "KZT" },
+                      { value: RUB_CURRENCY, label: "RUB" },
+                      { value: KZT_CURRENCY, label: "KZT" },
                     ]}
                     onChange={(value) => setCurrency(value)}
                     className={styles["currency-select"]}
@@ -69,7 +72,9 @@ const EnterAmount = ({ stepNumber, amountHandler, min, max, test, paymentMethod 
                 }
               />
             </Form.Item>
-            <p className={styles["currency"]}>{`Курс: 1 $ = ${currency === 75 ? "75 ₽" : "431 ₸"}`}</p>
+            <p className={styles["currency"]}>{`${t("make_deposit.currency")}: 1 $ = ${
+              currency === RUB_CURRENCY ? `${RUB_CURRENCY} ₽` : `${KZT_CURRENCY} ₸`
+            }`}</p>
           </>
         ) : (
           ""

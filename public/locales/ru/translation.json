@@ -317,7 +317,8 @@
     "total_income": "Общий доход",
     "error": "Недостаточно средст. Пополните пожалуйста кошелёк.",
     "enter_amount_warning": "Введите пожалуйста сумму",
-    "incorrect_amount": "Некорректная сумма"
+    "incorrect_amount": "Некорректная сумма",
+    "currency": "Курс"
   },
   "replenishment": {
     "title": "Пополнение",

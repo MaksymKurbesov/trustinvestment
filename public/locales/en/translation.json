@@ -317,7 +317,8 @@
     "total_income": "Total income",
     "error": "Insufficient funds. Please replenish your wallet.",
     "enter_amount_warning": "Please enter the amount",
-    "incorrect_amount": "Incorrect amount"
+    "incorrect_amount": "Incorrect amount",
+    "currency": "Currency Rate"
   },
   "replenishment": {
     "title": "Replenishment",
