@@ -188,9 +188,9 @@
   width: 50%;
 }
 
-.enterAmountRoot .ant-input-affix-wrapper {
-  width: 50%;
-}
+/*.enterAmountRoot .ant-input-affix-wrapper {*/
+/*  width: 50%;*/
+/*}*/
 
 .ant-menu-item a {
   display: block !important;

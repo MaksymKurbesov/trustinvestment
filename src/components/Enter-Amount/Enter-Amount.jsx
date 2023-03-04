@@ -3,10 +3,14 @@ import Input from "antd/lib/input";
 import Form from "antd/lib/form";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Select } from "antd";
 
 const EnterAmount = ({ stepNumber, amountHandler, min, max, test, paymentMethod }) => {
   const [value, setValue] = useState(null);
   const { t, i18n } = useTranslation();
+  const [currency, setCurrency] = useState(75);
+
+  console.log(currency, "currency");
 
   return (
     <div className={`${styles["enter-amount"]} enterAmountRoot`}>
@@ -41,14 +45,31 @@ const EnterAmount = ({ stepNumber, amountHandler, min, max, test, paymentMethod 
               setValue(Number(e.target.value));
             }}
             suffix={"USD"}
+            value={value * currency}
           />
         </Form.Item>
         {paymentMethod === "QIWI" ? (
           <>
             <Form.Item>
-              <Input prefix="₽" suffix={"RUB"} value={value ? (value * 75).toFixed(2) : ""} />
+              <Input
+                prefix={`${currency === 75 ? "₽" : "₸"}`}
+                // suffix={"RUB"}
+                // disabled={true}
+                value={value ? (value * currency).toFixed(2) : ""}
+                addonAfter={
+                  <Select
+                    defaultValue={"RUB"}
+                    options={[
+                      { value: 75, label: "RUB" },
+                      { value: 431, label: "KZT" },
+                    ]}
+                    onChange={(value) => setCurrency(value)}
+                    className={styles["currency-select"]}
+                  ></Select>
+                }
+              />
             </Form.Item>
-            <p className={styles["currency"]}>Курс: 1 $ = 75 ₽</p>
+            <p className={styles["currency"]}>{`Курс: 1 $ = ${currency === 75 ? "75 ₽" : "431 ₸"}`}</p>
           </>
         ) : (
           ""
