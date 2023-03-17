@@ -1,11 +1,16 @@
-import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from "firebase/auth";
-import { useContext, useEffect } from "react";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+  onAuthStateChanged,
+  sendEmailVerification,
+} from "firebase/auth";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
 import signInAnimation from "assets/lottie-animations/signIn-animation.json";
 import useLottie from "lottie-react";
-import { LoginForm } from "../../components/Login-Form/Login-Form";
-import AuthContext from "../../components/Auth-Provider/AuthContext";
+import { LoginForm } from "./components/Login-Form/Login-Form";
 import notification from "antd/lib/notification";
 import { useTranslation } from "react-i18next";
 
@@ -14,7 +19,7 @@ const FEBRUARY_21_2022 = 1676967299257;
 const Login = () => {
   const auth = getAuth();
   const navigate = useNavigate();
-  const { currentUser } = useContext(AuthContext);
+  // const { currentUser } = useContext(AuthContext);
   const { t } = useTranslation();
 
   const [api, notificationContextHolder] = notification.useNotification();
@@ -68,25 +73,51 @@ const Login = () => {
   const handleLogin = (email, pass) => {
     signInWithEmailAndPassword(auth, email, pass)
       .then((userCredential) => {
-        if (!userCredential.user.emailVerified && !(userCredential.user.metadata.createdAt < FEBRUARY_21_2022)) {
+        console.log(userCredential.user.emailVerified, "userCredential.user.emailVerified ");
+
+        console.log(
+          userCredential.user.metadata.createdAt < FEBRUARY_21_2022,
+          "userCredential.user.metadata.createdAt "
+        );
+
+        if (userCredential.user.metadata.createdAt < FEBRUARY_21_2022) {
+          sessionStorage.setItem("Auth Token", userCredential._tokenResponse.refreshToken);
+          navigate("/my-account");
+          return;
+        }
+
+        if (!userCredential.user.emailVerified) {
           confirmEmailNotification();
+          sendEmailVerification(userCredential.user);
           auth.signOut();
           return;
         } else {
           sessionStorage.setItem("Auth Token", userCredential._tokenResponse.refreshToken);
           navigate("/my-account");
         }
+
+        // if (!userCredential.user.emailVerified || !(userCredential.user.metadata.createdAt < FEBRUARY_21_2022)) {
+        //   confirmEmailNotification();
+        //   sendEmailVerification(userCredential.user);
+        //   auth.signOut();
+        //   return;
+        // } else {
+        //   sessionStorage.setItem("Auth Token", userCredential._tokenResponse.refreshToken);
+        //   navigate("/my-account");
+        // }
       })
       .catch((e) => {
         errorNotification();
       });
   };
 
-  // useEffect(() => {
-  //   if (currentUser) {
-  //     // navigate("/my-account");
-  //   }
-  // }, []);
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (user?.emailVerified) {
+        navigate("/my-account");
+      }
+    });
+  }, []);
 
   return (
     <div className={`${styles["login-page"]} devtools`}>

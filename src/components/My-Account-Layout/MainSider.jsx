@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "./My-Account-Layout.module.css";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
-
 import Layout from "antd/lib/layout";
 import Menu from "antd/lib/menu";
 import { SideMenuList } from "./SideMenuList";
@@ -12,6 +11,7 @@ import Button from "antd/lib/button";
 import RusLangIcon from "../../assets/images/rus-lang.svg";
 import EngLangIcon from "../../assets/images/eng-lang.svg";
 import { useTranslation } from "react-i18next";
+import { Select } from "antd";
 
 const { Sider } = Layout;
 
@@ -30,8 +30,9 @@ const MainSider = ({ setCollapsed, collapsed }) => {
 
   const { t, i18n } = useTranslation();
 
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
+  const handleChange = (value) => {
+    console.log(value, "value");
+    i18n.changeLanguage(value.value);
   };
 
   return (
@@ -53,19 +54,36 @@ const MainSider = ({ setCollapsed, collapsed }) => {
         items={SideMenuList(location)}
         onClick={(e) => {
           setCollapsed(true);
-          if (e.key === "7") {
+          if (e.key === "8") {
             signOutHandler();
           }
         }}
       />
       <div className={styles["choose-language"]}>
-        <span>{t("cabinet_menu.language")}</span>
-        <Button onClick={() => changeLanguage("ru")} type={"primary"}>
-          <img src={RusLangIcon} width={25} />
-        </Button>
-        <Button onClick={() => changeLanguage("en")} type={"primary"}>
-          <img src={EngLangIcon} width={25} />
-        </Button>
+        <p>{t("cabinet_menu.language")}</p>
+        <Select
+          options={[
+            {
+              value: "ru",
+              label: (
+                <div className={styles["language"]}>
+                  <span>{"RU"}</span> <img src={RusLangIcon} width={25} />
+                </div>
+              ),
+            },
+            {
+              value: "en",
+              label: (
+                <div className={styles["language"]}>
+                  <span>{"EN"}</span> <img src={EngLangIcon} width={25} />
+                </div>
+              ),
+            },
+          ]}
+          defaultValue="en"
+          onChange={handleChange}
+          labelInValue={true}
+        />
       </div>
     </Sider>
   );

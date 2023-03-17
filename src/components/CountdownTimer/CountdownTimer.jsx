@@ -7,23 +7,12 @@ import AuthContext from "../Auth-Provider/AuthContext";
 import { declensionNum } from "../../utils/helpers";
 import { useTranslation } from "react-i18next";
 
-const SECONDS_IN_DAY = 86400;
-
-const CountdownTimer = ({
-  targetDate = 0,
-  depositID,
-  receivedForDay,
-  nickname,
-  paymentMethod,
-  totalDays,
-  charges,
-  amount,
-}) => {
+const CountdownTimer = ({ targetDate = 0, deposit, cn }) => {
   const { signedInUser } = useContext(AuthContext);
   const { firestore } = useContext(FirebaseContext);
   const [days, hours, minutes, seconds, timeLeft] = useCountdown(typeof targetDate === "number" ? targetDate : null);
   const countdownIsEnded = timeLeft <= 0;
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const getElapsedDays = (time) => {
     let elapsedDays = Math.floor(Math.abs(time) / (86400 * 1000));
@@ -31,21 +20,18 @@ const CountdownTimer = ({
   };
 
   const setCharges = (days) => {
-    const receivedByCharges = (receivedForDay * days).toFixed(2);
-    const lastCharge = charges + 1 >= totalDays;
+    const receivedByCharges = ((deposit.willReceived / deposit.days) * days).toFixed(2);
+    const lastCharge = deposit.charges >= deposit.days;
 
     if (!receivedByCharges) return;
 
-    console.log(charges, "charges");
-    console.log(totalDays, "totalDays");
-
     if (lastCharge) {
       updateDoc(doc(firestore, "users", signedInUser.email), {
-        [`paymentMethods.${paymentMethod}.available`]: increment(amount),
+        [`paymentMethods.${deposit.paymentMethod}.available`]: increment(deposit.amount),
       });
     }
 
-    updateDoc(doc(firestore, "users", signedInUser.email, "deposits", `${depositID}`), {
+    updateDoc(doc(firestore, "users", signedInUser.email, "deposits", `${deposit.key}`), {
       charges: increment(days),
       received: increment(+receivedByCharges),
       status: lastCharge ? "completed" : "active",
@@ -57,25 +43,24 @@ const CountdownTimer = ({
         type: "Начисления",
         date: new Date(),
         email: signedInUser.email,
-        executor: nickname,
+        executor: deposit.executor,
       });
 
       updateDoc(doc(firestore, "users", signedInUser.email), {
         earned: increment(+receivedByCharges),
-        [`paymentMethods.${paymentMethod}.available`]: increment(+receivedByCharges),
+        [`paymentMethods.${deposit.paymentMethod}.available`]: increment(+receivedByCharges),
       });
     });
   };
 
   useEffect(() => {
-    const depositIsNotEnded = countdownIsEnded && receivedForDay && charges < totalDays;
+    const depositIsNotEnded = countdownIsEnded && deposit?.charges < deposit?.days;
 
     if (depositIsNotEnded) {
       setCharges(getElapsedDays(timeLeft));
     }
   }, [countdownIsEnded]);
 
-  // const formattedDays = declensionNum(days, [t("personal.area_days_1"), "дня", "дней"]);
   const formattedHours = declensionNum(hours, [
     t("personal_area.hours_1"),
     t("personal_area.hours_2"),
@@ -93,7 +78,7 @@ const CountdownTimer = ({
   ]);
 
   return (
-    <div className={styles["countdown-wrapper"]}>
+    <div className={`${styles["countdown-wrapper"]} ${styles[cn]}`}>
       {hours < -1 ? (
         <p className={styles["success"]}>Выполнено</p>
       ) : (

@@ -7,7 +7,6 @@ import { getFirestore } from "firebase/firestore";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { ScrollToTop } from "./components/Scroll-To-Top/Scroll-To-Top";
-import { AuthProvider } from "./components/Auth-Provider/Auth-Provider";
 import "./i18n.js";
 
 const firebaseApp = initializeApp({
@@ -36,9 +35,9 @@ root.render(
             firestore,
           }}
         >
-          <AuthProvider>
-            <App />
-          </AuthProvider>
+          {/*<AuthProvider>*/}
+          <App />
+          {/*</AuthProvider>*/}
         </FirebaseContext.Provider>
       </ScrollToTop>
     </Suspense>

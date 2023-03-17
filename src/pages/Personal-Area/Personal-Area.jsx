@@ -1,20 +1,19 @@
 import styles from "./Personal-Area.module.css";
-import InvestmentIcon from "assets/images/user-statistic/Investment.png";
-import EarnedIcon from "assets/images/user-statistic/Earned.png";
-import WithdrawnIcon from "assets/images/user-statistic/Withdrawn.png";
-import ReferalsIcon from "assets/images/user-statistic/Referals.png";
-import { DepositsStatus } from "components/Deposits-Status/Deposits-Status";
-import { TimeToPayment } from "components/Time-To-Payment/Time-To-Payment";
-import { UserWallets } from "components/Wallets/UserWallets";
+import { DepositsStatus } from "pages/Personal-Area/components/Deposits-Status/DepositStatus";
+import { TimeToPayment } from "pages/Personal-Area/components/Time-To-Payment";
+import { UserWallets } from "pages/Personal-Area/components/UserWallets/Userwallets";
 import { useContext, useEffect, useState } from "react";
 import { FirebaseContext } from "../../index";
 import { collection, query, getDocs, onSnapshot } from "firebase/firestore";
 import { useOutletContext } from "react-router-dom";
 import { getNextAccrual } from "../../utils/helpers";
 import { useTranslation } from "react-i18next";
+import { UserStatistic } from "./components/User-Statistic";
+import { TransactionContext } from "../../App";
 
 const PersonalArea = () => {
   const { firestore } = useContext(FirebaseContext);
+
   const { userData } = useOutletContext();
   const [depositsList, setDepositsList] = useState([]);
   const [nearestAccrual, setNearestAccrual] = useState(null);
@@ -38,7 +37,7 @@ const PersonalArea = () => {
             nextAccrual = getNextAccrual(deposit);
           }
 
-          snap.docs.map((item, index) => {
+          snap.docs.forEach((item) => {
             const data = item.data();
             const depositIsActive = data.status === "active";
 
@@ -61,7 +60,7 @@ const PersonalArea = () => {
     };
 
     getDeposits();
-  }, [userData]);
+  }, [firestore, userData]);
 
   if (!userData) {
     return null;
@@ -72,36 +71,7 @@ const PersonalArea = () => {
       <h2 className={"my-account-title"}>{t("personal_area.title")}</h2>
       <div className={styles["my-account"]}>
         <UserWallets paymentMethods={userData.paymentMethods} />
-        <div className={styles["user-statistic"]}>
-          <div className={styles["user-statistic__item"]}>
-            <img src={InvestmentIcon} width={50} alt={"Иконка"} />
-            <div className={styles["info"]}>
-              <p>{t("personal_area.invested")}:</p>
-              <span>{userData.invested.toFixed(1)} USD</span>
-            </div>
-          </div>
-          <div className={styles["user-statistic__item"]}>
-            <img src={EarnedIcon} width={50} alt={"Иконка"} />
-            <div className={styles["info"]}>
-              <p>{t("personal_area.earned")}:</p>
-              <span>{userData.earned.toFixed(1)} USD</span>
-            </div>
-          </div>
-          <div className={styles["user-statistic__item"]}>
-            <img src={WithdrawnIcon} width={50} alt={"Иконка"} />
-            <div className={styles["info"]}>
-              <p>{t("personal_area.withdrawn")}:</p>
-              <span>{userData.withdrawn.toFixed(1)} USD</span>
-            </div>
-          </div>
-          <div className={styles["user-statistic__item"]}>
-            <img src={ReferalsIcon} width={50} alt={"Иконка"} />
-            <div className={styles["info"]}>
-              <p>{t("personal_area.referrals")}:</p>
-              <span>{userData.referals.toFixed(1)} USD</span>
-            </div>
-          </div>
-        </div>
+        <UserStatistic userData={userData} />
         <DepositsStatus deposits={depositsList} />
         <TimeToPayment nearestAccrual={nearestAccrual} depositsIsEmpty={depositsList.length === 0} />
       </div>

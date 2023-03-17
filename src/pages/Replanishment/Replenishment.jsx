@@ -44,13 +44,13 @@ const Replenishment = () => {
       const sendData = async () => {
         await addDoc(collection(firestore, "transactions"), {
           account_id: userData.uid,
-          amount: data.amount,
+          // amount: data.amount,
           status: "Ожидание",
           type: "Пополнение",
           date: new Date(),
           email: userData.email,
-          paymentMethod: data.paymentMethod,
-          executor: data.paymentMethod,
+          // paymentMethod: data.paymentMethod,
+          // executor: data.paymentMethod,
         });
       };
       sendData();
@@ -58,8 +58,8 @@ const Replenishment = () => {
       handleSubmit({
         ...values,
         email: userData.email,
-        amount: data.amount,
-        tariffPlan: data.tariffPlan,
+        // amount: data.amount,
+        // tariffPlan: data.tariffPlan,
       });
     });
   };
@@ -73,23 +73,23 @@ const Replenishment = () => {
         <thead>
           <tr>
             <td>{t("replenishment.plan")}</td>
-            <td>{data.tariffPlan.title}</td>
+            {/*<td>{data.tariffPlan.title}</td>*/}
           </tr>
           <tr>
             <td>{t("replenishment.payment_method")}</td>
-            <td>{data.paymentMethod}</td>
+            {/*<td>{data.paymentMethod}</td>*/}
           </tr>
           <tr>
             <td>{t("replenishment.amount")}</td>
-            <td>{data.amount} USD</td>
+            {/*<td>{data.amount} USD</td>*/}
           </tr>
           <tr>
             <td>{t("replenishment.wallet_for_pay")}</td>
             <td>
-              {WALLETS[data.paymentMethod]}
+              {/*{WALLETS[data.paymentMethod]}*/}
               <Button
                 onClick={() => {
-                  navigator.clipboard.writeText(WALLETS[data.paymentMethod]);
+                  // navigator.clipboard.writeText(WALLETS[data.paymentMethod]);
                 }}
                 className={styles["copy-button"]}
               >
@@ -99,12 +99,12 @@ const Replenishment = () => {
           </tr>
           <tr>
             <td>{t("replenishment.date")}</td>
-            <td>{data.date}</td>
+            {/*<td>{data.date}</td>*/}
           </tr>
         </thead>
       </table>
       <p className={styles["information"]}>
-        Данные платежа произведенного вручную через {data.paymentMethod} и реквизиты плательщика
+        {/*Данные платежа произведенного вручную через {data.paymentMethod} и реквизиты плательщика*/}
       </p>
       <Form form={form}>
         <Form.Item

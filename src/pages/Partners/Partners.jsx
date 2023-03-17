@@ -4,12 +4,10 @@ import Button from "antd/lib/button";
 import notification from "antd/lib/notification";
 import { CheckCircleFilled, HeartFilled, SmileFilled, SmileOutlined, ThunderboltFilled } from "@ant-design/icons";
 import { useContext, useEffect, useState } from "react";
-import AuthContext from "../../components/Auth-Provider/AuthContext";
 import { FirebaseContext } from "../../index";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { LevelCollapse } from "./LevelCollapse";
+import { LevelCollapse } from "./components/LevelCollapse";
 import { useOutletContext } from "react-router-dom";
-import { getAuth } from "firebase/auth";
 import { useTranslation } from "react-i18next";
 
 const getNumberOfReferrals = (referrals) => {

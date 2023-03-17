@@ -4,22 +4,20 @@ import Form from "antd/lib/form";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Select } from "antd";
+import { useOutletContext } from "react-router-dom";
 
-const RUB_CURRENCY = 75;
-const KZT_CURRENCY = 431;
+const EnterAmount = ({ form, isWithoutValidate }) => {
+  const { t } = useTranslation();
+  const { userData } = useOutletContext();
 
-const EnterAmount = ({ stepNumber, amountHandler, min, max, test, paymentMethod }) => {
-  const [value, setValue] = useState(null);
-  const { t, i18n } = useTranslation();
-  const [currency, setCurrency] = useState(RUB_CURRENCY);
+  let availableMoneyOnWallet;
 
-  console.log(currency, "currency");
+  if (!isWithoutValidate) {
+    availableMoneyOnWallet = userData.paymentMethods[form.getFieldValue("payment-method")]?.available;
+  }
 
   return (
     <div className={`${styles["enter-amount"]} enterAmountRoot`}>
-      <h3>
-        <span>{stepNumber}</span> {t("make_deposit.enter_amount")}
-      </h3>
       <div className={styles["input-wrapper"]}>
         <Form.Item
           name={"amount"}
@@ -30,9 +28,16 @@ const EnterAmount = ({ stepNumber, amountHandler, min, max, test, paymentMethod 
             },
             ({ getFieldValue }) => ({
               validator(_, value) {
-                if (test) return Promise.resolve();
+                if (isWithoutValidate) return Promise.resolve();
 
-                if (!value || (getFieldValue("amount") >= min && getFieldValue("amount") <= max)) {
+                const amount = getFieldValue("amount");
+                const plan = getFieldValue("plan");
+
+                if (availableMoneyOnWallet < amount) {
+                  return Promise.reject(new Error(t("make_deposit.error")));
+                }
+
+                if (!value || (amount >= plan.min && amount <= plan.max)) {
                   return Promise.resolve();
                 }
                 return Promise.reject(new Error(t("make_deposit.incorrect_amount")));
@@ -40,45 +45,8 @@ const EnterAmount = ({ stepNumber, amountHandler, min, max, test, paymentMethod 
             }),
           ]}
         >
-          <Input
-            prefix={"$"}
-            onChange={(e) => {
-              if (!e.target.value) return;
-              amountHandler(Number(e.target.value));
-              setValue(Number(e.target.value));
-            }}
-            suffix={"USD"}
-            value={value * currency}
-          />
+          <Input prefix={"$"} suffix={"USD"} />
         </Form.Item>
-        {paymentMethod === "QIWI" ? (
-          <>
-            <Form.Item>
-              <Input
-                prefix={`${currency === RUB_CURRENCY ? "₽" : "₸"}`}
-                // suffix={"RUB"}
-                // disabled={true}
-                value={value ? (value * currency).toFixed(2) : ""}
-                addonAfter={
-                  <Select
-                    defaultValue={"RUB"}
-                    options={[
-                      { value: RUB_CURRENCY, label: "RUB" },
-                      { value: KZT_CURRENCY, label: "KZT" },
-                    ]}
-                    onChange={(value) => setCurrency(value)}
-                    className={styles["currency-select"]}
-                  ></Select>
-                }
-              />
-            </Form.Item>
-            <p className={styles["currency"]}>{`${t("make_deposit.currency")}: 1 $ = ${
-              currency === RUB_CURRENCY ? `${RUB_CURRENCY} ₽` : `${KZT_CURRENCY} ₸`
-            }`}</p>
-          </>
-        ) : (
-          ""
-        )}
       </div>
     </div>
   );

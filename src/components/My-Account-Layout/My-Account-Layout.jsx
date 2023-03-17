@@ -9,7 +9,7 @@ import AuthContext from "../Auth-Provider/AuthContext";
 
 import MainSider from "./MainSider";
 import { FirebaseContext } from "../../index";
-import { collection, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
 const { Content } = Layout;
 
@@ -55,20 +55,3 @@ const MyAccountLayout = () => {
 };
 
 export { MyAccountLayout };
-
-const addWallet = async (firestore) => {
-  await getDocs(collection(firestore, "users")).then((snap) => {
-    snap.forEach((item) => {
-      updateDoc(doc(firestore, "users", item.data().email), {
-        [`paymentMethods.QIWI`]: {
-          available: 0,
-          deposited: 0,
-          number: "",
-          referrals: 0,
-          withdrawn: 0,
-        },
-      });
-    });
-    // setUserData(snap.data());
-  });
-};

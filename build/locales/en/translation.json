@@ -48,13 +48,14 @@
   "tariffs": {
     "title": "TARIFF PLANS",
     "plan": "Plan",
-    "in_day": "in a day",
-    "days": "days",
+    "in_day": "In a day",
+    "days": "Days",
     "min": "Min. deposit",
     "max": "Max. deposit",
     "individually": "Individually",
     "end_term": "At the end of term",
-    "pay_everyday": "Payment daily"
+    "pay_everyday": "Payment daily",
+    "choose_plan_warning": "Please choose a plan"
   },
   "roadmap": {
     "may": "May",
@@ -267,9 +268,11 @@
     "invested": "Invested",
     "earned": "Earned",
     "next_accrual_in": "Next accrual in",
+    "status": "Status",
     "loading": "Loading...",
     "active_deposits": "Active Deposits",
     "completed_deposits": "Completed Deposits",
+    "complete": "Completed",
     "plan": "Plan",
     "progress": "Progress",
     "next_accrual": "Next accrual",
@@ -281,18 +284,18 @@
     "accruals": "Accruals",
     "open": "Opening",
     "close": "Closing",
-    "january": "jan.",
-    "february": "feb.",
-    "march": "mar.",
-    "april": "apr.",
+    "january": "january",
+    "february": "february",
+    "march": "march",
+    "april": "april",
     "may": "may",
     "june": "june",
     "july": "july",
     "august": "aug.",
-    "september": "sept.",
-    "october": "oct.",
-    "november": "nov.",
-    "december": "dec.",
+    "september": "september",
+    "october": "october",
+    "november": "november",
+    "december": "december",
     "days_1": "day",
     "days_2": "days",
     "days_3": "days",
@@ -304,12 +307,13 @@
     "minutes_3": "minutes",
     "seconds_1": "second",
     "seconds_2": "seconds",
-    "seconds_3": "seconds"
+    "seconds_3": "seconds",
+    "in_process": "In process"
   },
   "make_deposit": {
     "title": "Make a deposit",
     "choose_plan": "Choose a plan",
-    "choose_payment_method": "Choose a payment system",
+    "choose_payment_method": "Choose a wallet",
     "payment_method": "Payment system",
     "from_balance": "From the balance",
     "enter_amount": "Enter the amount",
@@ -317,7 +321,9 @@
     "total_income": "Total income",
     "error": "Insufficient funds. Please replenish your wallet.",
     "enter_amount_warning": "Please enter the amount",
-    "incorrect_amount": "Incorrect amount"
+    "incorrect_amount": "Incorrect amount",
+    "currency": "Currency Rate",
+    "confirm": "Confirm"
   },
   "replenishment": {
     "title": "Replenishment",
@@ -325,7 +331,7 @@
     "copy": "Copy",
     "payment_method": "Payment method",
     "amount": "Amount",
-    "fee": "Fee",
+    "fee": "Commission",
     "wallet_for_pay": "Wallet for pay",
     "date": "Date",
     "transaction_number": "Transaction number",
@@ -339,14 +345,14 @@
   "withdrawn": {
     "title": "Withdrawals",
     "notation": "Before withdrawing funds to the wallet, make sure that you have entered the details for withdrawal to the payment system you are interested in on the Settings page. Please note that Trust Investment does not provide exchange services, so withdrawal is only possible to the payment system from which the funds have been credited.",
-    "fee": "Fee",
+    "fee": "Commission",
     "withdrawn_fee": "Will be withdrawn subject to commission",
     "tooltip": "Specify the wallet for withdrawing funds in the account settings",
     "button": "Withdraw funds",
     "confirm_withdrawn": "Withdrawal confirmation",
     "confirm_modal": {
       "title": "Transaction was successful!",
-      "subtitle": "Transaction number: 48455 Transaction processing usually takes 3-5 minutes, please wait.",
+      "subtitle": "Transaction processing usually takes 3-5 minutes, please wait.",
       "main_button": "To home",
       "transaction_button": "To transactions"
     }
@@ -356,17 +362,20 @@
     "status": "Status",
     "type": "Type",
     "amount": "Amount",
-    "fee": "Fee",
+    "fee": "Commission",
     "date": "Date",
     "executor": "Executor",
     "previous": "Previous",
+    "done": "Done",
     "next": "Next",
     "Начисления": "Accrual",
     "Вклад": "Investment",
     "Пополнение": "Replenishment",
     "Вывод": "Withdrawals",
     "Ожидание": "Waiting",
-    "Выполнено": "Success"
+    "Выполнено": "Success",
+    "Реферальные": "Referrals",
+    "Отмена": "Cancel"
   },
   "partner_page": {
     "title": "Partners",
@@ -404,6 +413,7 @@
   },
   "cabinet_menu": {
     "cabinet": "Home",
+    "cash_in": "Cash in",
     "make_deposit": "Make a deposit",
     "withdrawn": "Withdrawals",
     "transactions": "Transactions",
@@ -411,5 +421,23 @@
     "settings": "Settings",
     "exit": "Exit",
     "language": "Language"
+  },
+  "cash_in": {
+    "title": "Cash in",
+    "choose_wallet": "Choose a wallet",
+    "choose_wallet_warning": "Please select a wallet",
+    "enter_amount": "Enter the amount",
+    "confirm": "Transaction confirmation",
+    "status": "Waiting for payment",
+    "disclaimer": "We would like to inform you that your payment will be processed manually. We are very grateful that you will take the time to go through the manual payment process. However, you have really helped us by ensuring that your payment is processed correctly, and for that we are grateful. If you have any questions or problems, please email tech support. Thanks again for your contribution to our company!",
+    "instruction": {
+      "title": "Instructions for payment transfer",
+      "1": "1. Select a payment system",
+      "2": "2. Specify the refill amount",
+      "3": "3. Make the payment using these details",
+      "4": "4. Confirm the transaction by entering the transaction number/hash below"
+    },
+    "enter_code": "Enter the transaction number/hash",
+    "enter_code_warning": "Please enter the transaction number/hash"
   }
 }

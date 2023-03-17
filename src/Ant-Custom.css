@@ -21,6 +21,10 @@
   margin-bottom: 5px;
 }
 
+.ant-result {
+  padding: 20px 0;
+}
+
 .ant-layout {
   background: none;
   /*padding-top: 95px;*/
@@ -65,7 +69,7 @@
 }
 
 .anticon {
-  color: white;
+  /*color: white;*/
 }
 
 .payment-select .anticon {
@@ -130,7 +134,7 @@
 .plans-listRoot .ant-card-body {
   width: 100% !important;
   display: grid;
-  grid-template-columns: 0 160px 1fr repeat(2, 1fr);
+  grid-template-columns: 0 135px 60px repeat(2, 1fr);
   grid-template-rows: 1fr;
   column-gap: 10px;
 }
@@ -188,13 +192,47 @@
   width: 50%;
 }
 
-/*.enterAmountRoot .ant-input-affix-wrapper {*/
-/*  width: 50%;*/
-/*}*/
+.depositRoot .anticon {
+  color: #52c41a;
+}
 
 .ant-menu-item a {
   display: block !important;
   color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.deposit .ant-radio-button-wrapper-checked span:nth-child(2) > div {
+  color: white;
+  background: var(--blue);
+}
+
+.ant-radio-button-wrapper-checked span:nth-child(2) > div span {
+  color: white;
+}
+
+.ant-radio-button-wrapper:not(:first-child)::before {
+  background-color: transparent;
+}
+
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+  border-color: transparent;
+}
+
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):first-child {
+  border-color: transparent;
+}
+
+.cash-in-form .ant-radio-button-wrapper {
+  /*background: transparent;*/
+  /*border: none;*/
+}
+
+.cash-in-form .ant-radio-button-wrapper-checked::before {
+  background-color: transparent !important;
+}
+
+.cash-in-form .ant-radio-button-wrapper-checked:not(:where(.ant-radio-button-wrapper-disabled)):hover {
+  border-color: transparent;
 }
 
 @media screen and (max-width: 1000px) {

@@ -1,9 +1,9 @@
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
-import { Form } from "components/Login-Form/Login-Form";
+import { Form } from "pages/Login/components/Login-Form/Login-Form";
 import { setDoc, doc, collection, where, query, getDocs, updateDoc, arrayUnion } from "firebase/firestore";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { FirebaseContext } from "../../index";
-import { RegisterForm } from "../../components/Register-Form/Register-Form";
+import { RegisterForm } from "./components/Register-Form/Register-Form";
 import styles from "./Register.module.css";
 import signUpAnimation from "assets/lottie-animations/signUp-animation.json";
 import useLottie from "lottie-react";
@@ -16,19 +16,30 @@ const REFERRALS_TOTAL_LEVELS = 6;
 const Register = () => {
   const { t } = useTranslation();
   const { firestore } = useContext(FirebaseContext);
+  const auth = getAuth();
 
   const SignUpAnimation = useLottie({
     animationData: signUpAnimation,
     className: styles["signUpAnimation"],
   });
 
+  // useEffect(() => {
+  //   setDoc(
+  //     doc(firestore, "users", "azrv12@gmail.com"),
+  //     setUserCustomFields(
+  //       { uid: "azrv12@gmail.com", metadata: { creationTime: new Date() } },
+  //       { email: "azrv12@gmail.com", nickname: "", phone: "", referredBy: "rich" }
+  //     )
+  //   );
+  // }, []);
+
   const handleRegister = async (user) => {
     const auth = getAuth();
 
     await createUserWithEmailAndPassword(auth, user.email, user.password).then(async (userCredential) => {
       const signedUpUser = userCredential.user;
-      sendEmailVerification(signedUpUser);
-      auth.signOut();
+      await sendEmailVerification(signedUpUser);
+      await auth.signOut();
       success();
 
       const setReferrals = async (referredBy, limit) => {
@@ -80,3 +91,9 @@ const Register = () => {
 };
 
 export { Register };
+
+// const addUser = () => {
+//   setDoc(doc(firestore, "users", signedUpUser.email), setUserCustomFields(signedUpUser, user)).then(() => {
+//     setReferrals(user.referredBy, REFERRALS_TOTAL_LEVELS);
+//   });
+// }

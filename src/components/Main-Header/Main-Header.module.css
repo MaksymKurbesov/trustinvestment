@@ -21,7 +21,11 @@
   background: #001529;
 }
 
-.header-container {
+.opacity-index {
+  /*opacity: 0;*/
+}
+
+.header .header-container {
   display: flex;
   justify-content: center;
   align-items: center;

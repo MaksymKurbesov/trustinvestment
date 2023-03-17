@@ -46,9 +46,9 @@ const PaymentMethods = ({ paymentMethodHandler, setTax }) => {
         showSearch
         optionFilterProp="children"
         onChange={(value) => {
-          if (value === "TRC20 Tether") {
-            setTax(1);
-          }
+          // if (value === "TRC20 Tether") {
+          //   setTax(1);
+          // }
           paymentMethodHandler(value);
         }}
         filterOption={(input, option) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase())}

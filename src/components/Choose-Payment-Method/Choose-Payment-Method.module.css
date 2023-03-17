@@ -1,6 +1,7 @@
 .choose-payment-method {
-  margin-bottom: 60px;
   max-width: 430px;
+  /*padding: 25px;*/
+  margin-bottom: -5px;
 }
 
 .choose-payment-method h3 {
@@ -23,11 +24,13 @@
 
 .error {
   opacity: 0;
+  display: none;
   transition: 0.2s;
 }
 
 .active-error {
   opacity: 1;
+  display: block;
   color: #ff3333;
 }
 

@@ -1,4 +1,18 @@
 import { CheckCircleOutlined, CloseCircleOutlined, SyncOutlined } from "@ant-design/icons";
+import Img1 from "../assets/images/1.webp";
+import Img2 from "../assets/images/2.webp";
+import Img3 from "../assets/images/3.webp";
+import Img4 from "../assets/images/4.webp";
+import Img5 from "../assets/images/5.webp";
+import Img6 from "../assets/images/6.webp";
+import PMIcon from "../assets/images/platform-icons/PM.png";
+import TRCIcon from "../assets/images/platform-icons/tether.png";
+import BitcoinIcon from "../assets/images/platform-icons/bitcoin.png";
+import EthereumIcon from "../assets/images/platform-icons/ethereum.png";
+import SolanaIcon from "../assets/images/platform-icons/solana.png";
+import PolkadotIcon from "../assets/images/platform-icons/polkadot-logo.png";
+import BnbIcon from "../assets/images/platform-icons/bnb.png";
+import QiwiIcon from "../assets/images/platform-icons/qiwi.png";
 
 export const LOGIN_ROUTE = "/login";
 export const ACCOUNT_ROUTE = "/my-account";
@@ -29,13 +43,70 @@ export const WALLETS = {
   QIWI: "2200730251373524",
 };
 
-// export const PERFECT_MONEY = "PERFECT_MONEY";
-// export const BITCOIN = "BITCOIN";
-// export const ETHEREUM = "ETHEREUM";
-// export const TRC20_TETHER = "TRC20_TETHER";
-// export const SOLANA = "SOLANA";
-// export const POLKADOT = "POLKADOT";
-// export const BNB = "BNB";
+export const WALLETS_ICONS = {
+  "Perfect Money": PMIcon,
+  "TRC20 Tether": TRCIcon,
+  Bitcoin: BitcoinIcon,
+  Ethereum: EthereumIcon,
+  Solana: SolanaIcon,
+  Polkadot: PolkadotIcon,
+  Bnb: BnbIcon,
+  QIWI: QiwiIcon,
+};
+
+export const getPlans = (t) => {
+  return [
+    {
+      title: `${t("tariffs.plan")} 1`,
+      percent: 1.5,
+      days: 30,
+      min: 100,
+      max: 1500,
+      image: Img1,
+    },
+    {
+      title: `${t("tariffs.plan")} 2`,
+      percent: 2.3,
+      days: 24,
+      min: 1500,
+      max: 8000,
+      image: Img2,
+    },
+    {
+      title: `${t("tariffs.plan")} 3`,
+      percent: 3.5,
+      days: 18,
+      min: 8000,
+      max: 15000,
+      image: Img3,
+    },
+    {
+      title: `${t("tariffs.plan")} 4`,
+      percent: 156,
+      days: 10,
+      min: 15000,
+      max: 40000,
+      image: Img4,
+    },
+    {
+      title: `${t("tariffs.plan")} 5`,
+      percent: 145,
+      days: 6,
+      min: 40000,
+      max: 80000,
+      image: Img5,
+    },
+    {
+      title: `${t("tariffs.plan")} 6`,
+      percent: "Индивидуально",
+      days: "",
+      min: 80000,
+      max: 1000000,
+      image: Img6,
+      individual: true,
+    },
+  ];
+};
 
 export const PERCENTAGE_BY_LVL = {
   1: 7,
@@ -53,14 +124,3 @@ export const SOLANA = "Solana";
 export const POLKADOT = "Polkadot";
 export const BNB = "Bnb";
 export const QIWI = "QIWI";
-
-export const PAYMENT_METHODS_MAP = {
-  PERFECT_MONEY: "Perfect Money",
-  BITCOIN: "Bitcoin",
-  ETHEREUM: "Ethereum",
-  TRC20_TETHER: "TRC20 Tether",
-  SOLANA: "Solana",
-  POLKADOT: "Polkadot",
-  BNB: "Bnb",
-  QIWI: "QIWI",
-};

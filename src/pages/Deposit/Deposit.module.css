@@ -17,7 +17,7 @@
 }
 
 .modal-content {
-  padding: 50px;
+  padding: 25px;
   font-size: 18px;
 }
 
@@ -27,12 +27,21 @@
 }
 
 .modal-content p {
-  border-bottom: 2px solid var(--alpha-blue);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   margin-bottom: 10px;
   display: flex;
+  flex-direction: column;
+  font-size: 12px;
 }
 
 .modal-content p span {
-  font-weight: 600;
-  margin-left: auto;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+@media screen and (max-width: 600px) {
+  .modal-content {
+    padding: 0;
+    padding-bottom: 10px;
+  }
 }

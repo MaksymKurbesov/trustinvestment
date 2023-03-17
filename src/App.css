@@ -54,6 +54,7 @@ ol {
   grid-area: a;
   margin-bottom: 75px;
   display: inline-block;
+  line-height: 1.2;
 }
 
 .my-account-title:before {

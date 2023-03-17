@@ -1,4 +1,4 @@
-import { TransactionsTable } from "./TransactionsTable";
+import { TransactionsTable } from "./components/TransactionTable/TransactionTable";
 import {
   collection,
   getDocs,

@@ -8,6 +8,7 @@ import {
   ImportOutlined,
   SettingOutlined,
   UsergroupAddOutlined,
+  WalletOutlined,
 } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 
@@ -19,6 +20,11 @@ export const SideMenuList = (location) => {
       title: t("cabinet_menu.cabinet"),
       link: "/my-account",
       icon: <HomeOutlined />,
+    },
+    {
+      title: t("cabinet_menu.cash_in"),
+      link: "/my-account/cash-in",
+      icon: <WalletOutlined />,
     },
     {
       title: t("cabinet_menu.make_deposit"),
