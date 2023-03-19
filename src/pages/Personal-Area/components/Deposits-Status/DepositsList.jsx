@@ -98,6 +98,7 @@ const getColumns = (t) => {
 };
 
 const DepositsList = ({ deposits }) => {
+  console.log(deposits, "deposits list");
   const { t, i18n } = useTranslation();
 
   return (

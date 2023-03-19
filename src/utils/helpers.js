@@ -67,7 +67,6 @@ export const ParseDate = (date, offset = 0, monthNames, isShort) => {
   const correctDays = new Date(currentDate).getDate();
   // const correctMonth = monthNames[new Date(currentDate).getMonth()];
 
-  console.log(new Date(currentDate).getHours(), "new Date(currentDate)");
   const offsetDays = new Date(offsetDate).getDate().toLocaleString();
   // const offsetMonth = monthNames[new Date(offsetDate).getMonth()];
 

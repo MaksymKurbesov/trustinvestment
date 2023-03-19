@@ -79,7 +79,7 @@ const Withdraw = () => {
       title: t("make_deposit.enter_amount"),
       content: (
         <>
-          <EnterAmount stepNumber={"02"} amountHandler={setAmount} isWithoutValidate={true} />
+          <EnterAmount form={form} stepNumber={"02"} amountHandler={setAmount} tax={tax} />
           <div className={styles["additional-info"]}>
             <AdditionalInformation
               infoLabel1={t("replenishment.fee")}
@@ -116,7 +116,7 @@ const Withdraw = () => {
                 <img src={CommissionIcon} width={20} alt={""} />
                 {t("transactions.fee")}:
               </p>
-              0$
+              {tax}$
             </li>
             <li className={styles["date"]}>
               <p>

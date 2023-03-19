@@ -13,11 +13,11 @@ const DepositsStatus = ({ deposits }) => {
     const activeArr = [];
     const completedArr = [];
 
-    deposits.forEach((deposit) => {
+    deposits.forEach((deposit, index) => {
       if (deposit.status === "active") {
-        activeArr.push(deposit);
+        activeArr.push({ ...deposit, key: index });
       } else {
-        completedArr.push(deposit);
+        completedArr.push({ ...deposit, key: index });
       }
 
       setActiveDeposits(activeArr);

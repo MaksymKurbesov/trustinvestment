@@ -4,7 +4,7 @@ import Switch from "antd/lib/switch";
 import { useTranslation } from "react-i18next";
 import Form from "antd/lib/form";
 
-const ChoosePaymentMethod = ({ status, paymentMethodHandler }) => {
+const ChoosePaymentMethod = ({ status, paymentMethodHandler, setTax }) => {
   const { t, i18n } = useTranslation();
 
   return (
@@ -13,7 +13,7 @@ const ChoosePaymentMethod = ({ status, paymentMethodHandler }) => {
       {/*  <span>{stepNumber}</span> {t("make_deposit.choose_payment_method")}*/}
       {/*</h3>*/}
 
-      <PaymentMethods paymentMethodHandler={paymentMethodHandler} />
+      <PaymentMethods paymentMethodHandler={paymentMethodHandler} setTax={setTax} />
       <div className={`${status ? styles["active-error"] : styles["error"]}`}>
         <p>{t("make_deposit.error")}</p>
       </div>

@@ -33,8 +33,6 @@ export const AuthProvider = ({ children }) => {
     });
   }, []);
 
-  console.log(transactionIsSent, "transactionIsSent");
-
   useEffect(() => {
     if (!signedInUser) return;
 
@@ -76,25 +74,23 @@ export const AuthProvider = ({ children }) => {
           // });
         }
 
-        if (isDepositTransaction && !transactionIsSent) {
+        if (isDepositTransaction) {
           setTransactionIsSent(true);
           await runTransaction(firestore, async (transaction) => {
-            console.log("transaction run");
-            const userRef = doc(firestore, "users", signedInUser.email);
-            const userDoc = await transaction.get(userRef);
-            const transactionDoc = await transaction.get(change.doc.ref);
-
-            const wallet = userDoc.data().paymentMethods[transactionDoc.data().executor];
-
-            const newAvailable = wallet.available + transactionDoc.data().amount;
-            const newDeposited = wallet.deposited + transactionDoc.data().amount;
-
-            transaction.update(userRef, {
-              [`paymentMethods.${transactionPaymentMethod}.available`]: newAvailable,
-              [`paymentMethods.${transactionPaymentMethod}.deposited`]: newDeposited,
-            });
-          }).then(() => {
-            setTransactionIsSent(false);
+            // console.log("transaction run");
+            // const userRef = doc(firestore, "users", signedInUser.email);
+            // const userDoc = await transaction.get(userRef);
+            // const transactionDoc = await transaction.get(change.doc.ref);
+            //
+            // const wallet = userDoc.data().paymentMethods[transactionDoc.data().executor];
+            //
+            // const newAvailable = wallet.available + transactionDoc.data().amount;
+            // const newDeposited = wallet.deposited + transactionDoc.data().amount;
+            //
+            // transaction.update(userRef, {
+            //   [`paymentMethods.${transactionPaymentMethod}.available`]: newAvailable,
+            //   [`paymentMethods.${transactionPaymentMethod}.deposited`]: newDeposited,
+            // });
           });
 
           // await runTransaction(firestore, async (transaction) => {
