@@ -110,8 +110,12 @@ const MenuList = ({ userIsLoggedIn }) => {
             <Link to={"/my-account"}>{t("menu.cabinet")}</Link>
           ) : (
             <>
-              <Link to={"/register"}>{t("menu.registration")}</Link>
-              <Link to={"/login"}>{t("menu.sign_in")}</Link>
+              <Link className={styles["register-button"]} to={"/register"}>
+                {t("menu.registration")}
+              </Link>
+              <Link className={styles["login-button"]} to={"/login"}>
+                {t("menu.sign_in")}
+              </Link>
             </>
           )}
         </div>

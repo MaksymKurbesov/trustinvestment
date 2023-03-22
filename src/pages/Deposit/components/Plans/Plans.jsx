@@ -4,9 +4,12 @@ import { useTranslation } from "react-i18next";
 import { getPlans } from "../../../../utils/consts";
 import { Radio } from "antd";
 import Form from "antd/lib/form";
+import { useState } from "react";
 
 const Plans = () => {
   const { t } = useTranslation();
+  const [currentPlan, setCurrentPlan] = useState(getPlans(t)[0]);
+
   return (
     <Form.Item
       name={"plan"}

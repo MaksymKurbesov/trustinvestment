@@ -69,7 +69,7 @@ const CashIn = () => {
                   <div>
                     <p>{item}</p>
                     <p className={styles["balance"]}>
-                      {t("balance")}: {userData.paymentMethods[item].available}$
+                      {t("balance")}: {userData.paymentMethods[item].available.toFixed(2)}$
                     </p>
                   </div>
                 </Radio.Button>
@@ -83,7 +83,7 @@ const CashIn = () => {
       title: t("make_deposit.enter_amount"),
       content: (
         <div className={styles["enter-amount"]}>
-          <EnterAmount form={form} isWithoutValidate={true} />
+          <EnterAmount form={form} isWithoutValidate={true} cashInOperation={true} />
           {form.getFieldValue("wallet") === "QIWI" ? (
             <>
               <Form.Item>
@@ -234,6 +234,7 @@ const CashIn = () => {
         email: auth.currentUser.email,
         paymentMethod: form.getFieldValue("wallet"),
         executor: form.getFieldValue("wallet"),
+        _status: "running",
       }).then(() => {
         setIsConfirmedModalOpen(true);
       });

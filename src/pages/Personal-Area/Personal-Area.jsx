@@ -33,34 +33,30 @@ const PersonalArea = () => {
 
     const getDeposits = async () => {
       const q = query(collection(firestore, "users", userData.email, "deposits"));
+      const depositsArr = [];
+      let nextAccrual = new Date().getTime() * 10000;
 
       // onSnapshot(q, async (snapshot) => {
       await getDocs(q).then((snap) => {
         if (snap.docs.length === 0) return;
 
-        const depositsArr = [];
-        let nextAccrual;
-
         snap.docs.forEach((item) => {
-          runTransaction(firestore, async (transaction) => {
-            const deposit = item.data();
+          const deposit = item.data();
+          const depositIsActive = deposit.status === "active";
+
+          if (depositIsActive && getNextAccrual(deposit) < nextAccrual) {
+            nextAccrual = getNextAccrual(deposit);
+          }
+
+          runTransaction(firestore, (transaction) => {
             const timeNow = Math.round(Date.now() / 1000);
             const depositOpenTime = deposit.date.seconds;
             const charges = Math.floor((timeNow - depositOpenTime) / (3600 * 24));
             const chargesSubtract = charges - deposit.charges;
             const receivedByCharges = ((deposit.willReceived / deposit.days) * chargesSubtract).toFixed(2);
-
             const isLastCharge = charges === deposit.days;
 
-            console.log(nextAccrual, "before nextAccrual");
-
-            if (deposit.status === "active") {
-              nextAccrual = getNextAccrual(deposit);
-            }
-
-            console.log(nextAccrual, "after nextAccrual");
-
-            if (isLastCharge) {
+            if (isLastCharge && depositIsActive) {
               transaction.update(doc(firestore, "users", userData.email), {
                 [`paymentMethods.${deposit.paymentMethod}.available`]: increment(deposit.amount),
               });
@@ -88,21 +84,26 @@ const PersonalArea = () => {
                 status: isLastCharge ? "completed" : "active",
               });
             }
-            const depositIsActive = deposit.status === "active";
 
-            if (getNextAccrual(deposit) < nextAccrual && depositIsActive) {
-              nextAccrual = getNextAccrual(deposit);
-            }
+            // if (getNextAccrual(deposit) < nextAccrual) {
+            //   nextAccrual = getNextAccrual(deposit);
+            // }
 
-            depositsArr.push({
-              ...deposit,
-              nextAccrual: deposit.charges < deposit.days ? getNextAccrual(deposit) : "",
-            });
-            setDepositsList(depositsArr);
-            setNearestAccrual(nextAccrual);
+            return Promise.resolve();
+          }).then(() => {
+            console.log(nextAccrual, "nextAccrual");
+            // setNearestAccrual(nextAccrual);
           });
+
+          depositsArr.push({
+            ...deposit,
+            nextAccrual: deposit.charges < deposit.days ? getNextAccrual(deposit) : "",
+          });
+
+          setDepositsList(depositsArr);
         });
       });
+      setNearestAccrual(nextAccrual);
       // });
     };
 
@@ -120,7 +121,7 @@ const PersonalArea = () => {
         <UserWallets paymentMethods={userData.paymentMethods} />
         <UserStatistic userData={userData} />
         <DepositsStatus deposits={depositsList} />
-        <TimeToPayment nearestAccrual={nearestAccrual} depositsIsEmpty={depositsList.length === 0} />
+        <TimeToPayment nearestAccrual={nearestAccrual} />
       </div>
     </div>
   );

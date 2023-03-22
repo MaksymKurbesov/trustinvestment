@@ -10,18 +10,15 @@ import {
   onSnapshot,
   orderBy,
   query,
-  updateDoc,
   where,
   runTransaction,
 } from "firebase/firestore";
 import { FirebaseContext } from "../../index";
-import { TransactionContext } from "../../App";
 
 export const AuthProvider = ({ children }) => {
   const auth = getAuth();
   const [signedInUser, setSignedInUser] = useState(null);
   const { firestore } = useContext(FirebaseContext);
-  const { transactionIsSent, setTransactionIsSent } = useContext(TransactionContext);
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
@@ -63,46 +60,47 @@ export const AuthProvider = ({ children }) => {
         const transactionPaymentMethod = modifiedTransaction.paymentMethod;
 
         if (isWithdrawnTransaction) {
-          // await runTransaction(firestore, async (transaction) => {
-          //   const transactionRef = await transaction.get(change.doc.ref);
-          //
-          //   updateDoc(doc(firestore, "users", signedInUser.email), {
-          //     [`paymentMethods.${transactionPaymentMethod}.withdrawn`]: increment(transactionAmount),
-          //     [`paymentMethods.${transactionPaymentMethod}.available`]: increment(-transactionAmount),
-          //     withdrawn: increment(transactionAmount),
-          //   });
-          // });
+          await runTransaction(firestore, async (transaction) => {
+            const userRef = doc(firestore, "users", signedInUser.email);
+            const transactionDoc = await transaction.get(change.doc.ref);
+
+            if (transactionDoc.data()._status === "running") {
+              transaction.update(change.doc.ref, {
+                _status: "completed",
+              });
+
+              transaction.update(userRef, {
+                [`paymentMethods.${transactionPaymentMethod}.withdrawn`]: increment(transactionAmount),
+                [`paymentMethods.${transactionPaymentMethod}.available`]: increment(-transactionAmount),
+                withdrawn: increment(transactionAmount),
+              });
+            }
+          });
         }
 
         if (isDepositTransaction) {
-          setTransactionIsSent(true);
           await runTransaction(firestore, async (transaction) => {
-            // console.log("transaction run");
-            // const userRef = doc(firestore, "users", signedInUser.email);
-            // const userDoc = await transaction.get(userRef);
-            // const transactionDoc = await transaction.get(change.doc.ref);
-            //
-            // const wallet = userDoc.data().paymentMethods[transactionDoc.data().executor];
-            //
-            // const newAvailable = wallet.available + transactionDoc.data().amount;
-            // const newDeposited = wallet.deposited + transactionDoc.data().amount;
-            //
-            // transaction.update(userRef, {
-            //   [`paymentMethods.${transactionPaymentMethod}.available`]: newAvailable,
-            //   [`paymentMethods.${transactionPaymentMethod}.deposited`]: newDeposited,
-            // });
-          });
+            console.log("transaction run");
+            const userRef = doc(firestore, "users", signedInUser.email);
+            const userDoc = await transaction.get(userRef);
+            const transactionDoc = await transaction.get(change.doc.ref);
 
-          // await runTransaction(firestore, async (transaction) => {
-          //   const transactionRef = await transaction.get(change.doc.ref);
-          //
-          //   updateDoc(doc(firestore, "users", signedInUser.email), {
-          //     [`paymentMethods.${transactionPaymentMethod}.available`]: increment(modifiedTransaction.amount),
-          //     [`paymentMethods.${transactionPaymentMethod}.deposited`]: increment(modifiedTransaction.amount),
-          //   });
-          // });
-        } else {
-          return;
+            const wallet = userDoc.data().paymentMethods[transactionDoc.data().executor];
+
+            const newAvailable = wallet.available + transactionDoc.data().amount;
+            const newDeposited = wallet.deposited + transactionDoc.data().amount;
+
+            if (transactionDoc.data()._status === "running") {
+              transaction.update(change.doc.ref, {
+                _status: "completed",
+              });
+
+              transaction.update(userRef, {
+                [`paymentMethods.${transactionPaymentMethod}.available`]: increment(newAvailable),
+                [`paymentMethods.${transactionPaymentMethod}.deposited`]: increment(newDeposited),
+              });
+            }
+          });
         }
       });
     });

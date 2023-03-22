@@ -26,10 +26,10 @@ const CountdownTimer = ({ targetDate = 0, cn }) => {
   return (
     <div className={`${styles["countdown-wrapper"]} ${styles[cn]}`}>
       {hours < -1 ? (
-        <p className={styles["success"]}>Выполнено</p>
+        <p className={styles["success"]}>{t("sign_in.success")}</p>
       ) : (
         <div className={styles["countdown"]}>
-          {days === -1 ? (
+          {days < 0 ? (
             t("personal_area.loading")
           ) : (
             <>

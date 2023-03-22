@@ -44,8 +44,8 @@ const getColumns = (t) => {
       dataIndex: "nextAccrual",
       key: "nextAccrual",
       responsive: ["sm"],
-      render: (text, record) => {
-        return <CountdownTimer targetDate={text} deposit={record} />;
+      render: (text) => {
+        return <CountdownTimer targetDate={text} />;
       },
       width: "20%",
     },

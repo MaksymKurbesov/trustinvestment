@@ -79,7 +79,7 @@ const Withdraw = () => {
       title: t("make_deposit.enter_amount"),
       content: (
         <>
-          <EnterAmount form={form} stepNumber={"02"} amountHandler={setAmount} tax={tax} />
+          <EnterAmount form={form} stepNumber={"02"} amountHandler={setAmount} tax={tax} withdrawnOperation={true} />
           <div className={styles["additional-info"]}>
             <AdditionalInformation
               infoLabel1={t("replenishment.fee")}
@@ -156,7 +156,7 @@ const Withdraw = () => {
     form.validateFields().then(async (values) => {
       await addDoc(collection(firestore, "transactions"), {
         account_id: auth.currentUser.uid,
-        amount: form.getFieldValue("amount"),
+        amount: +form.getFieldValue("amount"),
         status: "Ожидание",
         type: "Вывод",
         date: new Date(),
@@ -164,6 +164,7 @@ const Withdraw = () => {
         executor: paymentMethod,
         paymentMethod: paymentMethod,
         tax: paymentMethod === "TRC20 Tether" ? 1 : 0,
+        _status: "running",
       }).then(() => {
         setIsConfirmedModalOpen(true);
       });

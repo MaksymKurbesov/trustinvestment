@@ -1,14 +1,11 @@
 import { Button, Steps } from "antd";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import Form from "antd/lib/form";
 import { Plans } from "../Plans/Plans";
 import { useTranslation } from "react-i18next";
-import { ChoosePaymentMethod } from "components/Choose-Payment-Method/Choose-Payment-Method";
 import { EnterAmount } from "components/Enter-Amount/Enter-Amount";
 import { AdditionalInformation } from "components/Additional-Information/Additional-Information";
 import styles from "./DepositSteps.module.css";
-import withdrawnAnimation from "../../../../assets/lottie-animations/withdrawn-animation2.json";
-import Lottie from "lottie-react";
 import {
   addDoc,
   collection,
@@ -23,7 +20,7 @@ import {
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { FirebaseContext } from "index";
-import { calculateIncomeInDay, getClosingDate, getRandomArbitrary } from "utils/helpers";
+import { calculateIncomeInDay, getRandomArbitrary } from "utils/helpers";
 import { PERCENTAGE_BY_LVL, WALLETS_ICONS } from "utils/consts";
 import { useOutletContext } from "react-router-dom";
 import Modal from "antd/lib/modal";
@@ -70,7 +67,6 @@ const DepositSteps = ({ form, incomeInDay, totalIncome }) => {
     {
       title: t("make_deposit.choose_payment_method"),
       content: (
-        // <ChoosePaymentMethod />
         <Form.Item
           name={"payment-method"}
           rules={[
@@ -81,19 +77,21 @@ const DepositSteps = ({ form, incomeInDay, totalIncome }) => {
           ]}
         >
           <Radio.Group className={styles["wallets"]}>
-            {Object.keys(WALLETS_ICONS).map((item, index) => {
-              return (
-                <Radio.Button value={item} key={index} className={styles["wallet"]}>
-                  <img src={WALLETS_ICONS[item]} width={50} />
-                  <div>
-                    <p>{item}</p>
-                    <p className={styles["balance"]}>
-                      {t("balance")}: {userData.paymentMethods[item].available}$
-                    </p>
-                  </div>
-                </Radio.Button>
-              );
-            })}
+            <>
+              {Object.keys(WALLETS_ICONS).map((item, index) => {
+                return (
+                  <Radio.Button value={item} key={index} className={styles["wallet"]}>
+                    <img src={WALLETS_ICONS[item]} width={50} />
+                    <div>
+                      <p>{item}</p>
+                      <p className={styles["balance"]}>
+                        {t("balance")}: {userData.paymentMethods[item].available}$
+                      </p>
+                    </div>
+                  </Radio.Button>
+                );
+              })}
+            </>
           </Radio.Group>
         </Form.Item>
       ),
@@ -188,9 +186,11 @@ const DepositSteps = ({ form, incomeInDay, totalIncome }) => {
         const q1 = query(collection(firestore, "users"), where("nickname", "==", referredBy));
         await getDocs(q1).then(async (querySnap) => {
           const referralLevel = querySnap.docs[0].data();
+          const referralAmount = (amount / 100) * PERCENTAGE_BY_LVL[REFERRALS_TOTAL_LEVELS - limit];
 
           await updateDoc(doc(firestore, "users", referralLevel.email), {
-            referals: increment((amount / 100) * PERCENTAGE_BY_LVL[REFERRALS_TOTAL_LEVELS - limit]),
+            referals: increment(referralAmount),
+            [`paymentMethods.${form.getFieldValue("payment-method")}.referrals`]: increment(referralAmount),
           });
 
           await addDoc(collection(firestore, "transactions"), {

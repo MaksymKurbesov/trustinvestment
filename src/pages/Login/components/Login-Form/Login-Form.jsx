@@ -61,9 +61,9 @@ const LoginForm = ({ handleClick, resetPassword }) => {
         <Checkbox>{t("sign_in.remember_me")}</Checkbox>
       </Form.Item>
       <Form.Item>
-        <button onClick={() => setActiveClass("active")} className={styles["reset-password-button"]} href="">
+        <Button onClick={() => setActiveClass("active")} className={styles["reset-password-button"]}>
           {t("sign_in.forgot_password")}
-        </button>
+        </Button>
         <div className={`${styles[`reset-password-wrapper`]} ${styles[activeClass]}`}>
           <Input
             placeholder={t("sign_in.enter_email")}
@@ -72,7 +72,7 @@ const LoginForm = ({ handleClick, resetPassword }) => {
             onChange={onChange}
           />
           <Button onClick={() => resetPassword(email)} className={`${styles[`send-button`]} ${styles[activeClass]}`}>
-            {t("sign_in.forgot_password")}
+            {t("sign_in.send")}
           </Button>
         </div>
       </Form.Item>

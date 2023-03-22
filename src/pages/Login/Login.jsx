@@ -73,13 +73,6 @@ const Login = () => {
   const handleLogin = (email, pass) => {
     signInWithEmailAndPassword(auth, email, pass)
       .then((userCredential) => {
-        console.log(userCredential.user.emailVerified, "userCredential.user.emailVerified ");
-
-        console.log(
-          userCredential.user.metadata.createdAt < FEBRUARY_21_2022,
-          "userCredential.user.metadata.createdAt "
-        );
-
         if (userCredential.user.metadata.createdAt < FEBRUARY_21_2022) {
           sessionStorage.setItem("Auth Token", userCredential._tokenResponse.refreshToken);
           navigate("/my-account");

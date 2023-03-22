@@ -80,7 +80,7 @@ const MainSider = ({ setCollapsed, collapsed }) => {
               ),
             },
           ]}
-          defaultValue="en"
+          defaultValue="ru"
           onChange={handleChange}
           labelInValue={true}
         />

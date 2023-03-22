@@ -97,6 +97,12 @@ const RegisterForm = ({ handleClick }) => {
           {
             required: true,
             message: t("registration.password_warning"),
+            // validateTrigger: "onBlur",
+          },
+          {
+            min: 6,
+            message: t("registration.password_length_warning"),
+            // validateTrigger: "onBlur",
           },
         ]}
         hasFeedback
@@ -111,6 +117,7 @@ const RegisterForm = ({ handleClick }) => {
           {
             required: true,
             message: t("registration.confirm_password_warning"),
+            // validateTrigger: "onBlur",
           },
           ({ getFieldValue }) => ({
             validator(_, value) {
@@ -135,6 +142,7 @@ const RegisterForm = ({ handleClick }) => {
             required: true,
             message: t("registration.nickname_warning"),
             whitespace: true,
+            // validateTrigger: "onBlur",
           },
         ]}
       >
@@ -148,6 +156,7 @@ const RegisterForm = ({ handleClick }) => {
           {
             required: true,
             message: t("registration.phone_number_warning"),
+            // validateTrigger: "onBlur",
           },
         ]}
       >
