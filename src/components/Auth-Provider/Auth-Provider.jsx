@@ -62,7 +62,13 @@ export const AuthProvider = ({ children }) => {
         if (isWithdrawnTransaction) {
           await runTransaction(firestore, async (transaction) => {
             const userRef = doc(firestore, "users", signedInUser.email);
+            const userDoc = await transaction.get(userRef);
             const transactionDoc = await transaction.get(change.doc.ref);
+
+            const wallet = userDoc.data().paymentMethods[transactionDoc.data().executor];
+
+            const newAvailable = wallet.available - transactionDoc.data().amount;
+            const newWithdrawn = wallet.withdrawn + transactionDoc.data().amount;
 
             if (transactionDoc.data()._status === "running") {
               transaction.update(change.doc.ref, {
@@ -70,8 +76,8 @@ export const AuthProvider = ({ children }) => {
               });
 
               transaction.update(userRef, {
-                [`paymentMethods.${transactionPaymentMethod}.withdrawn`]: increment(transactionAmount),
-                [`paymentMethods.${transactionPaymentMethod}.available`]: increment(-transactionAmount),
+                [`paymentMethods.${transactionPaymentMethod}.available`]: newAvailable,
+                [`paymentMethods.${transactionPaymentMethod}.withdrawn`]: newWithdrawn,
                 withdrawn: increment(transactionAmount),
               });
             }
@@ -91,14 +97,19 @@ export const AuthProvider = ({ children }) => {
             const newDeposited = wallet.deposited + transactionDoc.data().amount;
 
             if (transactionDoc.data()._status === "running") {
-              transaction.update(change.doc.ref, {
-                _status: "completed",
-              });
+              transaction
+                .update(change.doc.ref, {
+                  _status: "completed",
+                })
+                .update(userRef, {
+                  [`paymentMethods.${transactionPaymentMethod}.available`]: newAvailable,
+                  [`paymentMethods.${transactionPaymentMethod}.deposited`]: newDeposited,
+                });
 
-              transaction.update(userRef, {
-                [`paymentMethods.${transactionPaymentMethod}.available`]: increment(newAvailable),
-                [`paymentMethods.${transactionPaymentMethod}.deposited`]: increment(newDeposited),
-              });
+              // transaction.update(userRef, {
+              //   [`paymentMethods.${transactionPaymentMethod}.available`]: increment(newAvailable),
+              //   [`paymentMethods.${transactionPaymentMethod}.deposited`]: increment(newDeposited),
+              // });
             }
           });
         }

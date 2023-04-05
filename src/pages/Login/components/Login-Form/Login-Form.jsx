@@ -10,9 +10,17 @@ import { useTranslation } from "react-i18next";
 const LoginForm = ({ handleClick, resetPassword }) => {
   const [email, setEmail] = useState("");
   const { t } = useTranslation();
+  const [loading, setLoading] = useState(false);
 
   const onFinish = ({ email, password }) => {
-    handleClick(email, password);
+    setLoading(true);
+    handleClick(email, password)
+      .then(() => {
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
   };
 
   const onChange = (e) => {
@@ -71,7 +79,11 @@ const LoginForm = ({ handleClick, resetPassword }) => {
             value={email}
             onChange={onChange}
           />
-          <Button onClick={() => resetPassword(email)} className={`${styles[`send-button`]} ${styles[activeClass]}`}>
+          <Button
+            disabled={loading}
+            onClick={() => resetPassword(email)}
+            className={`${styles[`send-button`]} ${styles[activeClass]}`}
+          >
             {t("sign_in.send")}
           </Button>
         </div>

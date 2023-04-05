@@ -122,11 +122,17 @@ export const calculateIncomeInDay = (form) => {
 };
 
 export const calculateTotalIncome = (form) => {
-  return +(
-    (form.getFieldValue("amount") / 100) *
-    form.getFieldValue("plan")?.percent *
-    form.getFieldValue("plan")?.days
-  ).toFixed(2);
+  const plan = form.getFieldValue("plan");
+
+  if (!plan?.percent) return;
+
+  return (
+    +(
+      (form.getFieldValue("amount") / 100) *
+      form.getFieldValue("plan")?.percent *
+      form.getFieldValue("plan")?.days
+    ).toFixed(2) || 0
+  );
 };
 
 export const setUserCustomFields = (signedUpUser, customFields) => {

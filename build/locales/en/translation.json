@@ -55,7 +55,13 @@
     "individually": "Individually",
     "end_term": "At the end of term",
     "pay_everyday": "Payment daily",
-    "choose_plan_warning": "Please choose a plan"
+    "choose_plan_warning": "Please choose a plan",
+    "newbie": "Newbie",
+    "basic": "Basic",
+    "optimal": "Optimal",
+    "experienced": "Experienced",
+    "maximum": "Maximum",
+    "individual": "Individual"
   },
   "roadmap": {
     "may": "May",

@@ -10,12 +10,14 @@ import useLottie from "lottie-react";
 import { setUserCustomFields } from "../../utils/helpers";
 import Modal from "antd/lib/modal";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 const REFERRALS_TOTAL_LEVELS = 6;
 
 const Register = () => {
   const { t } = useTranslation();
   const { firestore } = useContext(FirebaseContext);
+  const navigate = useNavigate();
   const auth = getAuth();
 
   const SignUpAnimation = useLottie({
@@ -23,15 +25,13 @@ const Register = () => {
     className: styles["signUpAnimation"],
   });
 
-  // useEffect(() => {
-  //   setDoc(
-  //     doc(firestore, "users", "azrv12@gmail.com"),
-  //     setUserCustomFields(
-  //       { uid: "azrv12@gmail.com", metadata: { creationTime: new Date() } },
-  //       { email: "azrv12@gmail.com", nickname: "", phone: "", referredBy: "rich" }
-  //     )
-  //   );
-  // }, []);
+  useEffect(() => {
+    auth.onAuthStateChanged((currentUser) => {
+      if (currentUser) {
+        navigate("/my-account");
+      }
+    });
+  }, []);
 
   const handleRegister = async (user) => {
     const auth = getAuth();
@@ -91,9 +91,3 @@ const Register = () => {
 };
 
 export { Register };
-
-// const addUser = () => {
-//   setDoc(doc(firestore, "users", signedUpUser.email), setUserCustomFields(signedUpUser, user)).then(() => {
-//     setReferrals(user.referredBy, REFERRALS_TOTAL_LEVELS);
-//   });
-// }

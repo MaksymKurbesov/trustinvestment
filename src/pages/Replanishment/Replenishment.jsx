@@ -54,13 +54,6 @@ const Replenishment = () => {
         });
       };
       sendData();
-
-      handleSubmit({
-        ...values,
-        email: userData.email,
-        // amount: data.amount,
-        // tariffPlan: data.tariffPlan,
-      });
     });
   };
 

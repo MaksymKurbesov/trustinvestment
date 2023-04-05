@@ -55,7 +55,13 @@
     "individually": "Индивидуально",
     "end_term": "В конце срока",
     "pay_everyday": "Выплата ежедневно",
-    "choose_plan_warning": "Выберите план, пожалуйста"
+    "choose_plan_warning": "Выберите план, пожалуйста",
+    "newbie": "Новичок",
+    "basic": "Базовый",
+    "optimal": "Оптимальный",
+    "experienced": "Опытный",
+    "maximum": "Максимальный",
+    "individual": "Индивидуальный"
   },
   "roadmap": {
     "may": "Май",
@@ -231,7 +237,7 @@
     "nickname": "Никнейм",
     "phone_number": "Номер телефона",
     "nickname_referral": "Ник реферала",
-    "agree": "Я согласен с <link>этими правилами<link/>",
+    "agree": "Я согласен с <button>этими правилами</button>",
     "agree_warning": "Следует принять соглашение",
     "notification": {
       "title": "Поздравляем, вы успешно зарегистрированы!",

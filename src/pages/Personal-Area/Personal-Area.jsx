@@ -62,7 +62,7 @@ const PersonalArea = () => {
               });
             }
 
-            if (chargesSubtract > 0) {
+            if (chargesSubtract > 0 && depositIsActive) {
               addDoc(collection(firestore, "transactions"), {
                 account_id: userData.uid,
                 amount: +receivedByCharges,
@@ -70,7 +70,7 @@ const PersonalArea = () => {
                 type: "Начисления",
                 date: new Date(),
                 email: userData.email,
-                executor: userData.nickname,
+                executor: deposit.paymentMethod,
               });
 
               transaction.update(doc(firestore, "users", userData.email), {

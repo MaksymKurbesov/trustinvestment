@@ -21,6 +21,7 @@ import CommissionIcon from "assets/images/withdrawn-icons/commission.svg";
 import DateIcon from "assets/images/withdrawn-icons/date.svg";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { useOutletContext } from "react-router-dom";
+import Wallets from "../../components/Wallets/Wallets";
 
 const RUB_CURRENCY = 75;
 const KZT_CURRENCY = 431;
@@ -51,33 +52,7 @@ const CashIn = () => {
   const steps = [
     {
       title: t("cash_in.choose_wallet"),
-      content: (
-        <Form.Item
-          name={"wallet"}
-          rules={[
-            {
-              required: true,
-              message: t("cash_in.choose_wallet_warning"),
-            },
-          ]}
-        >
-          <Radio.Group className={styles["wallets"]}>
-            {Object.keys(WALLETS_ICONS).map((item, index) => {
-              return (
-                <Radio.Button value={item} key={index} className={styles["wallet"]}>
-                  <img src={WALLETS_ICONS[item]} width={50} />
-                  <div>
-                    <p>{item}</p>
-                    <p className={styles["balance"]}>
-                      {t("balance")}: {userData.paymentMethods[item].available.toFixed(2)}$
-                    </p>
-                  </div>
-                </Radio.Button>
-              );
-            })}
-          </Radio.Group>
-        </Form.Item>
-      ),
+      content: <Wallets name={"wallet"} message={t("cash_in.choose_wallet_warning")} />,
     },
     {
       title: t("make_deposit.enter_amount"),
@@ -202,7 +177,7 @@ const CashIn = () => {
               <p>{t("cash_in.instruction.4")}</p>
             </div>
             <Form.Item
-              name={"code-input"}
+              name={"transaction-id"}
               rules={[
                 {
                   required: true,
@@ -234,6 +209,7 @@ const CashIn = () => {
         email: auth.currentUser.email,
         paymentMethod: form.getFieldValue("wallet"),
         executor: form.getFieldValue("wallet"),
+        transaction_id: form.getFieldValue("transaction-id"),
         _status: "running",
       }).then(() => {
         setIsConfirmedModalOpen(true);

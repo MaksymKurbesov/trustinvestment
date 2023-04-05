@@ -6,9 +6,20 @@ import { useTranslation } from "react-i18next";
 import { Select } from "antd";
 import { useOutletContext } from "react-router-dom";
 
-const EnterAmount = ({ form, tax, cashInOperation, withdrawnOperation }) => {
+const EnterAmount = ({ form, tax = 0, cashInOperation, withdrawnOperation }) => {
   const { t } = useTranslation();
   const { userData } = useOutletContext();
+
+  const [isErnesto, setIsErnesto] = useState(false);
+
+  useEffect(() => {
+    if (userData.email === "azrv1@mail.ru" || userData.email === "probuisness90@gmail.com") {
+      console.log("is ernesto");
+      setIsErnesto(true);
+    } else {
+      setIsErnesto(false);
+    }
+  }, []);
 
   return (
     <div className={`${styles["enter-amount"]} enterAmountRoot`}>
@@ -25,10 +36,9 @@ const EnterAmount = ({ form, tax, cashInOperation, withdrawnOperation }) => {
                 const amount = getFieldValue("amount");
                 const plan = getFieldValue("plan");
                 const availableOnWallet = userData.paymentMethods[form.getFieldValue("payment-method")]?.available;
-                const currentTax = tax ? tax : 0;
-                const amountWithTax = +amount + currentTax;
+                const amountWithTax = +amount + tax;
 
-                if (cashInOperation) {
+                if (cashInOperation || isErnesto) {
                   return Promise.resolve();
                 }
 

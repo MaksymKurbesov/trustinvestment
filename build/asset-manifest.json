@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.6e7a9fb2.css",
-    "main.js": "/static/js/main.5869bfbe.js",
+    "main.css": "/static/css/main.bbbaf396.css",
+    "main.js": "/static/js/main.d6b30e60.js",
     "static/media/roadmap.png": "/static/media/roadmap.78f09cf84b7347c12b4b.png",
     "static/media/hero-banner-bg.png": "/static/media/hero-banner-bg.5cb7359aca18637bb444.png",
     "static/media/faq-bg.webp": "/static/media/faq-bg.3d11d93102624ad877ff.webp",
@@ -22,21 +22,21 @@
     "static/media/faq.svg": "/static/media/faq.e7203f23d21922e7a507.svg",
     "static/media/polkadot-logo.png": "/static/media/polkadot-logo.8bbd1a4e0076dc37220f.png",
     "static/media/RothekBold.otf": "/static/media/RothekBold.52f80c10c0593ccbf72f.otf",
-    "static/media/4.webp": "/static/media/4.bce1ec8649d1c3f7973c.webp",
-    "static/media/2.webp": "/static/media/2.494233a138412d8fb51c.webp",
-    "static/media/1.webp": "/static/media/1.9c86a8209f6378abd006.webp",
     "static/media/5.png": "/static/media/5.d7f1ccb2f6f1d8976665.png",
     "static/media/TEST.png": "/static/media/TEST.4da056ca397fb802851f.png",
     "static/media/affilate-glow.png": "/static/media/affilate-glow.8ccfee9c4e0faf6924e5.png",
+    "static/media/6.webp": "/static/media/6.dd7f456a4e1cf862a4ff.webp",
     "static/media/about-company-image2.svg": "/static/media/about-company-image2.7512c9655172de39018d27e7def292bf.svg",
-    "static/media/6.webp": "/static/media/6.5fbbdecaeec2525abd6e.webp",
     "static/media/company3.webp": "/static/media/company3.149e737da5640237da81.webp",
-    "static/media/3.webp": "/static/media/3.c2f42706be660c623e5a.webp",
+    "static/media/4.webp": "/static/media/4.f99626bd630ca1909466.webp",
     "static/media/about-company-image.svg": "/static/media/about-company-image.043c58b77217124bca6f4ff611ce98bb.svg",
     "static/media/ethereum.png": "/static/media/ethereum.1e15b1884ed960dfaa7c.png",
+    "static/media/3.webp": "/static/media/3.ef6c70ca69cf3ee3d80c.webp",
     "static/media/youtube.png": "/static/media/youtube.4aa80dc8cb0f5629e608.png",
-    "static/media/5.webp": "/static/media/5.d350a96208563b0b335a.webp",
+    "static/media/5.webp": "/static/media/5.98f9edbf087b4511d3cb.webp",
     "static/media/contacts-page-decorate.svg": "/static/media/contacts-page-decorate.2b36d33c9782a0037acde72ef6ee78fd.svg",
+    "static/media/2.webp": "/static/media/2.f6599369020cc2ad9260.webp",
+    "static/media/1.webp": "/static/media/1.b102dbbb29788d303567.webp",
     "static/media/affiliate-image.png": "/static/media/affiliate-image.805adedd83fe1d7a4c7d.png",
     "static/media/bitcoin.png": "/static/media/bitcoin.8ab89a6822692b9f9ff6.png",
     "static/media/withdrawn.svg": "/static/media/withdrawn.f77f5f5e5fda1791e2f2b821d5812828.svg",
@@ -76,11 +76,11 @@
     "static/media/section-title.svg": "/static/media/section-title.81666729911a1dd82ea8.svg",
     "static/media/getFetch.cjs": "/static/media/getFetch.40f37ddea2378391108f.cjs",
     "static/media/rus-lang.svg": "/static/media/rus-lang.b41328698709cf180d8d19cd65d03050.svg",
-    "main.6e7a9fb2.css.map": "/static/css/main.6e7a9fb2.css.map",
-    "main.5869bfbe.js.map": "/static/js/main.5869bfbe.js.map"
+    "main.bbbaf396.css.map": "/static/css/main.bbbaf396.css.map",
+    "main.d6b30e60.js.map": "/static/js/main.d6b30e60.js.map"
   },
   "entrypoints": [
-    "static/css/main.6e7a9fb2.css",
-    "static/js/main.5869bfbe.js"
+    "static/css/main.bbbaf396.css",
+    "static/js/main.d6b30e60.js"
   ]
 }

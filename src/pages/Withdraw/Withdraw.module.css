@@ -112,6 +112,32 @@
   margin-bottom: 20px;
 }
 
+.disclaimer {
+  max-width: 750px;
+  background-color: rgba(217, 255, 197, 0.69);
+  padding: 20px;
+  border-radius: 10px;
+  color: rgba(0, 0, 0, 0.7);
+  margin: 20px auto 40px;
+}
+
+.disclaimer p span {
+  font-weight: 600;
+}
+
+.disclaimer p:not(:last-child) {
+  margin-bottom: 20px;
+}
+
+.nickname {
+  font-weight: 600;
+}
+
+.private-key {
+  width: 150px;
+  margin-bottom: 20px;
+}
+
 @media screen and (max-width: 600px) {
   .content {
     padding: 10px;
@@ -144,6 +170,10 @@
   }
 
   .information-list p {
+    font-size: 12px;
+  }
+
+  .disclaimer {
     font-size: 12px;
   }
 }

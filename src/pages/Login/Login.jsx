@@ -70,7 +70,7 @@ const Login = () => {
       });
   };
 
-  const handleLogin = (email, pass) => {
+  const handleLogin = async (email, pass) => {
     signInWithEmailAndPassword(auth, email, pass)
       .then((userCredential) => {
         if (userCredential.user.metadata.createdAt < FEBRUARY_21_2022) {
@@ -88,16 +88,6 @@ const Login = () => {
           sessionStorage.setItem("Auth Token", userCredential._tokenResponse.refreshToken);
           navigate("/my-account");
         }
-
-        // if (!userCredential.user.emailVerified || !(userCredential.user.metadata.createdAt < FEBRUARY_21_2022)) {
-        //   confirmEmailNotification();
-        //   sendEmailVerification(userCredential.user);
-        //   auth.signOut();
-        //   return;
-        // } else {
-        //   sessionStorage.setItem("Auth Token", userCredential._tokenResponse.refreshToken);
-        //   navigate("/my-account");
-        // }
       })
       .catch((e) => {
         errorNotification();
