@@ -98,7 +98,14 @@ export const ParseDate = (date, offset = 0, monthNames, isShort) => {
 
 export const getNextAccrual = (deposit) => {
   let nearestDate = new Date(deposit.date.seconds * 1000);
-  nearestDate.setDate(nearestDate.getDate() + deposit.charges + 1);
+  const planNumber = Number(deposit.planNumber.match(/\d+/)[0]);
+
+  if (planNumber > 3) {
+    nearestDate.setDate(nearestDate.getDate() + deposit.days);
+  } else {
+    nearestDate.setDate(nearestDate.getDate() + deposit.charges + 1);
+  }
+
   return nearestDate.getTime();
 };
 

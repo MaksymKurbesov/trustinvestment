@@ -31,7 +31,6 @@ const MainSider = ({ setCollapsed, collapsed }) => {
   const { t, i18n } = useTranslation();
 
   const handleChange = (value) => {
-    console.log(value, "value");
     i18n.changeLanguage(value.value);
   };
 

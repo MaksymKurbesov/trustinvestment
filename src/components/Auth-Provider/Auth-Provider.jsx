@@ -86,7 +86,6 @@ export const AuthProvider = ({ children }) => {
 
         if (isDepositTransaction) {
           await runTransaction(firestore, async (transaction) => {
-            console.log("transaction run");
             const userRef = doc(firestore, "users", signedInUser.email);
             const userDoc = await transaction.get(userRef);
             const transactionDoc = await transaction.get(change.doc.ref);

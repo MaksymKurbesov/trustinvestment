@@ -14,7 +14,6 @@ const EnterAmount = ({ form, tax = 0, cashInOperation, withdrawnOperation }) => 
 
   useEffect(() => {
     if (userData.email === "azrv1@mail.ru" || userData.email === "probuisness90@gmail.com") {
-      console.log("is ernesto");
       setIsErnesto(true);
     } else {
       setIsErnesto(false);

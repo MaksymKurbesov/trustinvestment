@@ -36,7 +36,6 @@ const PersonalArea = () => {
       const depositsArr = [];
       let nextAccrual = new Date().getTime() * 10000;
 
-      // onSnapshot(q, async (snapshot) => {
       await getDocs(q).then((snap) => {
         if (snap.docs.length === 0) return;
 
@@ -51,7 +50,17 @@ const PersonalArea = () => {
           runTransaction(firestore, (transaction) => {
             const timeNow = Math.round(Date.now() / 1000);
             const depositOpenTime = deposit.date.seconds;
-            const charges = Math.floor((timeNow - depositOpenTime) / (3600 * 24));
+            const planNumber = Number(deposit.planNumber.match(/\d+/)[0]);
+
+            let charges;
+
+            if (planNumber <= 3) {
+              charges = Math.floor((timeNow - depositOpenTime) / (3600 * 24));
+            } else {
+              charges = Math.floor((timeNow - depositOpenTime) / (3600 * (deposit.days * 24)));
+            }
+
+            console.log(charges, "charges");
             const chargesSubtract = charges - deposit.charges;
             const receivedByCharges = ((deposit.willReceived / deposit.days) * chargesSubtract).toFixed(2);
             const isLastCharge = charges === deposit.days;
@@ -85,14 +94,7 @@ const PersonalArea = () => {
               });
             }
 
-            // if (getNextAccrual(deposit) < nextAccrual) {
-            //   nextAccrual = getNextAccrual(deposit);
-            // }
-
             return Promise.resolve();
-          }).then(() => {
-            console.log(nextAccrual, "nextAccrual");
-            // setNearestAccrual(nextAccrual);
           });
 
           depositsArr.push({
@@ -104,7 +106,6 @@ const PersonalArea = () => {
         });
       });
       setNearestAccrual(nextAccrual);
-      // });
     };
 
     getDeposits();

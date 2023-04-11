@@ -23,8 +23,6 @@ const MainHeader = () => {
     });
   }, []);
 
-  console.log(location.pathname);
-
   return (
     <AntHeader
       className={`${styles["header"]} ${styles[`opacity-${location.pathname === "/" ? "index" : location.pathname}`]}`}

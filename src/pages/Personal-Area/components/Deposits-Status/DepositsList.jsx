@@ -25,14 +25,24 @@ const getColumns = (t) => {
       dataIndex: "progress",
       key: "progress",
       render: (text, record) => {
+        const planNumber = Number(record.planNumber.match(/\d+/)[0]);
+
         return (
           <div className={styles["progress"]}>
             <Progress
               percent={+((record.charges * 100) / record.days).toFixed(1)}
               showInfo={window.innerWidth > 1200}
             />
+            {/*<p>{window.innerWidth < 1000 ? "" : <span>{`${t("personal_area.accruals")}` {`${planNumber} > 3 ? ${record.charges} / 1 :  ${record.charges} / ${record.days}`}</span></p>*/}
             <p>
-              {window.innerWidth < 1000 ? "" : `${t("personal_area.accruals")}`} {record.charges} / {record.days}
+              {window.innerWidth > 1000 ? (
+                <span>
+                  {t("personal_area.accruals")}{" "}
+                  {planNumber > 3 ? `${record.charges} / 1` : `${record.charges} / ${record.days}`}
+                </span>
+              ) : (
+                ""
+              )}
             </p>
           </div>
         );
@@ -45,6 +55,7 @@ const getColumns = (t) => {
       key: "nextAccrual",
       responsive: ["sm"],
       render: (text) => {
+        console.log(text, "text");
         return <CountdownTimer targetDate={text} />;
       },
       width: "20%",
@@ -98,7 +109,6 @@ const getColumns = (t) => {
 };
 
 const DepositsList = ({ deposits }) => {
-  console.log(deposits, "deposits list");
   const { t, i18n } = useTranslation();
 
   return (

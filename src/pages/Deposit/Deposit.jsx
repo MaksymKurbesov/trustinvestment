@@ -47,8 +47,7 @@ const Deposit = () => {
   const [incomeInDay, setIncomeInDay] = useState(0);
   const [totalIncome, setTotalIncome] = useState(0);
   const [form] = Form.useForm();
-
-  console.log(form.getFieldValue("plan"));
+  const [loading, setLoading] = useState(false);
 
   const handleConfirmedOk = () => {
     setIsConfirmedModalOpen(false);
@@ -210,6 +209,8 @@ const Deposit = () => {
 
   const onDone = async () => {
     form.validateFields().then(async (values) => {
+      setLoading(true);
+
       const q = query(collection(firestore, "users", auth.currentUser.email, "deposits"));
       const queryCount = await getCountFromServer(q);
       const depositPlan = form.getFieldValue("plan");
@@ -217,8 +218,6 @@ const Deposit = () => {
       const depositPaymentMethod = form.getFieldValue("payment-method");
       const depositID =
         queryCount.data().count >= 9 ? `90${queryCount.data().count + 1}` : `900${queryCount.data().count + 1}`;
-
-      console.log(depositID, "depositID");
 
       await addDoc(collection(firestore, "transactions"), {
         account_id: auth.currentUser.uid,
@@ -248,6 +247,7 @@ const Deposit = () => {
         paymentMethod: depositPaymentMethod,
         deposit_id: depositID,
       }).then(() => {
+        setLoading(false);
         setIsConfirmedModalOpen(true);
         addReferralReward(userData.referredBy, REFERRALS_TOTAL_LEVELS, form.getFieldValue("amount"));
       });
@@ -286,7 +286,7 @@ const Deposit = () => {
             </Button>
           )}
           {current === steps.length - 1 && (
-            <Button type="primary" onClick={onDone}>
+            <Button type="primary" onClick={onDone} disabled={loading}>
               {t("transactions.done")}
             </Button>
           )}

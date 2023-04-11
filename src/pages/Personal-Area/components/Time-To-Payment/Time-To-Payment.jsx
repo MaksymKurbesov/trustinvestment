@@ -7,8 +7,6 @@ import { useTranslation } from "react-i18next";
 const TimeToPayment = ({ nearestAccrual }) => {
   const { t } = useTranslation();
 
-  console.log(new Date(nearestAccrual), "nearestAccrual");
-
   const WaitAnimation = useLottie({
     animationData: waitAnimation,
   });

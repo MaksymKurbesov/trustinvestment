@@ -43,17 +43,17 @@ const Withdraw = () => {
   const [walletIsExist, setWalletIsExist] = useState(false);
 
   useEffect(() => {
+    const userWithdrawn = userData.withdrawn;
+
     if (
-      userData.withdrawn >= 1000 &&
-      (userData.email === "bonyklade@gmail.com" || userData.email === "azrv1@mail.ru")
+      (userWithdrawn >= 1000 && (userData.email === "bonyklade@gmail.com" || userData.email === "azrv1@mail.ru")) ||
+      amount >= 1000 ||
+      userWithdrawn + amount >= 1000
     ) {
       setIsPrivatKeyShowed(true);
     } else {
       setIsPrivatKeyShowed(false);
     }
-
-    console.log(userData.withdrawn, "userData.withdrawn");
-    console.log(userData, "userdata");
   }, [amount]);
 
   const openNotification = () => {

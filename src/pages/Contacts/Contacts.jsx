@@ -129,7 +129,7 @@ const Contacts = () => {
             <img src={PhoneIcon} width={40} />
           </a>
 
-          <a href={"https://t.me/TrustInvestmentSupport"}>
+          <a href={"https://t.me/DubaiTrustSupport"}>
             <img src={TelegramIcon} width={40} />
           </a>
 
