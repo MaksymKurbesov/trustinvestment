@@ -147,7 +147,7 @@ export const setUserCustomFields = (signedUpUser, customFields) => {
     uid: signedUpUser.uid,
     email: customFields.email.toLowerCase(),
     nickname: customFields.nickname,
-    phoneNumber: customFields.phone,
+    phoneNumber: customFields.phone ? customFields.phone : "",
     referredBy: customFields.referredBy,
     registrationDate: new Date(signedUpUser.metadata.creationTime),
     referredTo: {},

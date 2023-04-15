@@ -25,13 +25,13 @@ const Register = () => {
     className: styles["signUpAnimation"],
   });
 
-  useEffect(() => {
-    auth.onAuthStateChanged((currentUser) => {
-      if (currentUser) {
-        navigate("/my-account");
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   auth.onAuthStateChanged((currentUser) => {
+  //     if (currentUser) {
+  //       navigate("/my-account");
+  //     }
+  //   });
+  // }, []);
 
   const handleRegister = async (user) => {
     const auth = getAuth();
@@ -39,8 +39,6 @@ const Register = () => {
     await createUserWithEmailAndPassword(auth, user.email, user.password).then(async (userCredential) => {
       const signedUpUser = userCredential.user;
       await sendEmailVerification(signedUpUser);
-      await auth.signOut();
-      success();
 
       const setReferrals = async (referredBy, limit) => {
         if (referredBy && referredBy.trim() !== "" && --limit) {
@@ -58,13 +56,15 @@ const Register = () => {
           };
 
           getReferral();
-        } else {
-          return null;
         }
       };
 
-      setDoc(doc(firestore, "users", signedUpUser.email), setUserCustomFields(signedUpUser, user)).then(() => {
+      await setDoc(doc(firestore, "users", signedUpUser.email), setUserCustomFields(signedUpUser, user)).then(() => {
         setReferrals(user.referredBy, REFERRALS_TOTAL_LEVELS);
+        auth.signOut().then(() => {
+          navigate("/");
+        });
+        success();
       });
     });
   };

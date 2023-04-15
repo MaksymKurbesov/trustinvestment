@@ -131,7 +131,7 @@ h3 {
 }
 
 .slick-dots li.slick-active button:before {
-  background: var(--blue) !important;
+  /*background: var(--blue) !important;*/
 }
 
 .accountRoot .slick-list {
@@ -163,6 +163,7 @@ h3 {
 
 .slick-track {
   display: flex !important;
+  /*gap: 50px;*/
 }
 
 @media screen and (max-width: 1000px) {

@@ -94,7 +94,7 @@ export const getPlans = (t) => {
     },
     {
       title: `${t("tariffs.plan")} 4`,
-      percent: 156,
+      percent: 56,
       days: 10,
       min: 15000,
       max: 40000,
@@ -106,7 +106,7 @@ export const getPlans = (t) => {
     },
     {
       title: `${t("tariffs.plan")} 5`,
-      percent: 145,
+      percent: 45,
       days: 6,
       min: 40000,
       max: 80000,

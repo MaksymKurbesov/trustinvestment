@@ -197,14 +197,22 @@
   color: rgba(255, 255, 255, 0.7) !important;
 }
 
-.deposit .ant-radio-button-wrapper-checked span:nth-child(2) > div img {
-  filter: blur(0);
+.deposit .ant-radio-button-wrapper-checked span:nth-child(1) {
+  background: var(--blue);
+  border-radius: 20px;
+  transition: 1s;
 }
 
-.deposit .ant-radio-button-wrapper-checked span:nth-child(2) > div:nth-child(1):before {
-  filter: blur(0);
-  opacity: 1;
-  background: linear-gradient(0deg, rgba(22, 119, 255, 1) 10%, rgba(178, 210, 255, 0) 100%);
+.deposit .ant-radio-button-wrapper-checked span:nth-child(2) div {
+  color: white;
+}
+
+.deposit .ant-radio-button-wrapper-checked span:nth-child(2) div:before {
+  filter: invert(1);
+}
+
+.deposit .slick-dots {
+  padding-top: 10px;
 }
 
 .deposit .ant-card-body {

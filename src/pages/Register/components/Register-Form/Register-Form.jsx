@@ -47,8 +47,8 @@ const RegisterForm = ({ handleClick }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
-
   const [form] = Form.useForm();
+
   const onFinish = (values) => {
     setLoading(true);
     handleClick(values)
@@ -165,16 +165,7 @@ const RegisterForm = ({ handleClick }) => {
           <Input />
         </Form.Item>
 
-        <Form.Item
-          name="phone"
-          label={t("registration.phone_number")}
-          rules={[
-            {
-              required: true,
-              message: t("registration.phone_number_warning"),
-            },
-          ]}
-        >
+        <Form.Item name="phone" label={t("registration.phone_number")}>
           <Input
             addonBefore={prefixSelector}
             style={{

@@ -71,7 +71,7 @@ const Advantage = () => {
           <div className={styles["statistic"]}>
             <ul className={styles["statistic-list"]}>
               <li>
-                <CountUp end={100} enableScrollSpy scrollSpyDelay={1000}>
+                <CountUp end={50} enableScrollSpy scrollSpyDelay={1000}>
                   {({ countUpRef }) => {
                     return <span ref={countUpRef} />;
                   }}
@@ -79,7 +79,7 @@ const Advantage = () => {
                 <p>{t("statistic.companies")}</p>
               </li>
               <li>
-                <CountUp end={50} enableScrollSpy={true} scrollSpyDelay={1000}>
+                <CountUp end={100} enableScrollSpy={true} scrollSpyDelay={1000}>
                   {({ countUpRef }) => {
                     return <span ref={countUpRef} />;
                   }}
@@ -87,7 +87,7 @@ const Advantage = () => {
                 <p>{t("statistic.team_members")}</p>
               </li>
               <li>
-                <CountUp end={2} prefix={"$"} suffix={"M"} enableScrollSpy={true} scrollSpyDelay={1000}>
+                <CountUp end={250} prefix={"$"} suffix={"M"} enableScrollSpy={true} scrollSpyDelay={1000}>
                   {({ countUpRef }) => {
                     return <span ref={countUpRef} />;
                   }}
@@ -95,7 +95,7 @@ const Advantage = () => {
                 <p>{t("statistic.capital")}</p>
               </li>
               <li>
-                <CountUp end={7} enableScrollSpy={true} scrollSpyDelay={1000}>
+                <CountUp end={10} enableScrollSpy={true} scrollSpyDelay={1000}>
                   {({ countUpRef }) => {
                     return <span ref={countUpRef} />;
                   }}

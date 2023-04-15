@@ -5,7 +5,7 @@ import notification from "antd/lib/notification";
 import { CheckCircleFilled, HeartFilled, SmileFilled, SmileOutlined, ThunderboltFilled } from "@ant-design/icons";
 import { useContext, useEffect, useState } from "react";
 import { FirebaseContext } from "../../index";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getCountFromServer, getDocs, query, where } from "firebase/firestore";
 import { LevelCollapse } from "./components/LevelCollapse";
 import { useOutletContext } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -34,6 +34,7 @@ const Partners = () => {
   const { firestore } = useContext(FirebaseContext);
   const { userData } = useOutletContext();
   const { t } = useTranslation();
+  const [depositQuantity, setDepositQuantity] = useState(0);
 
   const getReferrals = (referrals) => {
     for (const [level, userNicknames] of Object.entries(referrals)) {
@@ -61,7 +62,13 @@ const Partners = () => {
 
   useEffect(() => {
     getReferrals(userData.referredTo);
+    const q = query(collection(firestore, "users", userData.email, "deposits"));
+    getCountFromServer(q).then((item) => {
+      setDepositQuantity(item.data().count);
+    });
   }, []);
+
+  console.log(userData, "userData");
 
   const [api, contextHolder] = notification.useNotification();
   const openNotification = () => {
@@ -126,7 +133,7 @@ const Partners = () => {
           <ThunderboltFilled className={styles["icon"]} />
           <div className={styles["deposits-bought-info"]}>
             <p>{t("partner_page.bought_deposits")}:</p>
-            <span>0</span>
+            <span>{depositQuantity}</span>
           </div>
         </div>
         <div className={`${styles["levels"]} levelsRoot`}>

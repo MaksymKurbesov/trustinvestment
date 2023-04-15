@@ -23,7 +23,7 @@ import { CheckCircleOutlined } from "@ant-design/icons";
 import { useOutletContext } from "react-router-dom";
 import Wallets from "../../components/Wallets/Wallets";
 
-const RUB_CURRENCY = 75;
+const RUB_CURRENCY = 83;
 const KZT_CURRENCY = 431;
 
 const CashIn = () => {
