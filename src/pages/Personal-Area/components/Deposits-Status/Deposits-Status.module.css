@@ -1,0 +1,40 @@
+.deposits-status {
+  grid-area: d;
+  /*margin-right: -20px;*/
+  font-family: Fira Mono;
+  box-shadow: rgba(50, 50, 93, 0.15) 0px 10px 12px -2px, rgba(0, 0, 0, 0.15) 0px 3px 7px -3px;
+}
+
+.progress {
+  text-align: center;
+  padding-top: 25px;
+}
+
+.expanded-row {
+  text-align: left;
+  /*padding: 10px 25px;*/
+}
+
+.expanded-row th span {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.expanded-row-header {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.expanded-row-header img {
+  margin-right: 10px;
+}
+.expanded-row td span {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+@media screen and (max-width: 1700px) {
+  .deposits-status {
+    margin-right: 0;
+  }
+}

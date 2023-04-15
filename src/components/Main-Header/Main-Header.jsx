@@ -25,7 +25,7 @@ const MainHeader = () => {
 
   return (
     <AntHeader
-      className={`${styles["header"]} ${location.pathname === "/" ? styles["index-page"] : ""}`}
+      className={`${styles["header"]} ${styles[`opacity-${location.pathname === "/" ? "index" : location.pathname}`]}`}
       data-aos={"fade-down"}
     >
       <div className={`${styles["header-container"]} container`}>

@@ -10,8 +10,8 @@ import { FirebaseContext } from "../../index";
 import { BITCOIN, BNB, ETHEREUM, PERFECT_MONEY, POLKADOT, QIWI, SOLANA, TRC20_TETHER } from "../../utils/consts";
 import ChooseAvatarImage from "assets/images/add-avatar2.png";
 import { getStorage, ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import { useOutletContext } from "react-router-dom";
-import { getAuth, updateProfile } from "firebase/auth";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import { getAuth, updateProfile, updatePassword } from "firebase/auth";
 import { UploadOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 
@@ -25,6 +25,7 @@ const Settings = () => {
   const [avatar, setAvatar] = useState("");
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
@@ -102,7 +103,14 @@ const Settings = () => {
 
     sendData()
       .then(() => {
-        form.resetFields();
+        const password = form.getFieldValue("password");
+        const confirm_password = form.getFieldValue("confirm-password");
+
+        if (password === confirm_password && password) {
+          updatePassword(auth.currentUser, form.getFieldValue("password")).then(() => {
+            form.resetFields();
+          });
+        }
         success();
         window.location.reload(false);
       })
@@ -182,7 +190,7 @@ const Settings = () => {
           <div className={styles["personal-information"]}>
             <h3>{t("settings.personal_info")}</h3>
             <Form.Item name="nickname" label={t("settings.nickname")}>
-              <Input />
+              <Input disabled className={styles["nickname"]} />
             </Form.Item>
             <Form.Item name="email" label={"Email"}>
               <Input type={"email"} />
@@ -190,10 +198,35 @@ const Settings = () => {
             <Form.Item name="phone" label={t("settings.phone_number")}>
               <Input type={"phone"} />
             </Form.Item>
-            <Form.Item name="password" label={t("settings.password")}>
+            <Form.Item name="old_password" label={t("settings.old_password")}>
               <Input.Password />
             </Form.Item>
-            <Form.Item name="confirm-password" label={t("settings.confirm_password")}>
+            <Form.Item
+              name="password"
+              label={t("settings.password")}
+              rules={[
+                {
+                  min: 6,
+                  message: t("registration.password_length_warning"),
+                },
+              ]}
+            >
+              <Input.Password />
+            </Form.Item>
+            <Form.Item
+              name="confirm-password"
+              label={t("settings.confirm_password")}
+              rules={[
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue("password") === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(new Error(t("registration.password_mismatch")));
+                  },
+                }),
+              ]}
+            >
               <Input.Password />
             </Form.Item>
           </div>

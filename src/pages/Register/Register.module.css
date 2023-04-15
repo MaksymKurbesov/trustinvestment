@@ -12,6 +12,7 @@
   color: var(--blue);
   font-family: "Open Sans";
   font-size: 50px;
+  font-weight: 600;
 }
 
 .register-page p {

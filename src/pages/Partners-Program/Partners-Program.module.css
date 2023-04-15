@@ -8,9 +8,13 @@
   }
 }
 
-.partner-program {
-  /*padding: 120px 20px;*/
-  background-color: var(--dark-blue);
+@keyframes glowing {
+  from {
+    box-shadow: 0px 0px 55px 15px rgba(22, 119, 255, 0);
+  }
+  to {
+    box-shadow: 0px 0px 55px 15px rgba(22, 119, 255, 0.9);
+  }
 }
 
 .main {
@@ -23,6 +27,19 @@
   grid-template-rows: 1fr 1fr fit-content(100%);
   margin-bottom: 100px;
   gap: 30px;
+  padding: 100px 10px;
+  color: white;
+  overflow: hidden;
+}
+
+.partner-program-wrapper {
+  background-color: var(--dark-blue);
+  background-image: url("../../assets/images/hero-banner-bg.png");
+  padding: 0 30px;
+  overflow: hidden;
+  margin-bottom: 100px;
+  border-bottom-left-radius: 35px;
+  border-bottom-right-radius: 35px;
 }
 
 .main img {
@@ -31,7 +48,7 @@
 }
 
 .title {
-  font-size: 60px;
+  font-size: clamp(4.5vw, 60px, 7vw);
   font-weight: 600;
   line-height: 1;
   max-width: 500px;
@@ -50,31 +67,42 @@
 }
 
 .register-button {
-  border-radius: 0;
   padding: 15px;
   width: 90%;
   height: 65px;
   font-size: clamp(12px, 1.5vw, 16px);
   grid-area: button;
+  outline: 1px solid white;
+  outline-offset: 5px;
+  border-radius: 10px;
 }
 
 .program-description {
   display: flex;
   justify-content: center;
-  margin-bottom: 150px;
+  background-color: var(--blue);
+  border-radius: 20px;
+  padding: 30px;
+  color: white;
+  max-width: 1100px;
+  margin: 0 auto 150px auto;
+}
+
+.program-description img {
+  margin-bottom: 20px;
 }
 
 .program-description p {
   max-width: 600px;
-  border: 1px solid var(--black);
+  border: 1px solid white;
   padding: 40px;
   flex-basis: 50%;
 }
 
 .program-description p span {
   display: block;
-  font-size: 28px;
-  font-weight: 500;
+  font-size: 34px;
+  font-weight: 600;
   margin-bottom: 20px;
 }
 
@@ -84,7 +112,24 @@
 
 .how-to-work__title {
   font-weight: 600;
-  margin-bottom: 100px;
+  max-width: 700px;
+  margin: 0 auto 100px auto;
+  position: relative;
+}
+
+.how-to-work__title:before {
+  content: url("../../assets/images/section-title.svg");
+  position: absolute;
+  width: 100%;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: -1;
+}
+
+.how-to-work {
+  padding: 0 50px 100px 50px;
+  overflow: hidden;
 }
 
 .how-to-work-wrapper {
@@ -95,7 +140,6 @@
 .how-to-work__item {
   display: flex;
   flex-direction: column;
-  /*align-items: center;*/
   flex-basis: 230px;
   position: relative;
 }
@@ -118,8 +162,6 @@
   margin-bottom: 50px;
   background: #e7e7e7;
   color: var(--black);
-  /*animation: steps 1s ease-in;*/
-  /*animation-fill-mode: both;*/
 }
 
 .how-to-work__item:nth-child(2) span {
@@ -160,7 +202,8 @@
 }
 
 .program-description p b {
-  color: var(--blue);
+  color: white;
+  font-size: 18px;
   font-weight: 600;
 }
 
@@ -187,16 +230,13 @@
 }
 
 @media screen and (max-width: 855px) {
-  .partner-program {
-    padding: 55px 20px;
-  }
-
   .main {
     margin-bottom: 75px;
     grid-template-areas:
       "title image"
       "subtitle image"
       "button button";
+    padding: 50px 10px;
   }
 
   .main-text {
@@ -247,11 +287,11 @@
   }
 }
 
-@media screen and (max-width: 600px) {
-  .partner-program {
-    padding: 50px 20px;
-  }
+.padding-outer {
+  padding: 0 30px;
+}
 
+@media screen and (max-width: 600px) {
   .main {
     margin-bottom: 50px;
     grid-template-areas:
@@ -279,8 +319,8 @@
   }
 
   .program-description {
-    margin-bottom: 50px;
     flex-direction: column;
+    text-align: center;
   }
 
   .program-description p {
@@ -289,7 +329,7 @@
   }
 
   .program-description p:last-child {
-    border-left: 1px solid var(--black);
+    border-left: 1px solid white;
     border-top: none;
   }
 
@@ -298,32 +338,6 @@
     max-width: 100%;
     display: flex;
   }
-
-  /*.how-to-work__item:nth-child(even) span {*/
-  /*  order: 3;*/
-  /*}*/
-
-  /*.how-to-work__item:nth-child(even) h3 {*/
-  /*  order: 2;*/
-  /*}*/
-
-  /*.how-to-work__item:nth-child(even) p {*/
-  /*  max-width: 50%;*/
-  /*  order: TestFn;*/
-  /*}*/
-
-  /*.how-to-work__item:nth-child(odd) span {*/
-  /*  order: TestFn;*/
-  /*}*/
-
-  /*.how-to-work__item:nth-child(odd) h3 {*/
-  /*  order: 2;*/
-  /*}*/
-
-  /*.how-to-work__item:nth-child(odd) p {*/
-  /*  max-width: 50%;*/
-  /*  order: 3;*/
-  /*}*/
 
   .how-to-work__item {
     margin-bottom: 30px;

@@ -1,20 +1,29 @@
 import styles from "./Personal-Area.module.css";
-import InvestmentIcon from "assets/images/user-statistic/Investment.png";
-import EarnedIcon from "assets/images/user-statistic/Earned.png";
-import WithdrawnIcon from "assets/images/user-statistic/Withdrawn.png";
-import ReferalsIcon from "assets/images/user-statistic/Referals.png";
-import { DepositsStatus } from "components/Deposits-Status/Deposits-Status";
-import { TimeToPayment } from "components/Time-To-Payment/Time-To-Payment";
-import { UserWallets } from "components/Wallets/UserWallets";
+
+import { DepositsStatus } from "pages/Personal-Area/components/Deposits-Status/DepositStatus";
+import { TimeToPayment } from "pages/Personal-Area/components/Time-To-Payment/Time-To-Payment";
+import { UserWallets } from "pages/Personal-Area/components/UserWallets/Userwallets";
 import { useContext, useEffect, useState } from "react";
 import { FirebaseContext } from "../../index";
-import { collection, query, getDocs, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  query,
+  getDocs,
+  onSnapshot,
+  updateDoc,
+  doc,
+  increment,
+  addDoc,
+  runTransaction,
+} from "firebase/firestore";
 import { useOutletContext } from "react-router-dom";
 import { getNextAccrual } from "../../utils/helpers";
 import { useTranslation } from "react-i18next";
+import { UserStatistic } from "./components/User-Statistic";
 
 const PersonalArea = () => {
   const { firestore } = useContext(FirebaseContext);
+
   const { userData } = useOutletContext();
   const [depositsList, setDepositsList] = useState([]);
   const [nearestAccrual, setNearestAccrual] = useState(null);
@@ -25,43 +34,82 @@ const PersonalArea = () => {
 
     const getDeposits = async () => {
       const q = query(collection(firestore, "users", userData.email, "deposits"));
+      const depositsArr = [];
+      let nextAccrual = new Date().getTime() * 10000;
 
-      onSnapshot(q, async (snapshot) => {
-        await getDocs(q).then((snap) => {
-          const depositsArr = [];
-          let nextAccrual;
+      await getDocs(q).then((snap) => {
+        if (snap.docs.length === 0) return;
 
-          if (snap.docs.length === 0) return;
-          const deposit = snap.docs[snap.docs.length - 1].data();
+        snap.docs.forEach((item) => {
+          const deposit = item.data();
+          const depositIsActive = deposit.status === "active";
 
-          if (deposit.status === "active") {
+          if (depositIsActive && getNextAccrual(deposit) < nextAccrual) {
             nextAccrual = getNextAccrual(deposit);
           }
 
-          snap.docs.map((item, index) => {
-            const data = item.data();
-            const depositIsActive = data.status === "active";
+          runTransaction(firestore, (transaction) => {
+            const timeNow = Math.round(Date.now() / 1000);
+            const depositOpenTime = deposit.date.seconds;
+            const planNumber = Number(deposit.planNumber.match(/\d+/)[0]);
 
-            if (getNextAccrual(data) < nextAccrual && depositIsActive) {
-              nextAccrual = getNextAccrual(data);
+            let charges;
+
+            if (planNumber <= 3) {
+              charges = Math.floor((timeNow - depositOpenTime) / (3600 * 24));
+            } else {
+              charges = Math.floor((timeNow - depositOpenTime) / (3600 * (deposit.days * 24)));
             }
 
-            depositsArr.push({
-              ...data,
-              key: item.id,
-              nextAccrual: data.charges < data.days ? getNextAccrual(data) : "",
-              executor: userData.nickname,
-            });
-            setDepositsList(depositsArr);
+            const chargesSubtract = charges - deposit.charges;
+            const receivedByCharges = ((deposit.willReceived / deposit.days) * chargesSubtract).toFixed(2);
+            const isLastCharge = charges === deposit.days;
+
+            if (isLastCharge && depositIsActive && planNumber <= 3) {
+              transaction.update(doc(firestore, "users", userData.email), {
+                [`paymentMethods.${deposit.paymentMethod}.available`]: increment(deposit.amount),
+              });
+            }
+
+            if (chargesSubtract > 0 && depositIsActive) {
+              addDoc(collection(firestore, "transactions"), {
+                account_id: userData.uid,
+                amount: +receivedByCharges,
+                status: "Выполнено",
+                type: "Начисления",
+                date: new Date(),
+                email: userData.email,
+                executor: deposit.paymentMethod,
+              });
+
+              transaction.update(doc(firestore, "users", userData.email), {
+                earned: increment(+receivedByCharges),
+                [`paymentMethods.${deposit.paymentMethod}.available`]: increment(+receivedByCharges),
+              });
+
+              transaction.update(doc(firestore, "users", userData.email, "deposits", item.id), {
+                charges: increment(chargesSubtract),
+                received: increment(+receivedByCharges),
+                status: isLastCharge ? "completed" : "active",
+              });
+            }
+
+            return Promise.resolve();
           });
 
-          setNearestAccrual(nextAccrual);
+          depositsArr.push({
+            ...deposit,
+            nextAccrual: deposit.charges < deposit.days ? getNextAccrual(deposit) : "",
+          });
+
+          setDepositsList(depositsArr);
         });
       });
+      setNearestAccrual(nextAccrual);
     };
 
     getDeposits();
-  }, [userData]);
+  }, []);
 
   if (!userData) {
     return null;
@@ -72,38 +120,9 @@ const PersonalArea = () => {
       <h2 className={"my-account-title"}>{t("personal_area.title")}</h2>
       <div className={styles["my-account"]}>
         <UserWallets paymentMethods={userData.paymentMethods} />
-        <div className={styles["user-statistic"]}>
-          <div className={styles["user-statistic__item"]}>
-            <img src={InvestmentIcon} width={50} alt={"Иконка"} />
-            <div className={styles["info"]}>
-              <p>{t("personal_area.invested")}:</p>
-              <span>{userData.invested.toFixed(1)} USD</span>
-            </div>
-          </div>
-          <div className={styles["user-statistic__item"]}>
-            <img src={EarnedIcon} width={50} alt={"Иконка"} />
-            <div className={styles["info"]}>
-              <p>{t("personal_area.earned")}:</p>
-              <span>{userData.earned.toFixed(1)} USD</span>
-            </div>
-          </div>
-          <div className={styles["user-statistic__item"]}>
-            <img src={WithdrawnIcon} width={50} alt={"Иконка"} />
-            <div className={styles["info"]}>
-              <p>{t("personal_area.withdrawn")}:</p>
-              <span>{userData.withdrawn.toFixed(1)} USD</span>
-            </div>
-          </div>
-          <div className={styles["user-statistic__item"]}>
-            <img src={ReferalsIcon} width={50} alt={"Иконка"} />
-            <div className={styles["info"]}>
-              <p>{t("personal_area.referrals")}:</p>
-              <span>{userData.referals.toFixed(1)} USD</span>
-            </div>
-          </div>
-        </div>
+        <UserStatistic userData={userData} />
         <DepositsStatus deposits={depositsList} />
-        <TimeToPayment nearestAccrual={nearestAccrual} depositsIsEmpty={depositsList.length === 0} />
+        <TimeToPayment nearestAccrual={nearestAccrual} />
       </div>
     </div>
   );

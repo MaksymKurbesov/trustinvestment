@@ -110,6 +110,7 @@
   }
 }
 
+<<<<<<<< HEAD:src/components/Wallets/UserWallets.module.css
 @media screen and (max-width: 750px) {
   .platform-name {
     font-size: 18px;
@@ -119,6 +120,17 @@
     grid-gap: 10px;
   }
 }
+========
+/*@media screen and (max-width: 750px) {*/
+/*  .platform-name {*/
+/*    font-size: 18px;*/
+/*  }*/
+
+/*  .platform-statistic {*/
+/*    grid-gap: 10px;*/
+/*  }*/
+/*}*/
+>>>>>>>> production-development:src/pages/Personal-Area/components/UserWallets/UserWallets.module.css
 
 @media screen and (max-width: 480px) {
   .platform-name {

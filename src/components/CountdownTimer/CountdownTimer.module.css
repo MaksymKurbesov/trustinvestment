@@ -15,13 +15,21 @@
   margin-right: 15px;
 }
 
-.success {
-  text-align: center;
+.expanded-row-timer {
+  padding: 0;
+  font-size: 12px;
 }
 
 @media screen and (max-width: 525px) {
   .countdown {
     grid-template-columns: 80px 80px 80px;
-    /*justify-content: space-between;*/
+  }
+
+  .expanded-row-timer .countdown {
+    grid-template-columns: 36px 58px 52px;
+  }
+
+  .expanded-row-timer .countdown div:not(:last-child) {
+    margin-right: 0px;
   }
 }

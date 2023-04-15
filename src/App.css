@@ -54,6 +54,7 @@ ol {
   grid-area: a;
   margin-bottom: 75px;
   display: inline-block;
+  line-height: 1.2;
 }
 
 .my-account-title:before {
@@ -130,7 +131,7 @@ h3 {
 }
 
 .slick-dots li.slick-active button:before {
-  background: var(--blue) !important;
+  /*background: var(--blue) !important;*/
 }
 
 .accountRoot .slick-list {
@@ -162,6 +163,7 @@ h3 {
 
 .slick-track {
   display: flex !important;
+  /*gap: 50px;*/
 }
 
 @media screen and (max-width: 1000px) {

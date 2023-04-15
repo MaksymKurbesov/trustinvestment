@@ -21,6 +21,10 @@
   margin-bottom: 5px;
 }
 
+.ant-result {
+  padding: 20px 0;
+}
+
 .ant-layout {
   background: none;
   /*padding-top: 95px;*/
@@ -64,10 +68,6 @@
   width: 100%;
 }
 
-.anticon {
-  color: white;
-}
-
 .payment-select .anticon {
   color: rgba(0, 0, 0, 0.4);
 }
@@ -81,15 +81,11 @@
 }
 
 .depositRoot .ant-table-cell:nth-child(2) {
-  /*padding-right: 25px !important;*/
+  padding-right: 25px !important;
 }
 
 .depositRoot .ant-tabs-nav-wrap {
   padding: 0 20px;
-}
-
-.depositRoot .anticon {
-  color: #52c41a;
 }
 
 .levelsRoot .ant-collapse-item:not(:last-child) {
@@ -134,7 +130,7 @@
 .plans-listRoot .ant-card-body {
   width: 100% !important;
   display: grid;
-  grid-template-columns: 0 160px 1fr repeat(2, 1fr);
+  grid-template-columns: 0 135px 60px repeat(2, 1fr);
   grid-template-rows: 1fr;
   column-gap: 10px;
 }
@@ -192,8 +188,8 @@
   width: 50%;
 }
 
-.enterAmountRoot .ant-input-affix-wrapper {
-  width: 50%;
+.depositRoot .anticon {
+  color: #52c41a;
 }
 
 .ant-menu-item a {
@@ -201,9 +197,55 @@
   color: rgba(255, 255, 255, 0.7) !important;
 }
 
+.deposit .ant-radio-button-wrapper-checked span:nth-child(1) {
+  background: var(--blue);
+  border-radius: 20px;
+  transition: 1s;
+}
+
+.deposit .ant-radio-button-wrapper-checked span:nth-child(2) div {
+  color: white;
+}
+
+.deposit .ant-radio-button-wrapper-checked span:nth-child(2) div:before {
+  filter: invert(1);
+}
+
+.deposit .slick-dots {
+  padding-top: 10px;
+}
+
+.deposit .ant-card-body {
+  padding: 0;
+}
+
+.ant-radio-button-wrapper:not(:first-child)::before {
+  background-color: transparent;
+}
+
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+  border-color: transparent;
+}
+
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):first-child {
+  border-color: transparent;
+}
+
+.cash-in-form .ant-radio-button-wrapper {
+  /*background: transparent;*/
+  /*border: none;*/
+}
+
+.cash-in-form .ant-radio-button-wrapper-checked::before {
+  background-color: transparent !important;
+}
+
+.cash-in-form .ant-radio-button-wrapper-checked:not(:where(.ant-radio-button-wrapper-disabled)):hover {
+  border-color: transparent;
+}
+
 @media screen and (max-width: 1000px) {
   .ant-menu-item a {
-    /*display: block;*/
     width: 100% !important;
     color: rgba(255, 255, 255, 0.7) !important;
   }

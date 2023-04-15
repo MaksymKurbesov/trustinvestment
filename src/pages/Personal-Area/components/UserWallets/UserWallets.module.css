@@ -1,0 +1,140 @@
+.slider-wrapper {
+  grid-area: b;
+}
+
+.platform-balance,
+.platform-balance-wrapper {
+  display: flex !important;
+  flex-direction: column;
+  background: var(--blue);
+  color: white;
+  border-radius: 30px;
+  position: relative;
+  margin-right: 20px;
+  height: 100%;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  min-width: 270px;
+}
+
+.platform-balance {
+  margin-right: 0;
+}
+
+.platform-balance:before {
+  content: "";
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  border-radius: 30px;
+}
+
+.title {
+  align-items: center;
+  justify-content: space-between;
+  min-height: 50px;
+  display: flex;
+  padding: 30px 20px 20px 20px;
+}
+
+.title img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  bottom: 0;
+  opacity: 0.1;
+}
+
+.platform-name {
+  font-size: 24px;
+  font-weight: 600;
+  font-family: Fira Mono;
+}
+
+.platform-statistic {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 15px;
+  margin-top: auto;
+  padding: 20px;
+}
+
+.platform-statistic p {
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 3px;
+  font-size: 12px;
+  font-family: Fira Mono;
+}
+
+.platform-statistic span {
+  font-weight: 600;
+  font-size: 16px;
+  font-family: Fira Mono;
+}
+
+.custom-arrows {
+  text-align: right;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.custom-arrows button:first-child {
+  margin-right: 10px;
+}
+
+.custom-arrows button {
+  background: var(--blue);
+  border: none;
+  padding: 15px;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+
+@media screen and (max-width: 1700px) {
+  .custom-arrows {
+    margin-bottom: 0;
+  }
+}
+
+@media screen and (max-width: 1500px) {
+  .platform-statistic p {
+    font-size: 12px;
+  }
+  .platform-statistic span {
+    font-size: 14px;
+  }
+}
+
+/*@media screen and (max-width: 750px) {*/
+/*  .platform-name {*/
+/*    font-size: 18px;*/
+/*  }*/
+
+/*  .platform-statistic {*/
+/*    grid-gap: 10px;*/
+/*  }*/
+/*}*/
+
+@media screen and (max-width: 480px) {
+  .platform-name {
+    font-size: 20px;
+  }
+
+  .platform-statistic p {
+    font-size: 14px;
+  }
+
+  .platform-statistic span {
+    font-size: 18px;
+  }
+
+  .custom-arrows {
+    margin-top: 30px;
+    text-align: center;
+  }
+}

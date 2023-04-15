@@ -1,10 +1,10 @@
 import Layout from "antd/lib/layout";
-import { HeroBanner } from "../../components/Hero-Banner/Hero-Banner";
-import { Advantage } from "../../components/Advantage/Advantage";
-import { Plans } from "../../components/Plans/Plans";
-import { AffilateProgram } from "../../components/Affilate-Program/Affilate-Program";
-import { ContactUs } from "../../components/Contact-Us/Contact-Us";
-import { Roadmap } from "../../components/Roadmap/Roadmap";
+import { HeroBanner } from "./components/Hero-Banner/HeroBanner";
+import { Advantage } from "./components/Advantage";
+import { Plans } from "./components/Plans/Plans";
+import { AffilateProgram } from "./components/Affilate-Program";
+import { ContactUs } from "./components/Contact-Us/Contact-Us";
+import { Roadmap } from "./components/Roadmap";
 
 const { Content } = Layout;
 

@@ -179,7 +179,7 @@ span.icon {
   color: white;
   font-size: 16px;
   font-weight: 500;
-  padding-right: 25px;
+  padding-right: 15px;
   /*column-gap: 100px;*/
 }
 
@@ -188,7 +188,7 @@ span.icon {
 }
 
 .level-header p:last-child {
-  flex-basis: 290px;
+  /*flex-basis: 215px;*/
 }
 
 .level-header p span {
@@ -260,10 +260,6 @@ span.icon {
   .registered-clients div p,
   .deposits-bought-info p {
     margin-right: 5px;
-  }
-
-  .level-header p:last-child {
-    flex-basis: 240px;
   }
 }
 

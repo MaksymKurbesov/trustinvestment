@@ -11,6 +11,60 @@
   position: relative;
 }
 
+.content {
+  background-color: rgba(0, 0, 0, 0.02);
+  border: 1px dashed rgb(217, 217, 217);
+  border-radius: 10px;
+  padding: 25px;
+}
+
+.steps {
+  margin-bottom: 30px;
+}
+
+.date {
+  font-size: 16px;
+}
+
+.information-list {
+  font-size: 30px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  background-color: white;
+  padding: 50px 25px 150px 25px;
+  max-width: 700px;
+  margin: 0 auto 10px auto;
+  gap: 15px;
+  position: relative;
+  background-image: url("../../assets/images/withdraw-background.png");
+  background-position: center top;
+}
+
+.information-list > img {
+  margin: 0 auto 40px auto;
+}
+
+.transaction-number {
+  font-size: 16px;
+}
+
+.information-list li {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  font-weight: 500;
+}
+
+.information-list p {
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+}
+
+.information-list p img {
+  margin-right: 10px;
+}
+
 .withdraw-info:before {
   content: "!";
   position: absolute;
@@ -23,7 +77,7 @@
 }
 
 .modal-content {
-  padding: 50px;
+  padding: 25px;
   font-size: 18px;
 }
 
@@ -38,17 +92,62 @@
 }
 
 .modal-content p {
-  border-bottom: 2px solid var(--alpha-blue);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   margin-bottom: 10px;
   display: flex;
+  flex-direction: column;
+  font-size: 12px;
 }
 
 .modal-content p span {
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.choose-payment-method {
+  margin-bottom: 30px;
+}
+
+.additional-info {
+  margin-bottom: 20px;
+}
+
+.disclaimer {
+  max-width: 750px;
+  background-color: rgba(217, 255, 197, 0.69);
+  padding: 20px;
+  border-radius: 10px;
+  color: rgba(0, 0, 0, 0.7);
+  margin: 20px auto 40px;
+}
+
+.disclaimer p span {
   font-weight: 600;
-  margin-left: auto;
+}
+
+.disclaimer p:not(:last-child) {
+  margin-bottom: 20px;
+}
+
+.nickname {
+  font-weight: 600;
+}
+
+.private-key {
+  width: 150px;
+  margin-bottom: 20px;
 }
 
 @media screen and (max-width: 600px) {
+  .content {
+    padding: 10px;
+  }
+
+  .modal-content {
+    padding: 0;
+    padding-bottom: 10px;
+  }
+
   .withdraw-info {
     padding: 20px;
     font-size: 12px;
@@ -58,5 +157,22 @@
     opacity: 0.2;
     right: 0;
     left: initial;
+  }
+  .information-list {
+    background-position: center top -60px;
+    font-size: 22px;
+    padding: 50px 25px 100px 25px;
+  }
+
+  .information-list > img {
+    width: 200px;
+  }
+
+  .information-list p {
+    font-size: 12px;
+  }
+
+  .disclaimer {
+    font-size: 12px;
   }
 }

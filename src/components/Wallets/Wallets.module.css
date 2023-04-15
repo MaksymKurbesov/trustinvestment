@@ -1,0 +1,72 @@
+.wallets {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 20px;
+}
+
+.wallet {
+  display: flex;
+  align-items: center;
+  background-color: var(--blue);
+  padding: 15px;
+  border-radius: 15px;
+  color: white;
+  min-height: 100px;
+  line-height: 1.5;
+}
+
+.wallet:hover {
+  color: white;
+}
+
+.wallet span:nth-child(2) {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+}
+
+.wallet img {
+  margin-right: 30px;
+  /*filter: invert(38%) sepia(86%) saturate(3637%) hue-rotate(205deg) brightness(100%) contrast(102%);*/
+}
+
+.balance {
+  font-size: 14px;
+}
+
+@media screen and (max-width: 1500px) {
+  .wallets {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .wallet {
+    min-height: 75px;
+  }
+
+  .wallet span:nth-child(2) {
+    font-size: 14px;
+  }
+
+  .wallet span:nth-child(2) img {
+    width: 40px;
+    margin-right: 20px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .wallets {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .wallet {
+    min-height: 55px;
+  }
+
+  .wallet span:nth-child(2) img {
+    width: 30px;
+    margin-right: 10px;
+  }
+}

@@ -1,5 +1,11 @@
 .faq {
   padding: 60px 0;
+  background-image: url("../../assets/images/faq.svg"), url("../../assets/images/faq-bg.webp");
+  background-repeat: no-repeat;
+  background-size: 30%, cover;
+  background-position: left 50px center, left top;
+  /*width: 30%;*/
+  margin: 0 auto;
 }
 
 .faq h3 {
@@ -23,6 +29,14 @@
 }
 
 .faq-collapse {
-  max-width: 650px;
+  max-width: 500px;
   margin: 0 auto;
+}
+
+@media screen and (max-width: 1350px) {
+  .faq {
+    background-image: url("../../assets/images/faq-bg.webp");
+    background-size: cover;
+    background-position: left top;
+  }
 }

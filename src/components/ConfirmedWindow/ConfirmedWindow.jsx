@@ -4,10 +4,9 @@ import Result from "antd/lib/result";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-const ConfirmedWindow = ({ transactionID }) => {
+const ConfirmedWindow = () => {
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
-
+  const { t } = useTranslation();
   return (
     <Result
       status="success"

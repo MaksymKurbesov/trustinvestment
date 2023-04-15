@@ -1,0 +1,10 @@
+.ID {
+  font-size: 10px;
+}
+
+.prev-button,
+.next-button {
+  background: none;
+  padding: 3px;
+  border: none;
+}

@@ -24,6 +24,7 @@
   align-items: center;
 }
 
+<<<<<<< HEAD
 .user-statistic {
   display: grid;
   grid-template-columns: repeat(4, minmax(75px, 1fr));
@@ -67,6 +68,8 @@
   font-weight: 600;
 }
 
+=======
+>>>>>>> production-development
 .my-account footer {
   text-align: center;
   padding: 24px 200px 24px 50px !important;

@@ -1,0 +1,44 @@
+.agreement h3 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.agreement p {
+  margin-bottom: 30px;
+}
+
+.download {
+  margin-top: 20px;
+  display: inline-block;
+  /*border-bottom: 1px solid rgba(0, 0, 0, 0.3);*/
+  background-color: var(--blue);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+}
+
+.agreement > ul > li {
+  margin-bottom: 25px;
+}
+
+.agreement ul {
+  counter-reset: item;
+}
+.agreement li {
+  display: block;
+  font-weight: 600;
+}
+
+.agreement li ul li {
+  font-weight: 400;
+}
+
+.agreement li:before {
+  content: counters(item, ".") " ";
+  counter-increment: item;
+}
+
+.bottom-text {
+  margin-top: 30px;
+  font-weight: 600;
+}

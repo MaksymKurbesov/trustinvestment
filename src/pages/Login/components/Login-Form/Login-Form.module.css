@@ -1,0 +1,58 @@
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.password {
+  /*margin-bottom: 40px;*/
+}
+
+.remember-me {
+  display: inline !important;
+  margin-bottom: 0;
+}
+
+.reset-password-button {
+  text-decoration: underline;
+  color: var(--blue);
+  display: block;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+.reset-password-wrapper {
+  display: flex;
+  height: 0;
+  opacity: 0;
+  transition: 0.5s;
+}
+
+.send-button {
+  height: 0;
+  opacity: 0;
+  transition: 0.5s;
+}
+
+.reset-password-wrapper.active {
+  transition: 0.5s;
+  height: 70px;
+  opacity: 1;
+}
+
+.send-button.active {
+  transition: 0.5s;
+  height: 35px;
+  opacity: 1;
+}
+
+.reset-password-input {
+  display: block;
+  margin-bottom: 35px;
+}
+
+.submit-button {
+  background: var(--blue);
+  border: none;
+  max-width: 100px;
+  color: white;
+}

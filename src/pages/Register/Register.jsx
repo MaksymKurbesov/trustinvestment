@@ -1,36 +1,45 @@
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
-import { Form } from "components/Login-Form/Login-Form";
+
+import { Form } from "pages/Login/components/Login-Form/Login-Form";
 import { setDoc, doc, collection, where, query, getDocs, updateDoc, arrayUnion } from "firebase/firestore";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { FirebaseContext } from "../../index";
-import { RegisterForm } from "../../components/Register-Form/Register-Form";
+import { RegisterForm } from "./components/Register-Form/Register-Form";
 import styles from "./Register.module.css";
 import signUpAnimation from "assets/lottie-animations/signUp-animation.json";
 import useLottie from "lottie-react";
 import { setUserCustomFields } from "../../utils/helpers";
 import Modal from "antd/lib/modal";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 const REFERRALS_TOTAL_LEVELS = 6;
 
 const Register = () => {
   const { t } = useTranslation();
   const { firestore } = useContext(FirebaseContext);
+  const navigate = useNavigate();
+  const auth = getAuth();
 
   const SignUpAnimation = useLottie({
     animationData: signUpAnimation,
     className: styles["signUpAnimation"],
   });
 
+  // useEffect(() => {
+  //   auth.onAuthStateChanged((currentUser) => {
+  //     if (currentUser) {
+  //       navigate("/my-account");
+  //     }
+  //   });
+  // }, []);
+
   const handleRegister = async (user) => {
     const auth = getAuth();
 
     await createUserWithEmailAndPassword(auth, user.email, user.password).then(async (userCredential) => {
       const signedUpUser = userCredential.user;
-      sendEmailVerification(signedUpUser);
-      auth.signOut();
-      success();
-
+      await sendEmailVerification(signedUpUser);
       const setReferrals = async (referredBy, limit) => {
         if (referredBy && referredBy.trim() !== "" && --limit) {
           const getReferral = async () => {
@@ -47,13 +56,15 @@ const Register = () => {
           };
 
           getReferral();
-        } else {
-          return null;
         }
       };
 
-      setDoc(doc(firestore, "users", signedUpUser.email), setUserCustomFields(signedUpUser, user)).then(() => {
+      await setDoc(doc(firestore, "users", signedUpUser.email), setUserCustomFields(signedUpUser, user)).then(() => {
         setReferrals(user.referredBy, REFERRALS_TOTAL_LEVELS);
+        auth.signOut().then(() => {
+          navigate("/");
+        });
+        success();
       });
     });
   };

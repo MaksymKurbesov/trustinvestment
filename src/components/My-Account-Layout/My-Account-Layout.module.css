@@ -13,6 +13,11 @@
   padding: 24px 200px 24px 50px !important;
 }
 
+.test {
+  color: black;
+  background: none;
+}
+
 .right-sider {
   position: absolute !important;
   right: 0;
@@ -47,16 +52,25 @@
   align-items: center;
 }
 
-.choose-language span {
+.choose-language p {
   margin-top: 15px;
   margin-bottom: 15px;
 }
 
-.choose-language button {
+.language {
   display: flex;
-  justify-content: center;
   align-items: center;
 }
+
+.language span {
+  margin-right: 8px;
+}
+
+/*.choose-language button {*/
+/*  display: flex;*/
+/*  justify-content: center;*/
+/*  align-items: center;*/
+/*}*/
 
 .choose-language button:not(:last-child) {
   margin-bottom: 15px;
@@ -74,7 +88,7 @@
 @media screen and (max-width: 1200px) {
   .my-account-wrapper {
     width: 100%;
-    padding: 50px 20px 0 100px;
+    padding: 50px 20px 30px 110px;
   }
 
   .left-sider {

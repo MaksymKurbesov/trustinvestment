@@ -2,11 +2,20 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useState, useEffect, useContext } from "react";
 
 import AuthContext from "./AuthContext";
-import { collection, doc, increment, limit, onSnapshot, orderBy, query, updateDoc, where } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  increment,
+  limit,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+  runTransaction,
+} from "firebase/firestore";
 import { FirebaseContext } from "../../index";
 
 export const AuthProvider = ({ children }) => {
-  let initialCount = 0;
   const auth = getAuth();
   const [signedInUser, setSignedInUser] = useState(null);
   const { firestore } = useContext(FirebaseContext);
@@ -19,7 +28,7 @@ export const AuthProvider = ({ children }) => {
         setSignedInUser(null);
       }
     });
-  }, [auth]);
+  }, []);
 
   useEffect(() => {
     if (!signedInUser) return;
@@ -33,10 +42,10 @@ export const AuthProvider = ({ children }) => {
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const transactions = [];
-      snapshot.docChanges().forEach((change) => {
+
+      snapshot.docChanges().forEach(async (change) => {
         const modifiedTransaction = change.doc.data();
         transactions.push(modifiedTransaction);
-
         const isDepositTransaction =
           change.type === "modified" &&
           modifiedTransaction.status === "Выполнено" &&
@@ -50,28 +59,62 @@ export const AuthProvider = ({ children }) => {
         const transactionAmount = modifiedTransaction.amount + modifiedTransaction.tax;
         const transactionPaymentMethod = modifiedTransaction.paymentMethod;
 
-        if (isWithdrawnTransaction && initialCount < 1) {
-          updateDoc(doc(firestore, "users", signedInUser.email), {
-            [`paymentMethods.${transactionPaymentMethod}.withdrawn`]: increment(transactionAmount),
-            [`paymentMethods.${transactionPaymentMethod}.available`]: increment(-transactionAmount),
-            withdrawn: increment(transactionAmount),
+        if (isWithdrawnTransaction) {
+          await runTransaction(firestore, async (transaction) => {
+            const userRef = doc(firestore, "users", signedInUser.email);
+            const userDoc = await transaction.get(userRef);
+            const transactionDoc = await transaction.get(change.doc.ref);
+
+            const wallet = userDoc.data().paymentMethods[transactionDoc.data().executor];
+
+            const newAvailable = wallet.available - transactionDoc.data().amount;
+            const newWithdrawn = wallet.withdrawn + transactionDoc.data().amount;
+
+            if (transactionDoc.data()._status === "running") {
+              transaction.update(change.doc.ref, {
+                _status: "completed",
+              });
+
+              transaction.update(userRef, {
+                [`paymentMethods.${transactionPaymentMethod}.available`]: newAvailable,
+                [`paymentMethods.${transactionPaymentMethod}.withdrawn`]: newWithdrawn,
+                withdrawn: increment(transactionAmount),
+              });
+            }
           });
         }
 
-        if (isDepositTransaction && initialCount < 1) {
-          console.log("deposit transaction");
+        if (isDepositTransaction) {
+          await runTransaction(firestore, async (transaction) => {
+            const userRef = doc(firestore, "users", signedInUser.email);
+            const userDoc = await transaction.get(userRef);
+            const transactionDoc = await transaction.get(change.doc.ref);
 
-          updateDoc(doc(firestore, "users", signedInUser.email), {
-            [`paymentMethods.${transactionPaymentMethod}.available`]: increment(modifiedTransaction.amount),
-            [`paymentMethods.${transactionPaymentMethod}.deposited`]: increment(modifiedTransaction.amount),
+            const wallet = userDoc.data().paymentMethods[transactionDoc.data().executor];
+
+            const newAvailable = wallet.available + transactionDoc.data().amount;
+            const newDeposited = wallet.deposited + transactionDoc.data().amount;
+
+            if (transactionDoc.data()._status === "running") {
+              transaction
+                .update(change.doc.ref, {
+                  _status: "completed",
+                })
+                .update(userRef, {
+                  [`paymentMethods.${transactionPaymentMethod}.available`]: newAvailable,
+                  [`paymentMethods.${transactionPaymentMethod}.deposited`]: newDeposited,
+                });
+
+              // transaction.update(userRef, {
+              //   [`paymentMethods.${transactionPaymentMethod}.available`]: increment(newAvailable),
+              //   [`paymentMethods.${transactionPaymentMethod}.deposited`]: increment(newDeposited),
+              // });
+            }
           });
         }
       });
     });
 
-    console.log(initialCount, " initialCount");
-
-    initialCount++;
     return unsubscribe;
   }, [signedInUser]);
 

@@ -1,62 +1,189 @@
 import styles from "./Deposit.module.css";
-import Button from "antd/lib/button";
+import { useTranslation } from "react-i18next";
 import Form from "antd/lib/form";
+import { Button, Steps } from "antd";
 import Modal from "antd/lib/modal";
-import { Plans } from "./Plans";
-import { EnterAmount } from "components/Enter-Amount/Enter-Amount";
-import { ChoosePaymentMethod } from "components/Choose-Payment-Method/Choose-Payment-Method";
-import { AdditionalInformation } from "components/Additional-Information/Additional-Information";
-import { useNavigate, useOutletContext } from "react-router-dom";
-import { useContext, useState } from "react";
-import { getRandomArbitrary, hideDigitsInWallet, secondsToStringDays } from "utils/helpers";
-import Lottie from "lottie-react";
-import withdrawnAnimation from "../../assets/lottie-animations/withdrawn-animation2.json";
+import { ConfirmedWindow } from "../../components/ConfirmedWindow/ConfirmedWindow";
+import { calculateIncomeInDay, calculateTotalIncome, getRandomArbitrary } from "../../utils/helpers";
+import React, { useContext, useState } from "react";
+import { getAuth } from "firebase/auth";
+import { FirebaseContext } from "../../index";
+import { useOutletContext } from "react-router-dom";
+import { Plans } from "./components/Plans/Plans";
+import Wallets from "../../components/Wallets/Wallets";
+import { EnterAmount } from "../../components/Enter-Amount/Enter-Amount";
+import { AdditionalInformation } from "../../components/Additional-Information/Additional-Information";
+import PaymentMethodIcon from "../../assets/images/withdrawn-icons/payment-method.svg";
+import AmountIcon from "../../assets/images/withdrawn-icons/amount.svg";
+import DayIncomeIcon from "../../assets/images/withdrawn-icons/day-income.png";
+import TotalIncomeIcon from "../../assets/images/withdrawn-icons/total-income.png";
+import DateIcon from "../../assets/images/withdrawn-icons/date.svg";
+import IDIcon from "../../assets/images/withdrawn-icons/id.svg";
+import { v4 as uuidv4 } from "uuid";
+import { Waves } from "../../components/Waves/Waves";
 import {
   addDoc,
   collection,
-  updateDoc,
   doc,
+  getCountFromServer,
+  getDocs,
   increment,
   query,
-  where,
-  getDocs,
   setDoc,
-  getCountFromServer,
+  updateDoc,
+  where,
 } from "firebase/firestore";
-import { FirebaseContext } from "../../index";
-import { ConfirmedWindow } from "../../components/ConfirmedWindow/ConfirmedWindow";
-import { PERCENTAGE_BY_LVL, PERFECT_MONEY } from "../../utils/consts";
-import { v4 as uuidv4 } from "uuid";
-import { useTranslation } from "react-i18next";
+import { PERCENTAGE_BY_LVL } from "../../utils/consts";
 
 const REFERRALS_TOTAL_LEVELS = 6;
 
 const Deposit = () => {
-  const navigate = useNavigate();
-  const [tariffPlan, setTariffPlan] = useState(null);
-  const [paymentMethod, setPaymentMethod] = useState(PERFECT_MONEY);
-  const [amount, setAmount] = useState(0);
-  const [payFrom, setPayFrom] = useState("card");
-  const { firestore } = useContext(FirebaseContext);
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isConfirmedModalOpen, setIsConfirmedModalOpen] = useState(false);
-  const [enoughMoneyError, setEnoughMoneyError] = useState(false);
-  const totalIncome = tariffPlan ? ((amount / 100) * tariffPlan.percent * tariffPlan.days).toFixed(2) : 0;
-  const inDayIncome = tariffPlan ? ((amount / 100) * tariffPlan.percent).toFixed(2) : 0;
-  const [form] = Form.useForm();
   const { t, i18n } = useTranslation();
-
+  const [current, setCurrent] = useState(0);
+  const auth = getAuth();
+  const { firestore } = useContext(FirebaseContext);
   const { userData } = useOutletContext();
+  const [incomeInDay, setIncomeInDay] = useState(0);
+  const [totalIncome, setTotalIncome] = useState(0);
+  const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
+
+  const handleConfirmedOk = () => {
+    setIsConfirmedModalOpen(false);
+  };
+
+  const dateSettings = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timezone: "UTC",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+  };
+
+  const steps = [
+    {
+      title: t("make_deposit.choose_plan"),
+      content: <Plans />,
+    },
+    {
+      title: t("make_deposit.choose_payment_method"),
+      content: <Wallets name={"payment-method"} message={t("cash_in.choose_wallet_warning")} />,
+    },
+    {
+      title: t("make_deposit.enter_amount"),
+      content: (
+        <div className={styles["enter-amount"]}>
+          <EnterAmount form={form} />
+          <AdditionalInformation
+            infoLabel1={form.getFieldValue("plan")?.plan > 3 ? "" : t("make_deposit.income_per_day")}
+            infoValue1={incomeInDay}
+            infoLabel2={`${t("make_deposit.total_income")}`}
+            infoValue2={totalIncome}
+          />
+        </div>
+      ),
+    },
+    {
+      title: t("make_deposit.confirm"),
+      content: (
+        <>
+          <div className={styles["information"]}>
+            <ul className={styles["information-list"]}>
+              <li>
+                <p>
+                  <img src={PaymentMethodIcon} width={20} alt={""} />
+                  {t("make_deposit.payment_method")}:
+                </p>
+                {form.getFieldValue("payment-method")}
+              </li>
+              <li>
+                <p>
+                  <img src={AmountIcon} width={20} alt={""} />
+                  {t("transactions.amount")}:
+                </p>
+                {form.getFieldValue("amount")}$
+              </li>
+              {form.getFieldValue("plan")?.plan <= 3 ? (
+                <li>
+                  <p>
+                    <img src={DayIncomeIcon} width={20} alt={""} />
+                    <span>{t("make_deposit.income_per_day")}:</span>
+                  </p>
+                  {calculateIncomeInDay(form)}$
+                </li>
+              ) : (
+                ""
+              )}
+
+              <li>
+                <p>
+                  <img src={TotalIncomeIcon} width={20} alt={""} />
+                  <span>{t("make_deposit.total_income")}:</span>
+                </p>
+                {totalIncome}$
+              </li>
+              <li className={styles["date"]}>
+                <p>
+                  <img src={DateIcon} width={20} alt={""} />
+                  {t("transactions.date")}:
+                </p>
+                {new Date().toLocaleDateString(i18n.language === "en" ? "en-US" : "ru", dateSettings)}
+              </li>
+              <li className={styles["transaction-number"]}>
+                <p>
+                  <img src={IDIcon} width={20} alt={""} />
+                  {t("replenishment.transaction_number")}:
+                </p>
+                {uuidv4()}
+              </li>
+              <Waves cn={"deposit-waves"} />
+            </ul>
+          </div>
+        </>
+      ),
+    },
+  ];
+
+  const onChangeHandler = () => {
+    const selectedPlan = form.getFieldValue("plan").plan;
+
+    setIncomeInDay(calculateIncomeInDay(form));
+    setTotalIncome(calculateTotalIncome(form));
+
+    if (selectedPlan > 3) {
+      setTotalIncome(calculateIncomeInDay(form));
+    }
+  };
+
+  const next = () => {
+    form.validateFields().then((values) => setCurrent(current + 1));
+  };
+  const prev = () => {
+    setCurrent(current - 1);
+  };
+
+  const items = steps.map((item) => ({
+    key: item.title,
+    title: item.title,
+  }));
 
   const addReferralReward = (referredBy, limit, amount) => {
+    if (!referredBy) return;
+
     if (referredBy.trim() !== "" && --limit) {
       const getReferral = async () => {
         const q1 = query(collection(firestore, "users"), where("nickname", "==", referredBy));
         await getDocs(q1).then(async (querySnap) => {
           const referralLevel = querySnap.docs[0].data();
+          const referralAmount = (amount / 100) * PERCENTAGE_BY_LVL[REFERRALS_TOTAL_LEVELS - limit];
 
           await updateDoc(doc(firestore, "users", referralLevel.email), {
-            referals: increment((amount / 100) * PERCENTAGE_BY_LVL[REFERRALS_TOTAL_LEVELS - limit]),
+            referals: increment(referralAmount),
+            [`paymentMethods.${form.getFieldValue("payment-method")}.referrals`]: increment(referralAmount),
+            [`paymentMethods.${form.getFieldValue("payment-method")}.available`]: increment(referralAmount),
           });
 
           await addDoc(collection(firestore, "transactions"), {
@@ -66,7 +193,7 @@ const Deposit = () => {
             type: "Реферальные",
             date: new Date(),
             email: referralLevel.email,
-            paymentMethod: paymentMethod,
+            paymentMethod: form.getFieldValue("payment-method"),
             executor: userData.nickname,
           });
 
@@ -80,189 +207,101 @@ const Deposit = () => {
     }
   };
 
-  const handleConfirmOk = () => {
-    setIsConfirmModalOpen(false);
-    setIsConfirmedModalOpen(true);
+  const onDone = async () => {
+    form.validateFields().then(async (values) => {
+      setLoading(true);
 
-    const sendTransaction = async () => {
+      const q = query(collection(firestore, "users", auth.currentUser.email, "deposits"));
+      const queryCount = await getCountFromServer(q);
+      const depositPlan = form.getFieldValue("plan");
+      const depositAmount = form.getFieldValue("amount");
+      const depositPaymentMethod = form.getFieldValue("payment-method");
+      const depositID =
+        queryCount.data().count >= 9 ? `90${queryCount.data().count + 1}` : `900${queryCount.data().count + 1}`;
+
       await addDoc(collection(firestore, "transactions"), {
-        account_id: userData.uid,
-        amount: amount,
-        status: payFrom === "balance" ? "Выполнено" : "Ожидание",
-        type: payFrom === "balance" ? "Вклад" : "Пополнение",
+        account_id: auth.currentUser.uid,
+        amount: depositAmount,
+        status: "Выполнено",
+        type: "Вклад",
         date: new Date(),
-        email: userData.email,
-        paymentMethod: paymentMethod,
-        executor: paymentMethod,
+        email: auth.currentUser.email,
+        paymentMethod: depositPaymentMethod,
+        executor: depositPaymentMethod,
       });
-    };
 
-    if (payFrom === "balance") {
-      const updateData = async () => {
-        const q = query(collection(firestore, "users", userData.email, "deposits"));
-        const queryCount = await getCountFromServer(q);
-
-        await updateDoc(doc(firestore, "users", userData.email), {
-          [`paymentMethods.${paymentMethod}.available`]: increment(-amount),
-          invested: increment(amount),
-        });
-
-        const depositID = `900${queryCount.data().count}`;
-
-        await setDoc(doc(firestore, "users", userData.email, "deposits", depositID), {
-          planNumber: `#${tariffPlan.title[tariffPlan?.title.length - 1]}`,
-          days: tariffPlan.days,
-          amount: amount,
-          willReceived: +totalIncome,
-          date: new Date(),
-          charges: 0,
-          received: 0,
-          status: "active",
-          paymentMethod: paymentMethod,
-          deposit_id: depositID,
-        });
-      };
-
-      updateData().then(async () => {
-        addReferralReward(userData.referredBy, REFERRALS_TOTAL_LEVELS, amount);
+      await updateDoc(doc(firestore, "users", auth.currentUser.email), {
+        [`paymentMethods.${depositPaymentMethod}.available`]: increment(-depositAmount),
+        invested: increment(depositAmount),
       });
-    }
 
-    sendTransaction();
-  };
-
-  const showConfirmModal = async () => {
-    const enoughMoney = amount <= userData.paymentMethods[paymentMethod].available;
-
-    if (enoughMoney) {
-      setIsConfirmModalOpen(true);
-    } else {
-      setEnoughMoneyError(true);
-    }
-  };
-
-  const handleConfirmCancel = () => {
-    setIsConfirmModalOpen(false);
-  };
-
-  const handleConfirmedOk = () => {
-    setIsConfirmedModalOpen(false);
-  };
-
-  const handleConfirmedCancel = () => {
-    setIsConfirmedModalOpen(false);
-  };
-
-  const onFinish = () => {
-    form.validateFields().then((values) => {
-      if (payFrom === "card") {
-        navigate("/my-account/replenishment", {
-          state: {
-            tariffPlan,
-            paymentMethod: paymentMethod,
-            amount,
-            date: secondsToStringDays(Math.floor(Date.now() / 1000)),
-          },
-        });
-      }
+      await setDoc(doc(firestore, "users", auth.currentUser.email, "deposits", depositID), {
+        planNumber: depositPlan.title,
+        days: depositPlan.days,
+        amount: +depositAmount,
+        willReceived: totalIncome,
+        date: new Date(),
+        charges: 0,
+        received: 0,
+        status: "active",
+        paymentMethod: depositPaymentMethod,
+        deposit_id: depositID,
+      }).then(() => {
+        setLoading(false);
+        setIsConfirmedModalOpen(true);
+        addReferralReward(userData.referredBy, REFERRALS_TOTAL_LEVELS, form.getFieldValue("amount"));
+      });
     });
-
-    if (payFrom === "balance") {
-      showConfirmModal();
-    }
   };
-
-  if (!userData) {
-    return null;
-  }
 
   return (
     <div className={styles["deposit"]}>
       <h2 className={"my-account-title"}>{t("make_deposit.title")}</h2>
-      <Form
-        form={form}
-        onFinish={onFinish}
-        initialValues={{
-          "payment-method": "Perfect Money",
-        }}
-      >
-        <h3>
-          <span>01</span> {t("make_deposit.choose_plan")}
-        </h3>
-        <Form.Item>
-          <Plans tariffHandler={setTariffPlan} />
-        </Form.Item>
-
-        <div>
-          <div className={styles["payment-details"]}>
-            <ChoosePaymentMethod
-              paymentMethodHandler={setPaymentMethod}
-              setPayFrom={setPayFrom}
-              stepNumber={"02"}
-              toggleButton
-              status={enoughMoneyError}
-              setTax={() => null}
-            />
-
-            <EnterAmount
-              stepNumber={"03"}
-              amountHandler={setAmount}
-              min={tariffPlan?.min}
-              max={tariffPlan?.max}
-              paymentMethod={paymentMethod}
-            />
-            <AdditionalInformation
-              infoLabel1={`${t("make_deposit.income_per_day")}`}
-              infoValue1={inDayIncome}
-              infoLabel2={`${t("make_deposit.total_income")}`}
-              infoValue2={totalIncome}
-            />
-          </div>
-          <Form.Item>
-            <Button type="primary" htmlType="submit" disabled={!tariffPlan || amount <= 0}>
-              {t("make_deposit.title")}
+      <Form form={form} onChange={onChangeHandler}>
+        <Steps
+          current={current}
+          items={items}
+          className={styles["deposit-steps"]}
+          direction={window.innerWidth < 850 ? "vertical" : "horizontal"}
+        />
+        <div className={styles["content"]}>{steps[current].content}</div>
+        <div
+          style={{
+            marginTop: 24,
+          }}
+        >
+          {current > 0 && (
+            <Button
+              style={{
+                marginRight: "8px",
+              }}
+              onClick={prev}
+            >
+              {t("transactions.previous")}
             </Button>
-          </Form.Item>
+          )}
+          {current < steps.length - 1 && (
+            <Button type="primary" onClick={next}>
+              {t("transactions.next")}
+            </Button>
+          )}
+          {current === steps.length - 1 && (
+            <Button type="primary" onClick={onDone} disabled={loading}>
+              {t("transactions.done")}
+            </Button>
+          )}
         </div>
-      </Form>
 
-      <Modal
-        open={isConfirmModalOpen}
-        onOk={handleConfirmOk}
-        onCancel={handleConfirmCancel}
-        className={"withdraw-modal"}
-        cancelText={t("replenishment.cancel")}
-        title={<p className={styles["title-modal"]}>{t("make_deposit.title")}</p>}
-      >
-        <div className={styles["modal-content"]}>
-          <Lottie animationData={withdrawnAnimation} className={styles["withdraw-animation"]} />
-          <p>
-            {t("replenishment.amount")}: <span>{amount} USD</span>
-          </p>
-          <p>
-            {t("replenishment.fee")}: <span>0 USD</span>
-          </p>
-          <p>
-            {t("replenishment.payment_method")}: <span>{paymentMethod}</span>
-          </p>
-          <p>
-            {t("replenishment.wallet")}:<span>{hideDigitsInWallet(userData.paymentMethods[paymentMethod].number)}</span>
-          </p>
-          <p>
-            {t("replenishment.date")}: <span>{secondsToStringDays(Math.floor(Date.now() / 1000))}</span>
-          </p>
-        </div>
-      </Modal>
-      <Modal
-        open={isConfirmedModalOpen}
-        onOk={handleConfirmedOk}
-        onCancel={handleConfirmedCancel}
-        cancelText={t("make_deposit.cancel")}
-        title={<p className={styles["title-modal"]}>{t("make_deposit.title")}</p>}
-        footer={null}
-      >
-        <ConfirmedWindow transactionID={getRandomArbitrary()} />
-      </Modal>
+        <Modal
+          open={isConfirmedModalOpen}
+          onOk={handleConfirmedOk}
+          cancelText={t("replenishment.cancel")}
+          title={<p className={styles["title-modal"]}>{t("replenishment.confirm")}</p>}
+          footer={null}
+        >
+          <ConfirmedWindow transactionID={getRandomArbitrary()} />
+        </Modal>
+      </Form>
     </div>
   );
 };

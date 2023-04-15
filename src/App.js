@@ -19,32 +19,37 @@ import { Withdraw } from "./pages/Withdraw/Withdraw";
 import { PersonalArea } from "./pages/Personal-Area/Personal-Area";
 import { Settings } from "./pages/Settings/Settings";
 import { Replenishment } from "./pages/Replanishment/Replenishment";
+import { CashIn } from "./pages/Cash-In/Cash-In";
+import { AuthProvider } from "./components/Auth-Provider/Auth-Provider";
 
 function App() {
   return (
-    <div className="App">
-      <Routes>
-        <Route path="/" element={<HomeLayout />}>
-          <Route index element={<Index />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/faq" element={<Faq />} />
-          <Route path="/partners" element={<PartnersProgram />} />
-          <Route path="/about-us" element={<AboutUs />} />
-          <Route path="/contacts" element={<Contacts />} />
-        </Route>
+    <AuthProvider>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<HomeLayout />}>
+            <Route index element={<Index />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/faq" element={<Faq />} />
+            <Route path="/partners" element={<PartnersProgram />} />
+            <Route path="/about-us" element={<AboutUs />} />
+            <Route path="/contacts" element={<Contacts />} />
+          </Route>
 
-        <Route path="/my-account" element={<MyAccountLayout />}>
-          <Route index element={<PersonalArea />} />
-          <Route path="deposit" element={<Deposit />} />
-          <Route path="withdraw" element={<Withdraw />} />
-          <Route path="transactions" element={<Transactions />} />
-          <Route path="partners" element={<Partners />} />
-          <Route path="settings" element={<Settings />} />
-          <Route path="replenishment" element={<Replenishment />} />
-        </Route>
-      </Routes>
-    </div>
+          <Route path="/my-account" element={<MyAccountLayout />}>
+            <Route index element={<PersonalArea />} />
+            <Route path="cash-in" element={<CashIn />} />
+            <Route path="deposit" element={<Deposit />} />
+            <Route path="withdraw" element={<Withdraw />} />
+            <Route path="transactions" element={<Transactions />} />
+            <Route path="partners" element={<Partners />} />
+            <Route path="settings" element={<Settings />} />
+            <Route path="replenishment" element={<Replenishment />} />
+          </Route>
+        </Routes>
+      </div>
+    </AuthProvider>
   );
 }
 

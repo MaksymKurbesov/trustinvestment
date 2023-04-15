@@ -19,15 +19,15 @@ import CompanyImage4 from "assets/images/company-photos/company4.webp";
 import { useTranslation } from "react-i18next";
 
 const Contacts = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   return (
     <div className={styles["contacts"]}>
       <div className={styles["left-row"]}>
-        <h2>{t("contact_us.title")}</h2>
+        <h2 data-aos={"fade-up"}>{t("contact_us.title")}</h2>
         <div className={styles["content-wrapper"]}>
           <div className={styles["form-wrapper"]}>
-            <div className={styles["form-information"]}>
+            <div className={styles["form-information"]} data-aos={"fade-down"}>
               <p>
                 <span>{t("contact_us.form_title")}</span>
                 {t("contact_us.form_subtitle")}
@@ -38,19 +38,40 @@ const Contacts = () => {
             </div>
 
             <Form className={styles["contact-form"]}>
-              <Form.Item label={t("fill_form.name")} labelCol={{ span: 24 }}>
+              <Form.Item
+                label={t("fill_form.name")}
+                labelCol={{ span: 24 }}
+                data-aos={"fade-left"}
+                data-aos-delay={200}
+              >
                 <Input />
               </Form.Item>
-              <Form.Item label={"Email"} labelCol={{ span: 24 }}>
+              <Form.Item label={"Email"} labelCol={{ span: 24 }} data-aos={"fade-right"} data-aos-delay={300}>
                 <Input />
               </Form.Item>
-              <Form.Item label={t("fill_form.phone_number")} labelCol={{ span: 24 }}>
+              <Form.Item
+                label={t("fill_form.phone_number")}
+                labelCol={{ span: 24 }}
+                data-aos={"fade-right"}
+                data-aos-delay={400}
+              >
                 <Input />
               </Form.Item>
-              <Form.Item label={t("fill_form.message")} labelCol={{ span: 24 }}>
+              <Form.Item
+                label={t("fill_form.message")}
+                labelCol={{ span: 24 }}
+                data-aos={"fade-right"}
+                data-aos-delay={500}
+              >
                 <TextArea />
               </Form.Item>
-              <Button htmlType={"submit"} type={"primary"} className={styles["submit-button"]}>
+              <Button
+                htmlType={"submit"}
+                type={"primary"}
+                className={styles["submit-button"]}
+                data-aos={"fade-right"}
+                data-aos-delay={600}
+              >
                 {t("fill_form.Send")}
               </Button>
               <Checkbox>{t("contact_us.policy")}</Checkbox>
@@ -108,7 +129,7 @@ const Contacts = () => {
             <img src={PhoneIcon} width={40} />
           </a>
 
-          <a href={"https://t.me/TrustInvestmentSupport"}>
+          <a href={"https://t.me/DubaiTrustSupport"}>
             <img src={TelegramIcon} width={40} />
           </a>
 

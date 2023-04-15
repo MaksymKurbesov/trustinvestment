@@ -82,23 +82,25 @@ const Faq = () => {
   ];
 
   return (
-    <div className={`${styles["faq"]} container`}>
-      <h3 data-aos={"fade-up"}>FAQ's</h3>
-      <h2 data-aos={"fade-up"} data-aos-delay={300}>
-        {t("FAQ.title")}
-      </h2>
-      <p data-aos={"fade-up"} data-aos-delay={500} className={styles["subtitle"]}>
-        {t("FAQ.subtitle")}
-      </p>
-      <Collapse accordion className={styles["faq-collapse"]} data-aos={"fade-left"}>
-        {FAQ_LIST.map((faq, i) => {
-          return (
-            <Panel header={faq.header} key={i + 1}>
-              <p>{faq.content}</p>
-            </Panel>
-          );
-        })}
-      </Collapse>
+    <div className={`${styles["faq"]} faqRoot`}>
+      <div className={"container"}>
+        <h3 data-aos={"fade-up"}>FAQ's</h3>
+        <h2 data-aos={"fade-up"} data-aos-delay={300}>
+          {t("FAQ.title")}
+        </h2>
+        <p data-aos={"fade-up"} data-aos-delay={500} className={styles["subtitle"]}>
+          {t("FAQ.subtitle")}
+        </p>
+        <Collapse accordion className={styles["faq-collapse"]} data-aos={"fade-left"}>
+          {FAQ_LIST.map((faq, i) => {
+            return (
+              <Panel header={faq.header} key={i + 1}>
+                <p>{faq.content}</p>
+              </Panel>
+            );
+          })}
+        </Collapse>
+      </div>
     </div>
   );
 };

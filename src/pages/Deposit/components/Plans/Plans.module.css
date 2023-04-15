@@ -1,0 +1,150 @@
+.plans {
+  width: 100%;
+  padding: 15px 20px 0px 20px;
+}
+
+.plan {
+  display: block;
+  height: 100%;
+  border: none;
+  padding: 30px !important;
+  padding-bottom: 30px !important;
+  border-radius: 20px !important;
+  margin-left: 2px;
+}
+
+.plan-image {
+  border-radius: 25px;
+  margin-bottom: 20px;
+}
+
+.plan-name {
+  font-weight: 600;
+  color: black;
+  z-index: 5;
+  margin-bottom: 25px;
+}
+
+.plan-name p:nth-child(1) {
+  font-size: 16px;
+}
+
+.plan-name p:nth-child(2) {
+  font-size: 32px;
+  font-weight: 600;
+}
+
+.card-info-wrapper {
+  width: 100%;
+  color: black;
+  z-index: 5;
+  display: grid;
+  gap: 15px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: max-content max-content;
+}
+
+.card-info-wrapper div:before {
+  content: "";
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: url("../../../../assets/images/in-day.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.card-info-wrapper div:nth-child(2):before {
+  background-image: url("../../../../assets/images/days.svg");
+}
+
+.card-info-wrapper div:nth-child(3):before {
+  background-image: url("../../../../assets/images/minmax.svg");
+}
+
+.card-info-wrapper div:nth-child(4):before {
+  background-image: url("../../../../assets/images/minmax.svg");
+}
+
+.card-info {
+  font-size: 14px;
+  line-height: 1.8;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.card-info p {
+  padding-left: 25px;
+}
+
+.card-info span {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.active {
+  box-shadow: 0px 0px 55px 5px rgba(22, 119, 255, 0.9);
+  border-radius: 35px;
+}
+
+.plan-payment {
+  position: absolute;
+  font-size: 14px;
+  top: 50px;
+  right: 50px;
+  background-color: white;
+  color: black;
+  border-radius: 15px;
+  padding: 0px 25px;
+  font-weight: 500;
+  z-index: 5;
+}
+
+@media screen and (max-width: 1350px) {
+  .plans {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 33% 33% 33%;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .plan {
+    padding: 20px !important;
+  }
+
+  .plan-name p:nth-child(2) {
+    font-size: 24px;
+  }
+
+  .card-info {
+    font-size: 12px;
+  }
+
+  .card-info span {
+    font-size: 18px;
+  }
+
+  .plan-payment {
+    right: 45px;
+    top: 45px;
+    font-size: 12px !important;
+    padding: 0 15px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .plan-card img {
+    height: 90px;
+  }
+
+  .card-info {
+    font-size: 12px;
+  }
+
+  .card-info span {
+    font-size: 18px;
+  }
+}
