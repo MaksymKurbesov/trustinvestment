@@ -1,32 +1,22 @@
 import styles from "./Personal-Area.module.css";
 
-import { DepositsStatus } from "pages/Personal-Area/components/Deposits-Status/DepositStatus";
-import { TimeToPayment } from "pages/Personal-Area/components/Time-To-Payment/Time-To-Payment";
-import { UserWallets } from "pages/Personal-Area/components/UserWallets/Userwallets";
+import { DepositsStatus } from "./components/Deposits-Status/DepositStatus";
+import { TimeToPayment } from "./components/Time-To-Payment/Time-To-Payment";
+import { UserWallets } from "./components/UserWallets/UserWallets";
 import { useContext, useEffect, useState } from "react";
 import { FirebaseContext } from "../../index";
-import {
-  collection,
-  query,
-  getDocs,
-  onSnapshot,
-  updateDoc,
-  doc,
-  increment,
-  addDoc,
-  runTransaction,
-} from "firebase/firestore";
+import { collection, query, getDocs, doc, increment, addDoc, runTransaction } from "firebase/firestore";
 import { useOutletContext } from "react-router-dom";
 import { getNextAccrual } from "../../utils/helpers";
 import { useTranslation } from "react-i18next";
-import { UserStatistic } from "./components/User-Statistic";
+import { UserStatistic } from "./components/User-Statistic/User-Statistic";
 
 const PersonalArea = () => {
   const { firestore } = useContext(FirebaseContext);
 
   const { userData } = useOutletContext();
   const [depositsList, setDepositsList] = useState([]);
-  const [nearestAccrual, setNearestAccrual] = useState(null);
+  const [nearestAccrual, setNearestAccrual] = useState(0);
   const { t } = useTranslation();
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 import "./App.css";
 import "./utils/libs/slick/slick.css";
 import "./utils/libs/slick/slick-theme.css";
-import { Index } from "./pages/Index/Index";
+import { Index } from "./pages/Index/Index.tsx";
 
 import { BrowserRouter, Route, Routes, Switch } from "react-router-dom";
 import { HomeLayout } from "./components/Layouts/Home-Layout";
@@ -15,12 +15,12 @@ import { Contacts } from "./pages/Contacts/Contacts";
 import { Deposit } from "./pages/Deposit/Deposit";
 import { Transactions } from "./pages/Transactions/Transactions";
 import { Partners } from "./pages/Partners/Partners";
-import { Withdraw } from "./pages/Withdraw/Withdraw";
+import { Withdraw } from "./pages/Withdraw/Withdraw.tsx";
 import { PersonalArea } from "./pages/Personal-Area/Personal-Area";
 import { Settings } from "./pages/Settings/Settings";
-import { Replenishment } from "./pages/Replanishment/Replenishment";
+import { Replenishment } from "./pages/Replanishment/Replenishment.tsx";
 import { CashIn } from "./pages/Cash-In/Cash-In";
-import { AuthProvider } from "./components/Auth-Provider/Auth-Provider";
+import { AuthProvider } from "./components/Auth-Provider/Auth-Provider.tsx";
 
 function App() {
   return (

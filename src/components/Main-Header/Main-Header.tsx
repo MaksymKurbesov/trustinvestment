@@ -4,7 +4,7 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { MenuList } from "./Menu-List";
-import Logotype from "assets/images/logo.png";
+import Logotype from "../../assets/images/logo.png";
 
 const { Header: AntHeader } = Layout;
 

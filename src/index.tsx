@@ -1,13 +1,13 @@
 import React, { createContext, Suspense } from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
+import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { ScrollToTop } from "./components/Scroll-To-Top/Scroll-To-Top";
-import "./i18n.js";
+import "./i18n.ts";
 
 const firebaseApp = initializeApp({
   apiKey: "AIzaSyBRYVcyjt0EBhRzmd5SKdvoSeA6j6941PY",
