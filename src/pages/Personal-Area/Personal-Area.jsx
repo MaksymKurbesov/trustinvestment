@@ -65,7 +65,7 @@ const PersonalArea = () => {
             const receivedByCharges = ((deposit.willReceived / deposit.days) * chargesSubtract).toFixed(2);
             const isLastCharge = charges === deposit.days;
 
-            if (isLastCharge && depositIsActive && planNumber <= 3) {
+            if (isLastCharge && depositIsActive) {
               transaction.update(doc(firestore, "users", userData.email), {
                 [`paymentMethods.${deposit.paymentMethod}.available`]: increment(deposit.amount),
               });
