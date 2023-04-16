@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 const { Panel } = Collapse;
 
 const Faq = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const FAQ_LIST = [
     {

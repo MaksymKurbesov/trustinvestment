@@ -1,6 +1,6 @@
 import styles from "./Partners-Program.module.css";
 import Button from "antd/lib/button";
-import AffilateImage from "assets/images/affiliate-image.png";
+import AffilateImage from "../../assets/images/affiliate-image.png";
 import { useNavigate } from "react-router-dom";
 import { Trans, useTranslation } from "react-i18next";
 import WhatIsIcon from "../../assets/images/what-is-icon.svg";
@@ -8,7 +8,7 @@ import HowToStartIcon from "../../assets/images/how-to-start-icon.svg";
 
 const PartnersProgram = () => {
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <div className={`${styles["partner-program"]}`}>
@@ -39,12 +39,12 @@ const PartnersProgram = () => {
       <div className={styles["padding-outer"]} data-aos={"fade-down"}>
         <div className={styles["program-description"]}>
           <p data-aos={"fade-left"} data-aos-offset={200}>
-            <img src={WhatIsIcon} height={120} />
+            <img src={WhatIsIcon} height={120} alt={""} />
             <span>{t("become_partner.what_is_title")}</span>
             <Trans i18nKey="become_partner.what_is_descr" components={{ bolder: <b /> }} />
           </p>
           <p data-aos={"fade-right"} data-aos-offset={200}>
-            <img src={HowToStartIcon} height={120} />
+            <img src={HowToStartIcon} height={120} alt={""} />
             <span>{t("become_partner.how_to_start_title")}</span>
             <Trans i18nKey="become_partner.how_to_start_descr" components={{ bolder: <b /> }} />
           </p>

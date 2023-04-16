@@ -99,6 +99,7 @@ const PersonalArea = () => {
     };
 
     getDeposits();
+    /* eslint-disable */
   }, []);
 
   if (!userData) {

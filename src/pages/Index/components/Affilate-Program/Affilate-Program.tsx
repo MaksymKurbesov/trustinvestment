@@ -1,6 +1,6 @@
 import styles from "./Affilate-Program.module.css";
 import useLottie from "lottie-react";
-import partnerAnimation from "assets/lottie-animations/partner-animation.json";
+import partnerAnimation from "../../../../assets/lottie-animations/partner-animation.json";
 import Coins from "../../../../assets/images/coins.png";
 import { useTranslation } from "react-i18next";
 
@@ -8,7 +8,7 @@ const AffilateProgram = () => {
   const PartnerAnimation = useLottie({
     animationData: partnerAnimation,
   });
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <section className={styles["affilate-program"]}>
@@ -35,7 +35,7 @@ const AffilateProgram = () => {
               {/*<span>Level 3</span>*/}
               {/*<span>Level 4</span>*/}
               {/*<span>Level 5</span>*/}
-              <img src={Coins} width={"100%"} className={styles["coins"]} />
+              <img src={Coins} width={"100%"} className={styles["coins"]} alt={""} />
               <p>{t("partners.levels_title")}</p>
             </div>
           </div>

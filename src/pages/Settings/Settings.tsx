@@ -8,9 +8,9 @@ import { useContext, useEffect, useState } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import { FirebaseContext } from "../../index";
 import { BITCOIN, BNB, ETHEREUM, PERFECT_MONEY, POLKADOT, QIWI, SOLANA, TRC20_TETHER } from "../../utils/consts";
-import ChooseAvatarImage from "assets/images/add-avatar2.png";
+import ChooseAvatarImage from "../../assets/images/add-avatar2.png";
 import { getStorage, ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import { getAuth, updateProfile, updatePassword } from "firebase/auth";
 import { UploadOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
@@ -25,7 +25,6 @@ const Settings = () => {
   const [avatar, setAvatar] = useState("");
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
-  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
@@ -40,6 +39,7 @@ const Settings = () => {
         setAvatar(null);
         console.log(error);
       });
+    /* eslint-disable */
   }, []);
 
   const success = () => {

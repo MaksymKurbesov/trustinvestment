@@ -3,7 +3,6 @@ import Input from "antd/lib/input";
 import Form from "antd/lib/form";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Select } from "antd";
 import { useOutletContext } from "react-router-dom";
 
 const EnterAmount = ({ form, tax = 0, cashInOperation, withdrawnOperation }) => {

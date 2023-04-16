@@ -1,8 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 import Collapse from "antd/lib/collapse";
 import Table from "antd/lib/table";
 import styles from "../Partners.module.css";
-import AuthContext from "../../../components/Auth-Provider/AuthContext";
 import { useOutletContext } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 const { Panel } = Collapse;

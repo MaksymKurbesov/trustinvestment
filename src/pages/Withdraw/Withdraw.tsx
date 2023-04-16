@@ -14,14 +14,14 @@ import { useOutletContext } from "react-router-dom";
 import { getAuth } from "firebase/auth";
 import { useTranslation } from "react-i18next";
 import { Steps } from "antd";
-import WithdrawnImage from "assets/images/withdrawn.svg";
+import WithdrawnImage from "../../assets/images/withdrawn.svg";
 import { v4 as uuidv4 } from "uuid";
 
-import PaymentMethodIcon from "assets/images/withdrawn-icons/payment-method.svg";
-import AmountIcon from "assets/images/withdrawn-icons/amount.svg";
-import CommissionIcon from "assets/images/withdrawn-icons/commission.svg";
-import IDIcon from "assets/images/withdrawn-icons/id.svg";
-import DateIcon from "assets/images/withdrawn-icons/date.svg";
+import PaymentMethodIcon from "../../assets/images/withdrawn-icons/payment-method.svg";
+import AmountIcon from "../../assets/images/withdrawn-icons/amount.svg";
+import CommissionIcon from "../../assets/images/withdrawn-icons/commission.svg";
+import IDIcon from "../../assets/images/withdrawn-icons/id.svg";
+import DateIcon from "../../assets/images/withdrawn-icons/date.svg";
 import { Waves } from "../../components/Waves/Waves";
 import Wallets from "../../components/Wallets/Wallets";
 import Input from "antd/lib/input";
@@ -54,6 +54,7 @@ const Withdraw = () => {
     } else {
       setIsPrivatKeyShowed(false);
     }
+    /* eslint-disable */
   }, [amount]);
 
   const openNotification = () => {
@@ -136,7 +137,7 @@ const Withdraw = () => {
             ""
           )}
           <ul className={styles["information-list"]}>
-            <img src={WithdrawnImage} width={300} />
+            <img src={WithdrawnImage} width={300} alt={""} />
             <li>
               <p>
                 <img src={PaymentMethodIcon} width={20} alt={""} />

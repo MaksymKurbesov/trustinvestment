@@ -1,5 +1,5 @@
 import styles from "./Advantage.module.css";
-import CountUp, { useCountUp } from "react-countup";
+import CountUp from "react-countup";
 import { useTranslation } from "react-i18next";
 import Advantage1 from "../../../../assets/images/advantages/Asset 1.svg";
 import Advantage2 from "../../../../assets/images/advantages/Asset 2.svg";
@@ -9,7 +9,7 @@ import Advantage5 from "../../../../assets/images/advantages/Asset 6.svg";
 import Advantage6 from "../../../../assets/images/advantages/Asset 5.svg";
 
 const Advantage = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const ADVANTAGES_LIST = [
     {
       icon: Advantage1,
@@ -60,7 +60,7 @@ const Advantage = () => {
                   data-aos-delay={100 * index}
                 >
                   <div>
-                    <img src={item.icon} height={100} />
+                    <img src={item.icon} height={100} alt={""} />
                     <h3>{item.title}</h3>
                   </div>
                   <p>{item.description}</p>

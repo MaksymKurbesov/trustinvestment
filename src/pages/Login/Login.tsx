@@ -1,14 +1,8 @@
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  sendPasswordResetEmail,
-  onAuthStateChanged,
-  sendEmailVerification,
-} from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail, sendEmailVerification } from "firebase/auth";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
-import signInAnimation from "assets/lottie-animations/signIn-animation.json";
+import signInAnimation from "../../assets/lottie-animations/signIn-animation.json";
 import useLottie from "lottie-react";
 import { LoginForm } from "./components/Login-Form/Login-Form";
 import notification from "antd/lib/notification";
@@ -19,7 +13,6 @@ const FEBRUARY_21_2022 = 1676967299257;
 const Login = () => {
   const auth = getAuth();
   const navigate = useNavigate();
-  // const { currentUser } = useContext(AuthContext);
   const { t } = useTranslation();
 
   const [api, notificationContextHolder] = notification.useNotification();
@@ -99,12 +92,8 @@ const Login = () => {
         navigate("/my-account");
       }
     });
+    /* eslint-disable */
   }, []);
-  // useEffect(() => {
-  //   if (currentUser) {
-  //     // navigate("/my-account");
-  //   }
-  // }, []);
 
   return (
     <div className={`${styles["login-page"]} devtools`}>

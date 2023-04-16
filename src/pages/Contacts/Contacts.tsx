@@ -5,17 +5,17 @@ import Form from "antd/lib/form";
 import Input from "antd/lib/input";
 import TextArea from "antd/es/input/TextArea";
 
-import MapMarkIcon from "assets/images/contact-icons/location.png";
-import EmailIcon from "assets/images/contact-icons/mail.png";
-import PhoneIcon from "assets/images/contact-icons/phone.png";
-import TelegramIcon from "assets/images/contact-icons/telegram.png";
-import YoutubeIcon from "assets/images/contact-icons/youtube.png";
-import ContactsDecorateImage from "assets/images/contacts-page-decorate.svg";
+import MapMarkIcon from "../../assets/images/contact-icons/location.png";
+import EmailIcon from "../../assets/images/contact-icons/mail.png";
+import PhoneIcon from "../../assets/images/contact-icons/phone.png";
+import TelegramIcon from "../../assets/images/contact-icons/telegram.png";
+import YoutubeIcon from "../../assets/images/contact-icons/youtube.png";
+import ContactsDecorateImage from "../../assets/images/contacts-page-decorate.svg";
 
-import CompanyImage1 from "assets/images/company-photos/company1.webp";
-import CompanyImage2 from "assets/images/company-photos/company2.webp";
-import CompanyImage3 from "assets/images/company-photos/company3.webp";
-import CompanyImage4 from "assets/images/company-photos/company4.webp";
+import CompanyImage1 from "../../assets/images/company-photos/company1.webp";
+import CompanyImage2 from "../../assets/images/company-photos/company2.webp";
+import CompanyImage3 from "../../assets/images/company-photos/company3.webp";
+import CompanyImage4 from "../../assets/images/company-photos/company4.webp";
 import { useTranslation } from "react-i18next";
 
 const Contacts = () => {
@@ -80,16 +80,16 @@ const Contacts = () => {
           <div className={styles["company-photos"]}>
             <ul className={styles["company-photos-list"]}>
               <li>
-                <img src={CompanyImage1} width={"100%"} />
+                <img src={CompanyImage1} width={"100%"} alt={""} />
               </li>
               <li>
-                <img src={CompanyImage4} width={"100%"} />
+                <img src={CompanyImage4} width={"100%"} alt={""} />
               </li>
               <li>
-                <img src={CompanyImage3} width={"100%"} />
+                <img src={CompanyImage3} width={"100%"} alt={""} />
               </li>
               <li>
-                <img src={CompanyImage2} width={"100%"} />
+                <img src={CompanyImage2} width={"100%"} alt={""} />
               </li>
             </ul>
           </div>

@@ -19,7 +19,7 @@ import { useTranslation } from "react-i18next";
 const Transactions = () => {
   const auth = getAuth();
   const [transactions, setTransactions] = useState([]);
-  const [totalTransactions, setTotalTransactions] = useState(null);
+  const [totalTransactions, setTotalTransactions] = useState(0);
   const { firestore } = useContext(FirebaseContext);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -48,7 +48,7 @@ const Transactions = () => {
       await getDocs(transactionsDocRef).then((transaction) => {
         const arr = [];
 
-        transaction.docs.map((item, index) => {
+        transaction.docs.forEach((item, index) => {
           arr.push({ ...item.data(), key: index, id: item.id.slice(0, 5) });
           setTransactions(arr);
         });
@@ -56,6 +56,7 @@ const Transactions = () => {
     };
 
     getTransactions().then(() => setLoading(false));
+    /* eslint-disable */
   }, []);
 
   const showNext = ({ item }) => {
@@ -75,7 +76,7 @@ const Transactions = () => {
         await getDocs(transactionsDocRef).then((transaction) => {
           const arr = [];
 
-          transaction.docs.map((item, index) => {
+          transaction.docs.forEach((item, index) => {
             arr.push({ ...item.data(), key: index, id: item.id.slice(0, 5) });
             setTransactions(arr);
             setPage(page + 1);
@@ -100,7 +101,7 @@ const Transactions = () => {
       await getDocs(transactionsDocRef).then((transaction) => {
         const arr = [];
 
-        transaction.docs.map((item, index) => {
+        transaction.docs.forEach((item, index) => {
           arr.push({ ...item.data(), key: index, id: item.id.slice(0, 5) });
           setTransactions(arr);
           setPage(page - 1);

@@ -43,7 +43,7 @@ const Partners = () => {
         const q = query(collection(firestore, "users"), where("nickname", "==", userNickname));
 
         await getDocs(q).then((snap) => {
-          snap.docs.map((item, index) => {
+          snap.docs.forEach((item, index) => {
             setReferralsList((prevState) => ({
               ...prevState,
               [level]: [
@@ -67,9 +67,8 @@ const Partners = () => {
     getCountFromServer(q).then((item) => {
       setDepositQuantity(item.data().count);
     });
+    /* eslint-disable */
   }, []);
-
-  console.log(userData, "userData");
 
   const [api, contextHolder] = notification.useNotification();
   const openNotification = () => {

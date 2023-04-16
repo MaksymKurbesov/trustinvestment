@@ -5,8 +5,8 @@ import Menu from "antd/lib/menu";
 import styles from "./Main-Header.module.css";
 import { MenuOutlined } from "@ant-design/icons";
 import { Link, useLocation } from "react-router-dom";
-import RusLangIcon from "assets/images/rus-lang.svg";
-import EngLangIcon from "assets/images/eng-lang.svg";
+import RusLangIcon from "../../assets/images/rus-lang.svg";
+import EngLangIcon from "../../assets/images/eng-lang.svg";
 
 import { getAuth } from "firebase/auth";
 import { useTranslation } from "react-i18next";

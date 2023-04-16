@@ -2,11 +2,10 @@ import React, { useContext, useState } from "react";
 import styles from "./Cash-In.module.css";
 import { Trans, useTranslation } from "react-i18next";
 import { Badge, Button, Select, Steps } from "antd";
-import { WALLETS, WALLETS_ICONS } from "utils/consts";
+import { WALLETS } from "../../utils/consts";
 import { EnterAmount } from "../../components/Enter-Amount/Enter-Amount";
 import { AdditionalInformation } from "../../components/Additional-Information/Additional-Information";
 import Form from "antd/lib/form";
-import { Radio } from "antd/lib";
 import Input from "antd/lib/input";
 import { addDoc, collection } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
@@ -15,10 +14,10 @@ import Modal from "antd/lib/modal";
 import { ConfirmedWindow } from "../../components/ConfirmedWindow/ConfirmedWindow";
 import { getRandomArbitrary } from "../../utils/helpers";
 
-import PaymentMethodIcon from "assets/images/withdrawn-icons/payment-method.svg";
-import AmountIcon from "assets/images/withdrawn-icons/amount.svg";
-import CommissionIcon from "assets/images/withdrawn-icons/commission.svg";
-import DateIcon from "assets/images/withdrawn-icons/date.svg";
+import PaymentMethodIcon from "../../assets/images/withdrawn-icons/payment-method.svg";
+import AmountIcon from "../../assets/images/withdrawn-icons/amount.svg";
+import CommissionIcon from "../../assets/images/withdrawn-icons/commission.svg";
+import DateIcon from "../../assets/images/withdrawn-icons/date.svg";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { useOutletContext } from "react-router-dom";
 import Wallets from "../../components/Wallets/Wallets";
@@ -35,10 +34,8 @@ const CashIn = () => {
   const [isConfirmedModalOpen, setIsConfirmedModalOpen] = useState(false);
   const [currency, setCurrency] = useState(RUB_CURRENCY);
   const [currencyAmount, setCurrencyAmount] = useState(0);
-  const { userData } = useOutletContext();
 
   const next = () => {
-    // setCurrent(current + 1);
     form.validateFields().then((values) => setCurrent(current + 1));
   };
   const prev = () => {

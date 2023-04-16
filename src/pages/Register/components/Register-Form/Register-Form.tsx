@@ -8,7 +8,7 @@ import styles from "./Register-Form.module.css";
 import { Trans, useTranslation } from "react-i18next";
 import Modal from "antd/lib/modal";
 import { useState } from "react";
-import { Agreement } from "components/Agreement/Agreement";
+import { Agreement } from "../../../../components/Agreement/Agreement";
 const { Option } = Select;
 
 const formItemLayout = {

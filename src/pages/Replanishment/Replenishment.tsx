@@ -1,4 +1,4 @@
-import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import Button from "antd/lib/button";
 import Form from "antd/lib/form";
 import Input from "antd/lib/input";
@@ -9,27 +9,20 @@ import { addDoc, collection } from "firebase/firestore";
 import { FirebaseContext } from "../../index";
 import { getRandomArbitrary } from "../../utils/helpers";
 import { ConfirmedWindow } from "../../components/ConfirmedWindow/ConfirmedWindow";
-import { useForm } from "@formspree/react";
-import { WALLETS } from "../../utils/consts";
 import { useTranslation } from "react-i18next";
 
 const Replenishment = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [transactionID, setTransactionID] = useState(null);
-  const { t, i18n } = useTranslation();
-
+  const { t } = useTranslation();
   const { userData } = useOutletContext();
-  const location = useLocation();
   const navigate = useNavigate();
   const { firestore } = useContext(FirebaseContext);
-  const [state, handleSubmit] = useForm("xvongjlo");
   const [form] = Form.useForm();
 
   useEffect(() => {
     setTransactionID(getRandomArbitrary);
   }, []);
-
-  const data = location.state;
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -44,13 +37,10 @@ const Replenishment = () => {
       const sendData = async () => {
         await addDoc(collection(firestore, "transactions"), {
           account_id: userData.uid,
-          // amount: data.amount,
           status: "Ожидание",
           type: "Пополнение",
           date: new Date(),
           email: userData.email,
-          // paymentMethod: data.paymentMethod,
-          // executor: data.paymentMethod,
         });
       };
       sendData();

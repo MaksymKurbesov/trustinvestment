@@ -9,7 +9,7 @@ const HeroBanner = () => {
   const lottieAnimation = useLottie({
     animationData: LineWaves,
   });
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <section className={`${styles["hero-banner-wrapper"]} devtools`}>

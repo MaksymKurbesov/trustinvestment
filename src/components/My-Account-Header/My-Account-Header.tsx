@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./My-Account-Header.module.css";
 import Layout from "antd/lib/layout";
-import Logo from "assets/images/logo.png";
+import Logo from "../../assets/images/logo.png";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 

@@ -1,6 +1,6 @@
 import styles from "./Time-To-Payment.module.css";
 import { CountdownTimer } from "../../../../components/CountdownTimer/CountdownTimer";
-import waitAnimation from "assets/lottie-animations/wait-animation.json";
+import waitAnimation from "../../../../assets/lottie-animations/wait-animation.json";
 import useLottie from "lottie-react";
 import { useTranslation } from "react-i18next";
 
