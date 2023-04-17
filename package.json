@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^13.5.0",
     "antd": "^5.1.4",
     "aos": "^3.0.0-beta.6",
+    "dotenv": "^16.0.3",
     "firebase": "^9.15.0",
     "firebase-tools": "^11.22.0",
     "i18next": "^22.4.10",

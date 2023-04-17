@@ -8,14 +8,15 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { ScrollToTop } from "./components/Scroll-To-Top/Scroll-To-Top";
 import "./i18n.js";
+console.log(process.env.REACT_APP_API_KEY, "process");
 
 const firebaseApp = initializeApp({
-  apiKey: "AIzaSyBRYVcyjt0EBhRzmd5SKdvoSeA6j6941PY",
-  authDomain: "trustinvest-1fdc5.firebaseapp.com",
-  projectId: "trustinvest-1fdc5",
-  storageBucket: "trustinvest-1fdc5.appspot.com",
-  messagingSenderId: "318926719709",
-  appId: "TestFn:318926719709:web:3bbe8050befe4baf052934",
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
 });
 
 AOS.init();
