@@ -4,14 +4,12 @@ import Form from "antd/lib/form";
 import Input from "antd/lib/input";
 import Row from "antd/lib/row";
 import Col from "antd/lib/col";
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useForm } from "@formspree/react";
 
 const ContactUs = () => {
   const [form] = Form.useForm();
-  const [formLayout, setFormLayout] = useState("vertical");
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [state, handleSubmit] = useForm("xpzeypzj");
 
   const onFinish = (e) => {
@@ -28,7 +26,7 @@ const ContactUs = () => {
           <h2 className={`${styles["contact-us-title"]} section-title`}>{t("fill_form.title")}</h2>
           <p>{t("fill_form.subtitle")}</p>
         </div>
-        <Form layout={formLayout} form={form} data-aos="fade-left" onFinish={onFinish}>
+        <Form layout={"vertical"} form={form} data-aos="fade-left" onFinish={onFinish}>
           <Row>
             <Col span={24} xs={{ span: 24 }} xl={{ span: 18 }} lg={{ span: 18 }} md={{ span: 22 }}>
               <Form.Item

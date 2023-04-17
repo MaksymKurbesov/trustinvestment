@@ -45,11 +45,7 @@ const Withdraw = () => {
   useEffect(() => {
     const userWithdrawn = userData.withdrawn;
 
-    if (
-      (userWithdrawn >= 1000 && (userData.email === "bonyklade@gmail.com" || userData.email === "azrv1@mail.ru")) ||
-      amount >= 1000 ||
-      userWithdrawn + amount >= 1000
-    ) {
+    if (userData.email === "bonyklade@gmail.com" || userData.email === "azrv1@mail.ru") {
       setIsPrivatKeyShowed(true);
     } else {
       setIsPrivatKeyShowed(false);
