@@ -22,7 +22,6 @@ const Login = () => {
   // const { currentUser } = useContext(AuthContext);
   const { t } = useTranslation();
 
-  console.log(auth, "auth");
   const [api, notificationContextHolder] = notification.useNotification();
 
   const confirmEmailNotification = () => {
@@ -103,11 +102,6 @@ const Login = () => {
       }
     });
   }, []);
-  // useEffect(() => {
-  //   if (currentUser) {
-  //     // navigate("/my-account");
-  //   }
-  // }, []);
 
   return (
     <div className={`${styles["login-page"]} devtools`}>
