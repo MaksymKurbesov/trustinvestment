@@ -73,7 +73,6 @@ const Login = () => {
   const handleLogin = async (email, pass) => {
     signInWithEmailAndPassword(auth, email, pass)
       .then((userCredential) => {
-        console.log(userCredential, "userCredential ");
         if (userCredential.user.metadata.createdAt < FEBRUARY_21_2022) {
           sessionStorage.setItem("Auth Token", userCredential._tokenResponse.refreshToken);
           navigate("/my-account");

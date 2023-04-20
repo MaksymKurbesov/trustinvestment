@@ -54,16 +54,25 @@ const PersonalArea = () => {
             const planNumber = Number(deposit.planNumber.match(/\d+/)[0]);
 
             let charges;
+            let isLastCharge;
+            let receivedByCharges;
+            let chargesSubtract;
 
             if (planNumber <= 3) {
               charges = Math.floor((timeNow - depositOpenTime) / (3600 * 24));
+              chargesSubtract = charges - deposit.charges;
+              isLastCharge = charges === deposit.days;
+              receivedByCharges = ((deposit.willReceived / deposit.days) * chargesSubtract).toFixed(2);
             } else {
               charges = Math.floor((timeNow - depositOpenTime) / (3600 * (deposit.days * 24)));
+              console.log(charges, "charges");
+              chargesSubtract = charges - deposit.charges;
+              isLastCharge = charges === 1;
+              receivedByCharges = deposit.willReceived.toFixed(2);
             }
 
-            const chargesSubtract = charges - deposit.charges;
-            const receivedByCharges = ((deposit.willReceived / deposit.days) * chargesSubtract).toFixed(2);
-            const isLastCharge = charges === deposit.days;
+            // const receivedByCharges = ((deposit.willReceived / deposit.days) * chargesSubtract).toFixed(2);
+            // const isLastCharge = charges === deposit.days;
 
             if (isLastCharge && depositIsActive) {
               transaction.update(doc(firestore, "users", userData.email), {

@@ -55,7 +55,6 @@ const getColumns = (t) => {
       key: "nextAccrual",
       responsive: ["sm"],
       render: (text) => {
-        console.log(text, "text");
         return <CountdownTimer targetDate={text} />;
       },
       width: "20%",

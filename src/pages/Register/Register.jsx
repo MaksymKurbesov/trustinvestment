@@ -56,6 +56,8 @@ const Register = () => {
           };
 
           getReferral();
+        } else {
+          return null;
         }
       };
 

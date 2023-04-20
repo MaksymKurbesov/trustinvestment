@@ -69,8 +69,6 @@ const Partners = () => {
     });
   }, []);
 
-  console.log(userData, "userData");
-
   const [api, contextHolder] = notification.useNotification();
   const openNotification = () => {
     api.open({

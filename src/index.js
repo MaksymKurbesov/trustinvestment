@@ -8,7 +8,6 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { ScrollToTop } from "./components/Scroll-To-Top/Scroll-To-Top";
 import "./i18n.js";
-console.log(process.env.REACT_APP_API_KEY, "process");
 
 const firebaseApp = initializeApp({
   apiKey: process.env.REACT_APP_API_KEY,
