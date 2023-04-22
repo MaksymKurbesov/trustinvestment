@@ -1,7 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Agreement.module.css";
+import { useOutletContext } from "react-router-dom";
 
 const Agreement = () => {
+  // const { userData } = useOutletContext();
+  //
+  // const [amount, setAmount] = useState(1000);
+  // const [amountText, setAmountText] = useState("одна тысяча долларов");
+  // const [percentage, setPercentage] = useState(43);
+  //
+  // useEffect(() => {
+  //   if (userData.email === "azrv1@mail.ru" || userData.email === "bonyklade@gmail.com") {
+  //     setAmount(1000);
+  //     setPercentage(43);
+  //     setAmountText("одна тысяча долларов");
+  //   }
+  // }, []);
+
   return (
     <div className={styles["agreement"]}>
       <p>
@@ -216,9 +231,9 @@ const Agreement = () => {
                 </li>
                 <li>
                   Приватный финансовый ключ приобретается один раз и закрепляется за клиентом. Приватный финансовый ключ
-                  требуется при совершении транзакций свыше 500$ (пятьсот долларов). Лимит на вывод средств с личного
-                  кабинета без ввода приватного финансового ключа – 500$ (пятьсот долларов). В случае потери приватного
-                  финансового ключа – свяжитесь с тех. поддержкой компании;
+                  требуется при совершении транзакций свыше 1000$ (одна тысяча долларов). Лимит на вывод средств с
+                  личного кабинета без ввода приватного финансового ключа – 1000$ (одна тысяча долларов). В случае
+                  потери приватного финансового ключа – свяжитесь с тех. поддержкой компании;
                 </li>
                 <li>
                   Клиент компании, после получения приватного финансового ключа, несет полную ответственность за
