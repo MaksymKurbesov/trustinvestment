@@ -39,6 +39,7 @@ const REFERRALS_TOTAL_LEVELS = 6;
 
 const Deposit = () => {
   const [isConfirmedModalOpen, setIsConfirmedModalOpen] = useState(false);
+  const [choosedPlan, setChoosedPlan] = useState(null);
   const { t, i18n } = useTranslation();
   const [current, setCurrent] = useState(0);
   const auth = getAuth();
@@ -66,7 +67,7 @@ const Deposit = () => {
   const steps = [
     {
       title: t("make_deposit.choose_plan"),
-      content: <Plans />,
+      content: <Plans form={form} />,
     },
     {
       title: t("make_deposit.choose_payment_method"),

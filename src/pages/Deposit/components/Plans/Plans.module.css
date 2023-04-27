@@ -1,28 +1,73 @@
+.plan-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+.table-row {
+  /*background: var(--blue);*/
+  cursor: pointer;
+}
+
+.plan-table th {
+  font-weight: 600;
+  font-size: 16px;
+  padding: 25px;
+}
+
+.plan-table td {
+  text-align: center;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.6);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  /*color: var(--blue);*/
+  /*font-weight: ;*/
+}
+
 .plans {
   width: 100%;
   padding: 15px 20px 0px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.head-titles {
+  display: flex;
 }
 
 .plan {
-  display: block;
+  /*display: block;*/
   height: 100%;
   border: none;
   padding: 30px !important;
   padding-bottom: 30px !important;
   border-radius: 20px !important;
   margin-left: 2px;
+  background: none;
+}
+
+.plan-card {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  justify-content: space-evenly;
+  justify-items: center;
+  align-content: space-evenly;
 }
 
 .plan-image {
-  border-radius: 25px;
-  margin-bottom: 20px;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  /*margin-bottom: 20px;*/
 }
 
 .plan-name {
   font-weight: 600;
   color: black;
   z-index: 5;
-  margin-bottom: 25px;
+  /*margin-bottom: 25px;*/
 }
 
 .plan-name p:nth-child(1) {
@@ -35,38 +80,38 @@
 }
 
 .card-info-wrapper {
-  width: 100%;
+  /*width: 100%;*/
   color: black;
   z-index: 5;
-  display: grid;
-  gap: 15px;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: max-content max-content;
+  display: flex;
+  gap: 25%;
+  /*grid-template-columns: 1fr 1fr;*/
+  /*grid-template-rows: max-content max-content;*/
 }
 
-.card-info-wrapper div:before {
-  content: "";
-  width: 18px;
-  height: 18px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-image: url("../../../../assets/images/in-day.svg");
-  background-repeat: no-repeat;
-  background-position: center;
-}
+/*.card-info-wrapper div:before {*/
+/*  content: "";*/
+/*  width: 18px;*/
+/*  height: 18px;*/
+/*  position: absolute;*/
+/*  top: 0;*/
+/*  left: 0;*/
+/*  background-image: url("../../../../assets/images/in-day.svg");*/
+/*  background-repeat: no-repeat;*/
+/*  background-position: center;*/
+/*}*/
 
-.card-info-wrapper div:nth-child(2):before {
-  background-image: url("../../../../assets/images/days.svg");
-}
+/*.card-info-wrapper div:nth-child(2):before {*/
+/*  background-image: url("../../../../assets/images/days.svg");*/
+/*}*/
 
-.card-info-wrapper div:nth-child(3):before {
-  background-image: url("../../../../assets/images/minmax.svg");
-}
+/*.card-info-wrapper div:nth-child(3):before {*/
+/*  background-image: url("../../../../assets/images/minmax.svg");*/
+/*}*/
 
-.card-info-wrapper div:nth-child(4):before {
-  background-image: url("../../../../assets/images/minmax.svg");
-}
+/*.card-info-wrapper div:nth-child(4):before {*/
+/*  background-image: url("../../../../assets/images/minmax.svg");*/
+/*}*/
 
 .card-info {
   font-size: 14px;
@@ -86,16 +131,21 @@
 }
 
 .active {
-  box-shadow: 0px 0px 55px 5px rgba(22, 119, 255, 0.9);
-  border-radius: 35px;
+  transition: 0.5s;
+  background: var(--blue);
+}
+
+.active td {
+  color: white;
 }
 
 .plan-payment {
-  position: absolute;
+  /*position: absolute;*/
   font-size: 14px;
-  top: 50px;
-  right: 50px;
+  /*top: 50px;*/
+  /*right: 50px;*/
   background-color: white;
+  width: 200px;
   color: black;
   border-radius: 15px;
   padding: 0px 25px;

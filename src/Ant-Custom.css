@@ -1,3 +1,7 @@
+.ant-radio-button-wrapper:first-child {
+  border-inline-start: none;
+}
+
 .ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item:not(.ant-menu-item-selected):hover {
   background-color: var(--alpha-blue);
 }
