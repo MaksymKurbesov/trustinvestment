@@ -1,0 +1,147 @@
+.project-statistic {
+  padding: 50px;
+}
+
+.info-wrapper {
+  display: flex;
+  align-items: center;
+  margin-bottom: 90px;
+}
+
+.info ul {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-size: 16px;
+}
+
+.info ul li {
+  display: flex;
+}
+
+.info-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.info p {
+  font-weight: 600;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  color: var(--blue);
+}
+
+.info p img {
+  margin-right: 20px;
+}
+
+.info span {
+  font-weight: 400;
+  color: black;
+}
+
+.project-image {
+  margin-right: 50px;
+  border-radius: 20px;
+  object-fit: cover;
+}
+
+.additional-info-list {
+  margin-bottom: 50px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 20px;
+}
+
+.additional-info-list li {
+  padding: 15px 20px;
+  font-size: 22px;
+  font-weight: 600;
+  background-color: var(--blue);
+  border-radius: 15px;
+  color: white;
+  text-align: center;
+}
+
+.additional-info-list li span {
+  display: block;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.total-investment {
+  /*height: 250px;*/
+  width: 100%;
+  margin-bottom: 50px;
+}
+
+.total-investors {
+  /*height: 250px;*/
+  width: 100%;
+  margin-bottom: 50px;
+}
+
+.countries,
+.payments {
+  /*display: flex;*/
+  max-width: 400px;
+  max-height: 400px;
+  margin: 0 auto;
+}
+
+.countries-wrapper,
+.payments-wrapper {
+  /*height: 500px;*/
+  /*margin: 0 auto;*/
+  width: 50%;
+  text-align: center;
+}
+.countries-wrapper h2,
+.payments-wrapper h2 {
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.slider {
+  width: 50%;
+  margin-right: 25px;
+  position: relative;
+}
+
+.custom-arrows {
+  position: absolute;
+  bottom: -65px;
+  right: 50%;
+  transform: translateX(50%);
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  /*margin-top: 35px;*/
+}
+
+.custom-arrows button {
+  padding: 10px;
+  background-color: var(--blue);
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.pie-charts {
+  display: flex;
+}
+
+.countries canvas,
+.payments canvas {
+  height: 100% !important;
+  width: 100% !important;
+}
+
+.charts {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 250px 250px 400px;
+}

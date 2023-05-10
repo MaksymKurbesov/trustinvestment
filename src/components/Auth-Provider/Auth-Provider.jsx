@@ -104,11 +104,6 @@ export const AuthProvider = ({ children }) => {
                   [`paymentMethods.${transactionPaymentMethod}.available`]: newAvailable,
                   [`paymentMethods.${transactionPaymentMethod}.deposited`]: newDeposited,
                 });
-
-              // transaction.update(userRef, {
-              //   [`paymentMethods.${transactionPaymentMethod}.available`]: increment(newAvailable),
-              //   [`paymentMethods.${transactionPaymentMethod}.deposited`]: increment(newDeposited),
-              // });
             }
           });
         }

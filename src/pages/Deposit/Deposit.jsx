@@ -5,7 +5,7 @@ import { Button, Steps } from "antd";
 import Modal from "antd/lib/modal";
 import { ConfirmedWindow } from "../../components/ConfirmedWindow/ConfirmedWindow";
 import { calculateIncomeInDay, calculateTotalIncome, getRandomArbitrary } from "../../utils/helpers";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
 import { FirebaseContext } from "../../index";
 import { useOutletContext } from "react-router-dom";
@@ -48,6 +48,32 @@ const Deposit = () => {
   const [totalIncome, setTotalIncome] = useState(0);
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const q = query(collection(firestore, "users", userData.email, "deposits"));
+
+  const [openedDeposits, setOpenedDeposits] = useState([]);
+
+  useEffect(() => {
+    const deposits = [];
+
+    getDocs(q).then((snap) => {
+      snap.docs.forEach((item) => {
+        const deposit = item.data();
+
+        if (deposit.status === "active") {
+          setOpenedDeposits((prevState) => [...prevState, deposit]);
+          // deposits.push(deposit);
+          // setOpenedDeposits((prevState) => {
+          //   const deposits = [];
+          //   deposits.push
+          //   setOpenedDeposits([...prevState, deposit]);
+          // });
+          // console.log(deposit, "deposit");
+        }
+
+        // setOpenedDeposits(deposits);
+      });
+    });
+  }, []);
 
   const handleConfirmedOk = () => {
     setIsConfirmedModalOpen(false);
@@ -66,7 +92,7 @@ const Deposit = () => {
   const steps = [
     {
       title: t("make_deposit.choose_plan"),
-      content: <Plans />,
+      content: <Plans deposits={openedDeposits} />,
     },
     {
       title: t("make_deposit.choose_payment_method"),
