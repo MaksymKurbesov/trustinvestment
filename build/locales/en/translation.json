@@ -389,6 +389,7 @@
     "title": "Partners",
     "your_sponsor": "Your sponsor",
     "your_referral_link": "Your referral link",
+    "sponsor": "Sponsor",
     "copy": "Copy",
     "your_status": "Your status",
     "partner_status": "Partner",
@@ -448,5 +449,28 @@
     },
     "enter_code": "Enter the transaction number/hash",
     "enter_code_warning": "Please enter the transaction number/hash"
+  },
+  "projects_info": {
+    "investments": "Investments",
+    "invested": "Invested",
+    "investors": "Investors",
+    "project": "Project",
+    "location": "Location",
+    "type": "Property type",
+    "developer": "Builder",
+    "status": "Status",
+    "dateStart": "Construction start date",
+    "dateEnd": "Date of delivery",
+    "district": "District",
+    "minArea": "Minimum area",
+    "startPrice": "Starting price",
+    "ratingCountry": "Rating of countries by volume of investment",
+    "ratingPayment": "Rating of payment systems by volume of investments",
+    "dubai": "Dubai",
+    "russia": "Russia",
+    "uzbekistan": "Uzbekistan",
+    "tajikistan": "Tajikistan",
+    "turkey": "Turkey",
+    "baltics": "Baltics"
   }
 }

@@ -113,7 +113,7 @@
 }
 
 .disclaimer {
-  max-width: 750px;
+  max-width: 700px;
   background-color: rgba(217, 255, 197, 0.69);
   padding: 20px;
   border-radius: 10px;
@@ -135,6 +135,34 @@
 
 .private-key {
   width: 150px;
+  margin-bottom: 20px;
+}
+
+.private-key-wrapper {
+  margin: 0 auto 20px;
+  background-color: rgba(217, 255, 197, 0.69);
+  color: rgba(0, 0, 0, 0.7);
+  max-width: 700px;
+  padding: 25px;
+}
+
+.private-key-wrapper p {
+  margin-bottom: 20px;
+}
+
+.private-key-wrapper p span {
+  font-weight: 600;
+}
+
+.private-key-warning {
+  max-width: 700px;
+  color: rgba(0, 0, 0, 0.7);
+  background-color: #ffefb2;
+  padding: 25px;
+  margin: 0 auto 20px;
+}
+
+.private-key-warning p:not(:last-child) {
   margin-bottom: 20px;
 }
 

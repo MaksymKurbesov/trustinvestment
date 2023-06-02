@@ -197,7 +197,7 @@
   color: rgba(255, 255, 255, 0.7) !important;
 }
 
-.deposit .ant-radio-button-wrapper-checked span:nth-child(1) {
+.deposit .ant-radio-button-wrapper-checked > span:nth-child(1) {
   background: var(--blue);
   border-radius: 20px;
   transition: 1s;

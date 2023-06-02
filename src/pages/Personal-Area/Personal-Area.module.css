@@ -24,7 +24,6 @@
   align-items: center;
 }
 
-<<<<<<< HEAD
 .user-statistic {
   display: grid;
   grid-template-columns: repeat(4, minmax(75px, 1fr));
@@ -68,8 +67,6 @@
   font-weight: 600;
 }
 
-=======
->>>>>>> production-development
 .my-account footer {
   text-align: center;
   padding: 24px 200px 24px 50px !important;
@@ -89,6 +86,31 @@
     grid-template-columns: repeat(4, minmax(75px, 1fr));
     margin-bottom: 0;
   }
+}
+
+.warning {
+  margin: 0 auto;
+  max-width: 700px;
+  padding: 20px;
+  background-color: #ffefb2;
+  border-radius: 15px;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.warning button {
+  margin-bottom: 15px;
+}
+
+.warning p:not(:last-child) {
+  margin-bottom: 15px;
+}
+
+.private-key {
+  margin-bottom: 15px;
+}
+
+.personal-warning {
+  margin-bottom: 25px;
 }
 
 @media screen and (max-width: 750px) {

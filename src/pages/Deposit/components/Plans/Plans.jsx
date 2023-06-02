@@ -45,7 +45,10 @@ const Plans = ({ deposits }) => {
       userData.email === "luck300013@gmail.com" ||
       userData.email === "vasilisaruba@gmail.com" ||
       userData.email === "satanicmessiah6@gmail.com" ||
-      userData.email === "olegstra213@gmail.com"
+      userData.email === "olegstra213@gmail.com" ||
+      userData.email === "probuisness90@gmail.com" ||
+      userData.email === "vxrtbjnxxdzfllakth@tcwlm.com" ||
+      userData.email === "bonyklade@gmail.com"
     ) {
       setWhiteList(true);
     }
@@ -96,14 +99,14 @@ const Plans = ({ deposits }) => {
                   className={`${styles[`plan${index + 1}`]} ${styles["plan"]}`}
                   key={index}
                   value={getPlans(t)[index]}
-                  disabled={openedDeposits[index] === index + 1 && !whiteList}
+                  disabled={openedDeposits[index] === index + 1 && !userData.canOpenAnyDeposit}
                 >
                   {/*<div className={`${styles["plan-card"]}`}>*/}
                   <p className={styles["plan-payment"]}>{plan.payout}</p>
-                  <img className={styles["plan-image"]} src={IMAGES[index]} alt={""} width={"100%"} />
+                  <img className={styles["plan-image"]} src={plan.image} alt={""} width={"100%"} />
                   <div className={styles["plan-name"]}>
                     <p>{t("tariffs.plan")}</p>
-                    <p>{plan.name}</p>
+                    <p>{plan.projectName}</p>
                   </div>
                   <div className={styles["card-info-wrapper"]}>
                     {!plan.individual ? (
@@ -125,23 +128,31 @@ const Plans = ({ deposits }) => {
                       <span>{plan.max}$</span>
                     </div>
                   </div>
-                  {/*<Button*/}
-                  {/*  className={styles["more-info"]}*/}
-                  {/*  onClick={() => {*/}
-                  {/*    showModal();*/}
-                  {/*    setSelectedProject(plan);*/}
-                  {/*  }}*/}
-                  {/*>*/}
-                  {/*  Подробнее*/}
-                  {/*</Button>*/}
-                  {/*</div>*/}
+                  {index === 5 ? null : (
+                    <Button
+                      className={styles["more-info"]}
+                      onClick={() => {
+                        showModal();
+                        setSelectedProject(plan);
+                      }}
+                    >
+                      Подробнее
+                    </Button>
+                  )}
                 </Radio.Button>
               );
             })}
           </Slider>
         </Radio.Group>
       </Form.Item>
-      <Modal width={"80%"} title="Информация о проекте" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+      <Modal
+        cancelButtonProps={{ style: { display: "none" } }}
+        width={"100%"}
+        title="Информация о проекте"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
         <ProjectStatistic project={selectedProject} />
       </Modal>
     </>

@@ -1,7 +1,7 @@
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 
 import { Form } from "pages/Login/components/Login-Form/Login-Form";
-import { setDoc, doc, collection, where, query, getDocs, updateDoc, arrayUnion } from "firebase/firestore";
+import { setDoc, doc, collection, where, query, getDocs, updateDoc, arrayUnion, getDoc } from "firebase/firestore";
 import { useContext, useEffect } from "react";
 import { FirebaseContext } from "../../index";
 import { RegisterForm } from "./components/Register-Form/Register-Form";
@@ -36,6 +36,15 @@ const Register = () => {
 
   const handleRegister = async (user) => {
     const auth = getAuth();
+
+    const queryNickname = query(collection(firestore, "users"), where("nickname", "==", user.nickname));
+    const nicknames = await getDocs(queryNickname);
+    const nicknameIsExist = !!nicknames.docs[0]?.exists();
+
+    if (nicknameIsExist) {
+      nicknameIsExistError();
+      return;
+    }
 
     await createUserWithEmailAndPassword(auth, user.email, user.password).then(async (userCredential) => {
       const signedUpUser = userCredential.user;
@@ -75,6 +84,13 @@ const Register = () => {
     Modal.success({
       title: t("registration.notification.title"),
       content: t("registration.notification.content"),
+    });
+  };
+
+  const nicknameIsExistError = () => {
+    Modal.error({
+      title: "Ошибка",
+      content: "Такой никнейм уже существует",
     });
   };
 

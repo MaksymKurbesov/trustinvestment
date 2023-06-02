@@ -187,10 +187,6 @@ span.icon {
   font-weight: 600;
 }
 
-.level-header p:last-child {
-  /*flex-basis: 215px;*/
-}
-
 .level-header p span {
   font-size: 18px;
 }
@@ -239,6 +235,10 @@ span.icon {
 @media screen and (max-width: 830px) {
   .referral-wrapper {
     gap: 15px;
+  }
+
+  .level-header p:last-child {
+    display: none;
   }
 
   .status,

@@ -7,7 +7,7 @@ import styles from "./Login-Form.module.css";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-const LoginForm = ({ handleClick, resetPassword }) => {
+const LoginForm = ({ handleClick, resetPassword, userLoginLoading }) => {
   const [email, setEmail] = useState("");
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
@@ -59,7 +59,7 @@ const LoginForm = ({ handleClick, resetPassword }) => {
         ]}
         className={styles["password"]}
       >
-        <Input
+        <Input.Password
           prefix={<LockOutlined className={styles["site-form-item-icon"]} />}
           type="password"
           placeholder={t("registration.password")}
@@ -90,7 +90,7 @@ const LoginForm = ({ handleClick, resetPassword }) => {
       </Form.Item>
 
       <Form.Item>
-        <Button type="primary" htmlType="submit" className={styles["login-form-button"]}>
+        <Button disabled={userLoginLoading} type="primary" htmlType="submit" className={styles["login-form-button"]}>
           {t("sign_in.sign_in_button")}
         </Button>
       </Form.Item>

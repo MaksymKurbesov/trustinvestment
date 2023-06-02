@@ -53,24 +53,13 @@ const Deposit = () => {
   const [openedDeposits, setOpenedDeposits] = useState([]);
 
   useEffect(() => {
-    const deposits = [];
-
     getDocs(q).then((snap) => {
       snap.docs.forEach((item) => {
         const deposit = item.data();
 
         if (deposit.status === "active") {
           setOpenedDeposits((prevState) => [...prevState, deposit]);
-          // deposits.push(deposit);
-          // setOpenedDeposits((prevState) => {
-          //   const deposits = [];
-          //   deposits.push
-          //   setOpenedDeposits([...prevState, deposit]);
-          // });
-          // console.log(deposit, "deposit");
         }
-
-        // setOpenedDeposits(deposits);
       });
     });
   }, []);

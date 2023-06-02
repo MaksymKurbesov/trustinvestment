@@ -1,5 +1,5 @@
 .project-statistic {
-  padding: 50px;
+  padding: 25px;
 }
 
 .info-wrapper {
@@ -73,20 +73,17 @@
 }
 
 .total-investment {
-  /*height: 250px;*/
   width: 100%;
   margin-bottom: 50px;
 }
 
 .total-investors {
-  /*height: 250px;*/
   width: 100%;
   margin-bottom: 50px;
 }
 
 .countries,
 .payments {
-  /*display: flex;*/
   max-width: 400px;
   max-height: 400px;
   margin: 0 auto;
@@ -94,8 +91,6 @@
 
 .countries-wrapper,
 .payments-wrapper {
-  /*height: 500px;*/
-  /*margin: 0 auto;*/
   width: 50%;
   text-align: center;
 }
@@ -119,7 +114,6 @@
   display: flex;
   justify-content: center;
   gap: 15px;
-  /*margin-top: 35px;*/
 }
 
 .custom-arrows button {
@@ -143,5 +137,108 @@
 .charts {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 250px 250px 400px;
+  grid-template-rows: 250px 250px 1fr;
+}
+
+@media screen and (max-width: 1350px) {
+  .info-wrapper {
+    flex-direction: column;
+  }
+
+  .slider {
+    margin-bottom: 100px;
+    width: 70%;
+  }
+
+  .info ul {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+
+  .info-wrapper {
+    margin-bottom: 25px;
+  }
+
+  .countries-wrapper h2,
+  .payments-wrapper h2 {
+    font-size: 14px;
+  }
+
+  .additional-info-list li {
+    font-size: 18px;
+    padding: 10px 15px;
+  }
+
+  .additional-info-list li span {
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .slider {
+    width: 100%;
+  }
+
+  .info ul {
+    grid-template-columns: 1fr;
+  }
+
+  .additional-info-list {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .pie-charts {
+    display: block;
+  }
+
+  .countries-wrapper {
+    width: 80%;
+    margin: 0 auto 30px;
+  }
+
+  .payments-wrapper {
+    width: 80%;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .slider {
+    margin-right: 0;
+  }
+
+  .slider img {
+    height: 200px;
+  }
+
+  .project-statistic {
+    padding: 0;
+  }
+
+  .additional-info-list {
+    grid-template-columns: 1fr;
+  }
+
+  .info ul {
+    gap: 20px;
+    font-size: 14px;
+  }
+
+  .info-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .countries-wrapper {
+    /*margin: auto;*/
+  }
+
+  .payments-wrapper {
+    margin: auto;
+  }
+
+  .charts {
+    /*grid-template-columns: 250px;*/
+  }
 }

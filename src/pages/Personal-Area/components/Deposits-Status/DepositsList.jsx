@@ -30,10 +30,13 @@ const getColumns = (t) => {
         return (
           <div className={styles["progress"]}>
             <Progress
-              percent={+((record.charges * 100) / record.days).toFixed(1)}
+              percent={
+                planNumber > 3 && record.status === "completed"
+                  ? 100
+                  : +((record.charges * 100) / record.days).toFixed(1)
+              }
               showInfo={window.innerWidth > 1200}
             />
-            {/*<p>{window.innerWidth < 1000 ? "" : <span>{`${t("personal_area.accruals")}` {`${planNumber} > 3 ? ${record.charges} / 1 :  ${record.charges} / ${record.days}`}</span></p>*/}
             <p>
               {window.innerWidth > 1000 ? (
                 <span>

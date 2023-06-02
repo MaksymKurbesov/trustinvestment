@@ -5,7 +5,7 @@ import {
   onAuthStateChanged,
   sendEmailVerification,
 } from "firebase/auth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
 import signInAnimation from "assets/lottie-animations/signIn-animation.json";
@@ -21,6 +21,7 @@ const Login = () => {
   const navigate = useNavigate();
   // const { currentUser } = useContext(AuthContext);
   const { t } = useTranslation();
+  const [userLoginLoading, setUserLoginLoading] = useState(false);
 
   const [api, notificationContextHolder] = notification.useNotification();
 
@@ -71,6 +72,7 @@ const Login = () => {
   };
 
   const handleLogin = async (email, pass) => {
+    setUserLoginLoading(true);
     signInWithEmailAndPassword(auth, email, pass)
       .then((userCredential) => {
         if (userCredential.user.metadata.createdAt < FEBRUARY_21_2022) {
@@ -78,6 +80,7 @@ const Login = () => {
           navigate("/my-account");
           return;
         }
+        setUserLoginLoading(false);
 
         if (!userCredential.user.emailVerified) {
           confirmEmailNotification();
@@ -90,8 +93,8 @@ const Login = () => {
         }
       })
       .catch((e) => {
-        console.log(e, "e");
         errorNotification();
+        setUserLoginLoading(false);
       });
   };
   useEffect(() => {
@@ -110,7 +113,12 @@ const Login = () => {
         <div className={styles["login-page__wrapper"]}>
           <div className={styles["login-page__description"]}>{SignInAnimation}</div>
           <div className={styles["login-page__form"]}>
-            <LoginForm title={"Войти"} handleClick={handleLogin} resetPassword={resetPassword} />
+            <LoginForm
+              title={"Войти"}
+              handleClick={handleLogin}
+              resetPassword={resetPassword}
+              userLoginLoading={userLoginLoading}
+            />
           </div>
         </div>
       </div>

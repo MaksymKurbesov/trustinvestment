@@ -1,16 +1,15 @@
 import Chart from "chart.js/auto";
 import { CategoryScale, ArcElement, Tooltip, Legend } from "chart.js";
-import { useRef, useState } from "react";
-import PieChart from "../Payment-Methods/PieChart";
+import { useRef } from "react";
 import Slider from "react-slick";
 import { Line, Pie } from "react-chartjs-2";
 import styles from "./Project-Statistic.module.css";
-import ProjectImage from "../../assets/images/future-project.png";
 import MapIcon from "../../assets/images/projects-info/map.svg";
 import TypeIcon from "../../assets/images/projects-info/type.svg";
 import DeveloperIcon from "../../assets/images/projects-info/developer.svg";
 import ProjectIcon from "../../assets/images/projects-info/project.svg";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 
 Chart.register(CategoryScale, ArcElement, Tooltip, Legend);
 
@@ -61,17 +60,18 @@ const sliderSettings = {
   infinite: true,
   slidesToShow: 1,
   dots: true,
-  // arrows: true,
+  arrows: false,
   adaptiveHeight: true,
 };
 
 export const ProjectStatistic = ({ project }) => {
+  const { t } = useTranslation();
   const sliderRef = useRef();
   const dataTotalInvestment = {
     labels: labels,
     datasets: [
       {
-        label: "Инвестировано (2023г.)",
+        label: `${t("projects_info.invested")} (2023г.)`,
         backgroundColor: "#4BB543",
         borderColor: "#4BB543",
         data: project.dataTotalInvestment,
@@ -83,7 +83,7 @@ export const ProjectStatistic = ({ project }) => {
     labels: labels,
     datasets: [
       {
-        label: "Инвесторов (2023г.)",
+        label: `${t("projects_info.invested")} (2023г.)`,
         backgroundColor: "#1677ff",
         borderColor: "#1677ff",
         data: project.dataTotalInvestors,
@@ -92,10 +92,17 @@ export const ProjectStatistic = ({ project }) => {
   };
 
   const dataCountries = {
-    labels: ["ОАЭ", "Россия", "Узбекистан", "Таджикистан", "Турция", "Страны Прибалтики"],
+    labels: [
+      t("projects_info.dubai"),
+      t("projects_info.russia"),
+      t("projects_info.uzbekistan"),
+      t("projects_info.tajikistan"),
+      t("projects_info.turkey"),
+      t("projects_info.baltics"),
+    ],
     datasets: [
       {
-        label: "Инвестиций",
+        label: t("projects_info.investments"),
         data: project.dataCountries,
         backgroundColor: [
           "rgb(249,247,208, 0.5)",
@@ -122,7 +129,7 @@ export const ProjectStatistic = ({ project }) => {
     labels: ["Perfect Money", "TRC20", "Bitcoin", "Ethereum", "Solana", "PolkaDOT", "BNB", "QIWI"],
     datasets: [
       {
-        label: "Инвестиций",
+        label: t("projects_info.investments"),
         data: [12, 19, 3, 5, 2, 3, 6, 2],
         backgroundColor: [
           "rgb(220,222,112, 0.5)",
@@ -149,21 +156,19 @@ export const ProjectStatistic = ({ project }) => {
     ],
   };
 
-  console.log(project, "project");
-
   return (
     <div className={styles["project-statistic"]}>
       <div className={styles["info-wrapper"]}>
         <div className={styles["slider"]}>
           <Slider ref={sliderRef} {...sliderSettings}>
             <div>
-              <img src={ProjectImage} width={"100%"} height={300} className={styles["project-image"]} />
+              <img src={project.sliderImages[0]} width={"100%"} height={300} className={styles["project-image"]} />
             </div>
             <div>
-              <img src={ProjectImage} width={"100%"} height={300} className={styles["project-image"]} />
+              <img src={project.sliderImages[1]} width={"100%"} height={300} className={styles["project-image"]} />
             </div>
             <div>
-              <img src={ProjectImage} width={"100%"} height={300} className={styles["project-image"]} />
+              <img src={project.sliderImages[2]} width={"100%"} height={300} className={styles["project-image"]} />
             </div>
           </Slider>
           <div className={styles["custom-arrows"]}>
@@ -179,10 +184,18 @@ export const ProjectStatistic = ({ project }) => {
           <ul>
             <li>
               <div>
+                <img className={styles["info-icon"]} src={ProjectIcon} alt={""} height={25} />
+              </div>
+              <p>
+                <span>{t("projects_info.project")}:</span> {project.projectName}
+              </p>
+            </li>
+            <li>
+              <div>
                 <img className={styles["info-icon"]} src={MapIcon} alt={""} height={25} />
               </div>
               <p>
-                <span>Местоположение:</span> {project.place}
+                <span>{t("projects_info.location")}:</span> {project.place}
               </p>
             </li>
             <li>
@@ -190,23 +203,16 @@ export const ProjectStatistic = ({ project }) => {
                 <img className={styles["info-icon"]} src={TypeIcon} alt={""} height={25} />
               </div>
               <p>
-                <span>Тип недвижимости:</span> {project.type}
+                <span>{t("projects_info.type")}:</span> {project.type}
               </p>
             </li>
-            <li>
-              <div>
-                <img className={styles["info-icon"]} src={ProjectIcon} alt={""} height={25} />
-              </div>
-              <p>
-                <span>Проект:</span> {project.projectName}
-              </p>
-            </li>
+
             <li>
               <div>
                 <img className={styles["info-icon"]} src={DeveloperIcon} alt={""} height={25} />
               </div>
               <p>
-                <span>Застройщик:</span> {project.developer}
+                <span>{t("projects_info.developer")}:</span> {project.developer}
               </p>
             </li>
           </ul>
@@ -215,22 +221,22 @@ export const ProjectStatistic = ({ project }) => {
       <div className={styles["additional-info"]}>
         <ul className={styles["additional-info-list"]}>
           <li>
-            <span>Статус:</span> {project.status}
+            <span>{t("projects_info.status")}:</span> {project.status}
           </li>
           <li>
-            <span>Дата начал стройки: </span> {project.dateStart}
+            <span>{t("projects_info.dateStart")}: </span> {project.dateStart}
           </li>
           <li>
-            <span>Дата сдачи:</span> {project.dateEnd}
+            <span>{t("projects_info.dateEnd")}:</span> {project.dateEnd}
           </li>
           <li>
-            <span>Район:</span> {project.district}
+            <span>{t("projects_info.district")}:</span> {project.district}
           </li>
           <li>
-            <span>Минимальная площадь:</span> {project.minArea}
+            <span>{t("projects_info.minArea")}:</span> от {project.minArea} кв. м
           </li>
           <li>
-            <span>Стартовая цена:</span> {project.startPrice}
+            <span>{t("projects_info.startPrice")}:</span> ${project.startPrice}
           </li>
         </ul>
       </div>
@@ -244,13 +250,13 @@ export const ProjectStatistic = ({ project }) => {
         </div>
         <div className={styles["pie-charts"]}>
           <div className={styles["countries-wrapper"]}>
-            <h2>Рейтинг стран по объему инвестиций</h2>
+            <h2>{t("projects_info.ratingCountry")}</h2>
             <div className={styles["countries"]}>
               <Pie data={dataCountries} options={options2} />
             </div>
           </div>
           <div className={styles["payments-wrapper"]}>
-            <h2>Рейтинг платежных систем по объему инвестиций</h2>
+            <h2>{t("projects_info.ratingPayment")}</h2>
             <div className={styles["payments"]}>
               <Pie data={dataPayments} options={options2} />
             </div>

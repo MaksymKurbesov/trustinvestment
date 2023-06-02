@@ -1,9 +1,24 @@
 import { CheckCircleOutlined, CloseCircleOutlined, SyncOutlined } from "@ant-design/icons";
-import Img1 from "../assets/images/plans/3.webp";
-import Img2 from "../assets/images/plans/4.webp";
-import Img3 from "../assets/images/plans/1.webp";
-import Img4 from "../assets/images/plans/2.webp";
-import Img5 from "../assets/images/plans/5.webp";
+import Seagate1 from "../assets/images/projects-photos/Seagate/seagate1.webp";
+import Seagate2 from "../assets/images/projects-photos/Seagate/seagate2.webp";
+import Seagate3 from "../assets/images/projects-photos/Seagate/seagate3.webp";
+import Seagate4 from "../assets/images/projects-photos/Seagate/seagate4.webp";
+import CanalHeights1 from "../assets/images/projects-photos/Canal Heights/canalheights1.webp";
+import CanalHeights2 from "../assets/images/projects-photos/Canal Heights/canalheights2.webp";
+import CanalHeights3 from "../assets/images/projects-photos/Canal Heights/canalheights3.webp";
+import CanalHeights4 from "../assets/images/projects-photos/Canal Heights/canalheights4.webp";
+import Jomana1 from "../assets/images/projects-photos/Jomana/jomana1.webp";
+import Jomana2 from "../assets/images/projects-photos/Jomana/jomana2.webp";
+import Jomana3 from "../assets/images/projects-photos/Jomana/jomana3.webp";
+import Jomana4 from "../assets/images/projects-photos/Jomana/jomana4.webp";
+import TheEdge1 from "../assets/images/projects-photos/The Edge/thedge1.webp";
+import TheEdge2 from "../assets/images/projects-photos/The Edge/thedge2.webp";
+import TheEdge3 from "../assets/images/projects-photos/The Edge/thedge3.webp";
+import TheEdge4 from "../assets/images/projects-photos/The Edge/thedge4.webp";
+import Water1 from "../assets/images/projects-photos/The Waterside At The Sanctuary/water1.webp";
+import Water2 from "../assets/images/projects-photos/The Waterside At The Sanctuary/water2.webp";
+import Water3 from "../assets/images/projects-photos/The Waterside At The Sanctuary/water3.webp";
+import Water4 from "../assets/images/projects-photos/The Waterside At The Sanctuary/water4.webp";
 import Img6 from "../assets/images/plans/6.webp";
 import PMIcon from "../assets/images/platform-icons/PM.png";
 import TRCIcon from "../assets/images/platform-icons/tether.png";
@@ -35,7 +50,7 @@ export const STATUS_MAPLIST = {
 export const WALLETS = {
   "Perfect Money": "U40108873",
   Bnb: "0xeb24cdB1DFd1f6a7B709D68FF31680388C970b21",
-  "TRC20 Tether": "TELXLPo4ug7CABRY22ABAyGySD6pi1HHKn",
+  "TRC20 Tether": "TBqaDhbgWnS1MndLM6vBNTNXHgkdyLZu5V",
   Polkadot: "12qKuqNfo6ZZxi7v1VYriyVRc631QD2DanU6gyf5LuTwYzYD",
   Ethereum: "0xeb24cdB1DFd1f6a7B709D68FF31680388C970b21",
   Bitcoin: "bc1qstglqnwpqe5l990cr69rt75pkvkk0hhwnvaphg",
@@ -62,7 +77,7 @@ export const getPlans = (t) => {
       days: 30,
       min: 100,
       max: 1500,
-      image: Img1,
+      image: Seagate1,
       plan: 1,
       name: t("tariffs.newbie"),
       payout: t("tariffs.pay_everyday"),
@@ -71,16 +86,17 @@ export const getPlans = (t) => {
       dataTotalInvestors: [355, 361, 235, 785, 226, 0, 0, 0, 0, 0, 0, 0],
       dataCountries: [44, 33, 8, 7, 4, 4],
       dataPayments: [12, 19, 3, 5, 2, 3, 6, 2],
-      projectName: "",
-      place: "DUBAI",
-      type: "Недвижимость",
-      developer: "Azizi Developers",
-      status: "Сдан",
-      dateStart: "февраль 2010",
-      dateEnd: "4 квартал 2021",
-      district: "Jumeirah",
-      minArea: "1430м2",
-      startPrice: "$10,888,000",
+      projectName: "Seagate",
+      place: "Dubai",
+      type: "Апартаменты",
+      developer: "EMAAR Properties",
+      status: "Строится",
+      dateStart: "1 квартал 2010",
+      dateEnd: "3 квартал 2025",
+      district: "Mina Rashid",
+      minArea: 65,
+      startPrice: 384000,
+      sliderImages: [Seagate2, Seagate3, Seagate4],
     },
     {
       title: `${t("tariffs.plan")} 2`,
@@ -88,7 +104,7 @@ export const getPlans = (t) => {
       days: 24,
       min: 1500,
       max: 8000,
-      image: Img2,
+      image: CanalHeights1,
       plan: 2,
       name: t("tariffs.basic"),
       payout: t("tariffs.pay_everyday"),
@@ -97,16 +113,17 @@ export const getPlans = (t) => {
       dataTotalInvestors: [153, 575, 1156, 785, 205, 0, 0, 0, 0, 0, 0, 0],
       dataCountries: [54, 23, 10, 5, 3, 5],
       dataPayments: [12, 19, 3, 5, 2, 3, 6, 2],
-      projectName: "Burj Jumeirah",
-      place: "DUBAI",
-      type: "Недвижимость",
-      developer: "Azizi Developers",
-      status: "Сдан",
-      dateStart: "февраль 2010",
-      dateEnd: "4 квартал 2021",
-      district: "Jumeirah",
-      minArea: "1430м2",
-      startPrice: "$10,888,000",
+      projectName: "Canal Heights",
+      place: "Dubai",
+      type: "Жилищный комплекс",
+      developer: "DAMAC Properties",
+      status: "Строится",
+      dateStart: "3 квартал 2012",
+      dateEnd: "3 квартал 2027",
+      district: "Business Bay",
+      minArea: 41,
+      startPrice: 335000,
+      sliderImages: [CanalHeights2, CanalHeights3, CanalHeights4],
     },
     {
       title: `${t("tariffs.plan")} 3`,
@@ -114,7 +131,7 @@ export const getPlans = (t) => {
       days: 18,
       min: 8000,
       max: 15000,
-      image: Img3,
+      image: Jomana1,
       plan: 3,
       name: t("tariffs.optimal"),
       payout: t("tariffs.pay_everyday"),
@@ -123,16 +140,17 @@ export const getPlans = (t) => {
       dataTotalInvestors: [540, 1023, 235, 785, 259, 0, 0, 0, 0, 0, 0, 0],
       dataCountries: [60, 17, 9, 6, 5, 3],
       dataPayments: [12, 19, 3, 5, 2, 3, 6, 2],
-      projectName: "Dubai Creek Tower",
-      place: "DUBAI",
-      type: "Недвижимость",
-      developer: "Azizi Developers",
-      status: "Сдан",
-      dateStart: "февраль 2010",
-      dateEnd: "4 квартал 2021",
-      district: "Jumeirah",
-      minArea: "1430м2",
-      startPrice: "$10,888,000",
+      projectName: "Jomana",
+      place: "Dubai",
+      type: "Жилищный комплекс",
+      developer: "Meraas",
+      status: "Строится",
+      dateStart: "4 квартал 2009",
+      dateEnd: "2 квартал 2026",
+      district: "Madinat Jumeirah",
+      minArea: 74,
+      startPrice: 520000,
+      sliderImages: [Jomana2, Jomana3, Jomana4],
     },
     {
       title: `${t("tariffs.plan")} 4`,
@@ -140,7 +158,7 @@ export const getPlans = (t) => {
       days: 10,
       min: 15000,
       max: 40000,
-      image: Img4,
+      image: TheEdge1,
       plan: 4,
       name: t("tariffs.experienced"),
       payout: t("tariffs.end_term"),
@@ -149,16 +167,17 @@ export const getPlans = (t) => {
       dataTotalInvestors: [171, 891, 981, 794, 164, 0, 0, 0, 0, 0, 0, 0],
       dataCountries: [49, 20, 13, 10, 3, 5],
       dataPayments: [12, 19, 3, 5, 2, 3, 6, 2],
-      projectName: "Marsa Al Arab",
-      place: "DUBAI",
-      type: "Недвижимость",
-      developer: "Azizi Developers",
-      status: "Сдан",
-      dateStart: "февраль 2010",
-      dateEnd: "4 квартал 2021",
-      district: "Jumeirah",
-      minArea: "1430м2",
-      startPrice: "$10,888,000",
+      projectName: "The Edge",
+      place: "Dubai",
+      type: "Апартаменты",
+      developer: "Ellington Properties Select Group",
+      status: "Строится",
+      dateStart: "2 квартал 2009",
+      dateEnd: "4 квартал 2026",
+      district: "MBR City (District One)",
+      minArea: 729,
+      startPrice: 305000,
+      sliderImages: [TheEdge2, TheEdge3, TheEdge4],
     },
     {
       title: `${t("tariffs.plan")} 5`,
@@ -166,7 +185,7 @@ export const getPlans = (t) => {
       days: 6,
       min: 40000,
       max: 80000,
-      image: Img5,
+      image: Water1,
       plan: 5,
       name: t("tariffs.maximum"),
       payout: t("tariffs.end_term"),
@@ -175,16 +194,17 @@ export const getPlans = (t) => {
       dataTotalInvestors: [496, 1023, 235, 785, 332, 0, 0, 0, 0, 0, 0, 0],
       dataCountries: [50, 20, 13, 9, 3, 5],
       dataPayments: [12, 19, 3, 5, 2, 3, 6, 2],
-      projectName: "Dubai Moon",
-      place: "DUBAI",
-      type: "Недвижимость",
-      developer: "Azizi Developers",
-      status: "Сдан",
-      dateStart: "февраль 2010",
-      dateEnd: "4 квартал 2021",
-      district: "Jumeirah",
-      minArea: "1430м2",
-      startPrice: "$10,888,000",
+      projectName: "The Waterside At The Sanctuary",
+      place: "Dubai",
+      type: "Жилищное комьюнити",
+      developer: "Ellington Properties",
+      status: "Строится",
+      dateStart: "4 квартал 2007",
+      dateEnd: "4 квартал 2025",
+      district: "MBR City (District One)",
+      minArea: 729,
+      startPrice: 4628000,
+      sliderImages: [Water2, Water3, Water4],
     },
     {
       title: `${t("tariffs.plan")} 6`,
@@ -204,7 +224,7 @@ export const getPlans = (t) => {
       dataPayments: [12, 19, 3, 5, 2, 3, 6, 2],
       place: "",
       type: "",
-      projectName: "",
+      projectName: t("tariffs.individual"),
       developer: "",
       status: "",
       dateStart: "",

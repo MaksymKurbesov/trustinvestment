@@ -63,6 +63,13 @@ const LevelCollapse = ({ referralsList }) => {
       align: "center",
     },
     {
+      title: t("partner_page.sponsor"),
+      dataIndex: "referredBy",
+      key: "sponsor",
+      width: "20%",
+      align: "center",
+    },
+    {
       title: t("partner_page.referrals"),
       dataIndex: "numberOfReferrals",
       key: "referrals",

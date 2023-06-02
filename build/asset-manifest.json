@@ -1,15 +1,34 @@
 {
   "files": {
-    "main.css": "/static/css/main.0c8fcca6.css",
-    "main.js": "/static/js/main.39931d4a.js",
+    "main.css": "/static/css/main.6921776c.css",
+    "main.js": "/static/js/main.6152b0fe.js",
     "static/media/roadmap.png": "/static/media/roadmap.78f09cf84b7347c12b4b.png",
+    "static/media/thedge1.webp": "/static/media/thedge1.c20dd7ea3e39179e16b1.webp",
     "static/media/hero-banner-bg.png": "/static/media/hero-banner-bg.5cb7359aca18637bb444.png",
-    "static/media/future-project.png": "/static/media/future-project.66f10c24c83275f7d262.png",
     "static/media/faq-bg.webp": "/static/media/faq-bg.3d11d93102624ad877ff.webp",
+    "static/media/water1.webp": "/static/media/water1.45cd20b654ecefa2c22d.webp",
+    "static/media/seagate1.webp": "/static/media/seagate1.fb107cec482a60c3e2b6.webp",
+    "static/media/jomana3.webp": "/static/media/jomana3.edf673038c2519572c8f.webp",
+    "static/media/jomana2.webp": "/static/media/jomana2.77a2aab5986fa15072bd.webp",
     "static/media/coins.png": "/static/media/coins.36afb260aeec4de27cf4.png",
+    "static/media/canalheights1.webp": "/static/media/canalheights1.10c78af180b07c9ccc3e.webp",
+    "static/media/seagate2.webp": "/static/media/seagate2.761266d0ea05d25f8973.webp",
+    "static/media/canalheights3.webp": "/static/media/canalheights3.623ff672d9f95059845c.webp",
+    "static/media/water3.webp": "/static/media/water3.072eedb80969b9feaa6c.webp",
+    "static/media/canalheights2.webp": "/static/media/canalheights2.6abc7ea5c48dd78a5841.webp",
+    "static/media/water4.webp": "/static/media/water4.dfad364f579363729454.webp",
     "static/media/tether.png": "/static/media/tether.ebe816e536abe9779812.png",
+    "static/media/canalheights4.webp": "/static/media/canalheights4.798e2468cedfefd0f47a.webp",
+    "static/media/water2.webp": "/static/media/water2.fc6aa95aeec58efebab1.webp",
+    "static/media/seagate4.webp": "/static/media/seagate4.e2d02b7bf06880c9bac7.webp",
+    "static/media/jomana1.webp": "/static/media/jomana1.012a4b86c29323389d04.webp",
+    "static/media/thedge4.webp": "/static/media/thedge4.44f9390d1ad27105b809.webp",
     "static/media/withdraw-background.png": "/static/media/withdraw-background.48fb69e8958421efc05b.png",
+    "static/media/jomana4.webp": "/static/media/jomana4.d160f80a81e5fa825aa3.webp",
+    "static/media/thedge3.webp": "/static/media/thedge3.005d9810bbb57605c486.webp",
     "static/media/hero-banner2.webp": "/static/media/hero-banner2.5de75d978be16720c8dc.webp",
+    "static/media/seagate3.webp": "/static/media/seagate3.02a83ba64025fcee1268.webp",
+    "static/media/thedge2.webp": "/static/media/thedge2.bdd9dc71c3fc25a7746e.webp",
     "static/media/Asset 2.svg": "/static/media/Asset 2.212419d3af0d4a67849c61d2c8ae5df4.svg",
     "static/media/1.png": "/static/media/1.2e5fc8a7286357569f2f.png",
     "static/media/company1.webp": "/static/media/company1.a118f712e24b675130fa.webp",
@@ -84,11 +103,11 @@
     "static/media/section-title.svg": "/static/media/section-title.81666729911a1dd82ea8.svg",
     "static/media/getFetch.cjs": "/static/media/getFetch.40f37ddea2378391108f.cjs",
     "static/media/rus-lang.svg": "/static/media/rus-lang.b41328698709cf180d8d19cd65d03050.svg",
-    "main.0c8fcca6.css.map": "/static/css/main.0c8fcca6.css.map",
-    "main.39931d4a.js.map": "/static/js/main.39931d4a.js.map"
+    "main.6921776c.css.map": "/static/css/main.6921776c.css.map",
+    "main.6152b0fe.js.map": "/static/js/main.6152b0fe.js.map"
   },
   "entrypoints": [
-    "static/css/main.0c8fcca6.css",
-    "static/js/main.39931d4a.js"
+    "static/css/main.6921776c.css",
+    "static/js/main.6152b0fe.js"
   ]
 }

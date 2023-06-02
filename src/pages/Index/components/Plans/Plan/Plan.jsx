@@ -10,7 +10,7 @@ const Plan = ({ plan, index }) => {
         <p className={styles["plan-payment"]}>{plan.payout}</p>
         <div className={styles["plan-name"]}>
           <p>{t("tariffs.plan")}</p>
-          <p>{plan.name}</p>
+          <p>{plan.projectName}</p>
         </div>
         <div className={styles["card-info-wrapper"]}>
           {!plan.individual ? (
