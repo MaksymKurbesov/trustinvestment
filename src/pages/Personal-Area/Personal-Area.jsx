@@ -143,9 +143,9 @@ const PersonalArea = () => {
               isLastCharge = charges >= deposit.days;
               receivedByCharges = ((deposit.willReceived / deposit.days) * chargesSubtract).toFixed(2);
             } else {
-              charges = Math.floor((timeNow - depositOpenTime) / (3600 * (deposit.days * 24)));
+              charges = Math.min(Math.floor((timeNow - depositOpenTime) / (3600 * (deposit.days * 24))), 1);
               chargesSubtract = charges - deposit.charges;
-              isLastCharge = charges === 1;
+              isLastCharge = charges >= 1;
               receivedByCharges = deposit.willReceived.toFixed(2);
             }
 

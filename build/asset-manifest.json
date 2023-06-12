@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.6921776c.css",
-    "main.js": "/static/js/main.6152b0fe.js",
+    "main.css": "/static/css/main.f590a2dd.css",
+    "main.js": "/static/js/main.691b624e.js",
     "static/media/roadmap.png": "/static/media/roadmap.78f09cf84b7347c12b4b.png",
     "static/media/thedge1.webp": "/static/media/thedge1.c20dd7ea3e39179e16b1.webp",
     "static/media/hero-banner-bg.png": "/static/media/hero-banner-bg.5cb7359aca18637bb444.png",
@@ -48,14 +48,10 @@
     "static/media/6.webp": "/static/media/6.dd7f456a4e1cf862a4ff.webp",
     "static/media/about-company-image2.svg": "/static/media/about-company-image2.7512c9655172de39018d27e7def292bf.svg",
     "static/media/company3.webp": "/static/media/company3.149e737da5640237da81.webp",
-    "static/media/4.webp": "/static/media/4.f99626bd630ca1909466.webp",
     "static/media/about-company-image.svg": "/static/media/about-company-image.043c58b77217124bca6f4ff611ce98bb.svg",
     "static/media/ethereum.png": "/static/media/ethereum.1e15b1884ed960dfaa7c.png",
-    "static/media/3.webp": "/static/media/3.ef6c70ca69cf3ee3d80c.webp",
     "static/media/youtube.png": "/static/media/youtube.4aa80dc8cb0f5629e608.png",
-    "static/media/5.webp": "/static/media/5.98f9edbf087b4511d3cb.webp",
     "static/media/contacts-page-decorate.svg": "/static/media/contacts-page-decorate.2b36d33c9782a0037acde72ef6ee78fd.svg",
-    "static/media/2.webp": "/static/media/2.f6599369020cc2ad9260.webp",
     "static/media/1.webp": "/static/media/1.b102dbbb29788d303567.webp",
     "static/media/affiliate-image.png": "/static/media/affiliate-image.805adedd83fe1d7a4c7d.png",
     "static/media/bitcoin.png": "/static/media/bitcoin.8ab89a6822692b9f9ff6.png",
@@ -103,11 +99,11 @@
     "static/media/section-title.svg": "/static/media/section-title.81666729911a1dd82ea8.svg",
     "static/media/getFetch.cjs": "/static/media/getFetch.40f37ddea2378391108f.cjs",
     "static/media/rus-lang.svg": "/static/media/rus-lang.b41328698709cf180d8d19cd65d03050.svg",
-    "main.6921776c.css.map": "/static/css/main.6921776c.css.map",
-    "main.6152b0fe.js.map": "/static/js/main.6152b0fe.js.map"
+    "main.f590a2dd.css.map": "/static/css/main.f590a2dd.css.map",
+    "main.691b624e.js.map": "/static/js/main.691b624e.js.map"
   },
   "entrypoints": [
-    "static/css/main.6921776c.css",
-    "static/js/main.6152b0fe.js"
+    "static/css/main.f590a2dd.css",
+    "static/js/main.691b624e.js"
   ]
 }

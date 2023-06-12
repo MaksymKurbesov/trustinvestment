@@ -1,6 +1,6 @@
 import Chart from "chart.js/auto";
 import { CategoryScale, ArcElement, Tooltip, Legend } from "chart.js";
-import { useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Slider from "react-slick";
 import { Line, Pie } from "react-chartjs-2";
 import styles from "./Project-Statistic.module.css";
@@ -10,6 +10,8 @@ import DeveloperIcon from "../../assets/images/projects-info/developer.svg";
 import ProjectIcon from "../../assets/images/projects-info/project.svg";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
+import { FirebaseContext } from "../../index";
+import { collection, doc, getDoc, query } from "firebase/firestore";
 
 Chart.register(CategoryScale, ArcElement, Tooltip, Legend);
 
@@ -66,6 +68,21 @@ const sliderSettings = {
 
 export const ProjectStatistic = ({ project }) => {
   const { t } = useTranslation();
+  const { firestore } = useContext(FirebaseContext);
+  const [currentProject, setCurrentProject] = useState(null);
+
+  const getProjectData = async () => {
+    await getDoc(doc(firestore, "projects", project.projectName)).then((snap) => {
+      setCurrentProject(snap.data());
+    });
+  };
+
+  useEffect(() => {
+    getProjectData();
+  }, [project]);
+
+  console.log(currentProject, "currentProject");
+
   const sliderRef = useRef();
   const dataTotalInvestment = {
     labels: labels,
@@ -74,7 +91,7 @@ export const ProjectStatistic = ({ project }) => {
         label: `${t("projects_info.invested")} (2023г.)`,
         backgroundColor: "#4BB543",
         borderColor: "#4BB543",
-        data: project.dataTotalInvestment,
+        data: currentProject?.totalInvestment,
       },
     ],
   };
@@ -83,10 +100,10 @@ export const ProjectStatistic = ({ project }) => {
     labels: labels,
     datasets: [
       {
-        label: `${t("projects_info.invested")} (2023г.)`,
+        label: `${t("projects_info.investors")} (2023г.)`,
         backgroundColor: "#1677ff",
         borderColor: "#1677ff",
-        data: project.dataTotalInvestors,
+        data: currentProject?.totalInvestors,
       },
     ],
   };
@@ -103,7 +120,7 @@ export const ProjectStatistic = ({ project }) => {
     datasets: [
       {
         label: t("projects_info.investments"),
-        data: project.dataCountries,
+        data: currentProject?.countriesRating,
         backgroundColor: [
           "rgb(249,247,208, 0.5)",
           "rgba(227,166,199,0.5)",
@@ -130,7 +147,7 @@ export const ProjectStatistic = ({ project }) => {
     datasets: [
       {
         label: t("projects_info.investments"),
-        data: [12, 19, 3, 5, 2, 3, 6, 2],
+        data: currentProject?.paymentsRating,
         backgroundColor: [
           "rgb(220,222,112, 0.5)",
           "rgb(218,234,185, 0.5)",

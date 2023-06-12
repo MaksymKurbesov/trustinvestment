@@ -18,7 +18,6 @@ import { Partners } from "./pages/Partners/Partners";
 import { Withdraw } from "./pages/Withdraw/Withdraw";
 import { PersonalArea } from "./pages/Personal-Area/Personal-Area";
 import { Settings } from "./pages/Settings/Settings";
-import { Replenishment } from "./pages/Replanishment/Replenishment";
 import { CashIn } from "./pages/Cash-In/Cash-In";
 import { AuthProvider } from "./components/Auth-Provider/Auth-Provider";
 
@@ -45,7 +44,6 @@ function App() {
             <Route path="transactions" element={<Transactions />} />
             <Route path="partners" element={<Partners />} />
             <Route path="settings" element={<Settings />} />
-            <Route path="replenishment" element={<Replenishment />} />
           </Route>
         </Routes>
       </div>

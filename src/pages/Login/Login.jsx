@@ -82,15 +82,18 @@ const Login = () => {
         }
         setUserLoginLoading(false);
 
-        if (!userCredential.user.emailVerified) {
-          confirmEmailNotification();
-          sendEmailVerification(userCredential.user);
-          auth.signOut();
-          return;
-        } else {
-          sessionStorage.setItem("Auth Token", userCredential._tokenResponse.refreshToken);
-          navigate("/my-account");
-        }
+        sessionStorage.setItem("Auth Token", userCredential._tokenResponse.refreshToken);
+        navigate("/my-account");
+
+        // if (!userCredential.user.emailVerified) {
+        //   confirmEmailNotification();
+        //   sendEmailVerification(userCredential.user);
+        //   auth.signOut();
+        //   return;
+        // } else {
+        //   sessionStorage.setItem("Auth Token", userCredential._tokenResponse.refreshToken);
+        //   navigate("/my-account");
+        // }
       })
       .catch((e) => {
         errorNotification();

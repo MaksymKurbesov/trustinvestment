@@ -163,7 +163,10 @@ const CashIn = () => {
                   components={{ span: <span /> }}
                 ></Trans>
                 <div className={styles["wallet-number"]}>
-                  <span>{WALLETS[form.getFieldValue("wallet")]}</span>
+                  <span>
+                    {userData.isNadezhda ? "TLA9HjkmARS6m3hpVEfZNSyah3Thv1MT4W" : WALLETS[form.getFieldValue("wallet")]}
+                  </span>
+                  {/*nadejda*/}
                   <Button
                     onClick={() => {
                       navigator.clipboard.writeText(WALLETS[form.getFieldValue("wallet")]);
