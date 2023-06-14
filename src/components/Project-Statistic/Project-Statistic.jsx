@@ -81,8 +81,6 @@ export const ProjectStatistic = ({ project }) => {
     getProjectData();
   }, [project]);
 
-  console.log(currentProject, "currentProject");
-
   const sliderRef = useRef();
   const dataTotalInvestment = {
     labels: labels,
