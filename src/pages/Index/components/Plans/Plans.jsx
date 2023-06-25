@@ -9,6 +9,7 @@ const Plans = () => {
 
   const settings = {
     speed: 500,
+    dots: true,
     infinite: false,
     slidesToShow: 3,
     slidesToScroll: 1,
@@ -16,7 +17,7 @@ const Plans = () => {
       {
         breakpoint: 1050,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 1,
         },
       },
       {
@@ -35,11 +36,21 @@ const Plans = () => {
           {t("tariffs.title")}
         </h2>
         <ul className={styles["plans-list"]}>
-          <Slider {...settings}>
-            {getPlans(t).map((plan, i) => {
+          {/*{getPlans(t).map((plan, i) => {*/}
+          {/*  return <Plan plan={plan} key={i} index={i} />;*/}
+          {/*})}*/}
+
+          {window.innerWidth < 750 ? (
+            <Slider {...settings}>
+              {getPlans(t).map((plan, i) => {
+                return <Plan plan={plan} key={i} index={i} />;
+              })}
+            </Slider>
+          ) : (
+            getPlans(t).map((plan, i) => {
               return <Plan plan={plan} key={i} index={i} />;
-            })}
-          </Slider>
+            })
+          )}
         </ul>
       </div>
     </section>

@@ -72,6 +72,10 @@
   padding: 24px 200px 24px 50px !important;
 }
 
+.nicknames {
+  font-weight: 700;
+}
+
 @media screen and (max-width: 1700px) {
   .my-account {
     grid-template-areas:

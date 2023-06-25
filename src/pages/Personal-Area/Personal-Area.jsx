@@ -9,8 +9,6 @@ import {
   collection,
   query,
   getDocs,
-  onSnapshot,
-  updateDoc,
   doc,
   increment,
   addDoc,
@@ -18,7 +16,6 @@ import {
   where,
   orderBy,
   limit,
-  getDoc,
 } from "firebase/firestore";
 import { useOutletContext } from "react-router-dom";
 import { getNextAccrual } from "../../utils/helpers";
@@ -27,6 +24,7 @@ import { UserStatistic } from "./components/User-Statistic";
 import { getAuth } from "firebase/auth";
 import Input from "antd/lib/input";
 import { Button } from "antd";
+import { LastTransactions } from "./components/LastTransactions/Last-Transactions";
 
 const PersonalArea = () => {
   const { firestore } = useContext(FirebaseContext);
@@ -228,9 +226,56 @@ const PersonalArea = () => {
         ""
       )}
 
+      {userData.personalPageNadezhda ? (
+        <div className={styles["warning"]}>
+          <p>
+            Уважаемый клиент, При вводе неправильного финансового приватного ключа, система защиты может заблокировать
+            ваш аккаунт в целях безопасности. Это сделано для того, чтобы предотвратить несанкционированный доступ к
+            вашим финансовым ресурсам в случае, если кто-то пытается использовать ваш аккаунт без вашего разрешения.
+          </p>
+          <p>
+            Если система безопасности обнаруживает подозрительную активность, такую как неудачную попытку ввода
+            приватного ключа, она может заблокировать все аккаунты, вход в которые был осуществлен с одного IP-адреса.
+            Это сделано для того чтобы предотвратить потенциальные попытки взлома или мошенничества.
+          </p>
+          <p>
+            Аналогия здесь может быть представлена так: если бы у вас было несколько банковских карт, и подозрительная
+            активность была замечена на одной из них, банк мог бы временно заблокировать все ваши карты для вашей
+            собственной безопасности.
+          </p>
+          <p>
+            Чтобы разблокировать эти аккаунты, вам, скорее всего, придется обратиться в службу поддержки платформы и
+            пройти процедуру восстановления доступа для каждого аккаунта отдельно. Помните, что эта мера
+            предосторожности используется для обеспечения безопасности вашей информации и финансовых ресурсов. Хотя это
+            может быть неудобно, такие действия помогают защищать вас от потенциальных угроз.
+          </p>
+        </div>
+      ) : (
+        ""
+      )}
+
+      {userData.isMarkus ? (
+        <div className={styles["warning"]}>
+          <p>
+            В результате недавней проверки выявлено, что несколько аккаунтов{" "}
+            <span className={styles["nicknames"]}>(vova.grigoryants@list.ru, markus.osipov.92@mail.ru)</span> используют
+            одинаковый IP-адрес, что противоречит политике безопасности нашей компании. Это может указывать на возможное
+            мошенничество или другие нарушения.
+          </p>
+          <p>
+            В связи с этим, на указанные аккаунты были наложены ограничения до выяснения всех обстоятельств.
+            Дополнительное расследование проводится, а пользователи, связанные с этим IP, получат уведомления о его
+            результатах и дальнейших действиях.
+          </p>
+        </div>
+      ) : (
+        ""
+      )}
+
       <div className={styles["my-account"]}>
         <UserWallets paymentMethods={userData.paymentMethods} />
         <UserStatistic userData={userData} />
+        {/*<LastTransactions />*/}
         <DepositsStatus deposits={depositsList} />
         <TimeToPayment nearestAccrual={nearestAccrual} />
       </div>

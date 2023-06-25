@@ -5,6 +5,11 @@
   text-align: center;
 }
 
+.countdown-wrapper {
+  max-width: 260px;
+  /*margin-right: -40px;*/
+}
+
 .hours span,
 .minutes span,
 .seconds span {

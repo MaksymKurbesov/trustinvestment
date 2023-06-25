@@ -162,6 +162,10 @@
   margin: 0 auto 20px;
 }
 
+.private-key-warning p:last-child {
+  font-weight: 600;
+}
+
 .private-key-warning p:not(:last-child) {
   margin-bottom: 20px;
 }

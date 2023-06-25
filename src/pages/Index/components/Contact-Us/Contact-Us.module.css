@@ -2,6 +2,10 @@
   padding-top: 50px;
 }
 
+.contact-us-title {
+  text-align: left;
+}
+
 .contact-us-container {
   display: flex;
   justify-content: center;

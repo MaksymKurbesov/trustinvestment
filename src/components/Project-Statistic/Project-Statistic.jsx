@@ -11,7 +11,7 @@ import ProjectIcon from "../../assets/images/projects-info/project.svg";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { FirebaseContext } from "../../index";
-import { collection, doc, getDoc, query } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
 Chart.register(CategoryScale, ArcElement, Tooltip, Legend);
 
@@ -86,6 +86,7 @@ export const ProjectStatistic = ({ project }) => {
     labels: labels,
     datasets: [
       {
+        cubicInterpolationMode: "monotone",
         label: `${t("projects_info.invested")} (2023г.)`,
         backgroundColor: "#4BB543",
         borderColor: "#4BB543",
@@ -98,6 +99,7 @@ export const ProjectStatistic = ({ project }) => {
     labels: labels,
     datasets: [
       {
+        cubicInterpolationMode: "monotone",
         label: `${t("projects_info.investors")} (2023г.)`,
         backgroundColor: "#1677ff",
         borderColor: "#1677ff",

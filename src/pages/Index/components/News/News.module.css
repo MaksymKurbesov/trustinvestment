@@ -1,0 +1,8 @@
+.drawer {
+  /*position: relative;*/
+}
+
+.drawer p:not(:last-child) {
+  /*height: 200px;*/
+  margin-bottom: 15px;
+}

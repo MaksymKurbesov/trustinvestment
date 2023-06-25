@@ -37,8 +37,6 @@ const Partners = () => {
   const { t } = useTranslation();
   const [depositQuantity, setDepositQuantity] = useState(0);
 
-  console.log(referralsList, "referralsList");
-
   const getReferrals = (referrals) => {
     for (const [level, userNicknames] of Object.entries(referrals)) {
       userNicknames.forEach(async (userNickname) => {
@@ -86,6 +84,8 @@ const Partners = () => {
     });
   };
 
+  console.log(new URL(window.location.href).hostname, "window.location.href");
+
   return (
     <div>
       <h3 className={"my-account-title"}> {t("partner_page.title")}</h3>
@@ -98,13 +98,15 @@ const Partners = () => {
             <p>{t("partner_page.your_referral_link")}:</p>
             <Input
               readOnly={"readonly"}
-              defaultValue={`https://dubaitrustinvestment.net/register?ref=${userData.nickname}`}
+              defaultValue={`https://${new URL(window.location.href).hostname}/register?ref=${userData.nickname}`}
             />
           </div>
           <Button
             onClick={() => {
               openNotification();
-              navigator.clipboard.writeText(`https://dubaitrustinvestment.net/register?ref=${userData.nickname}`);
+              navigator.clipboard.writeText(
+                `https://${new URL(window.location.href).hostname}/register?ref=${userData.nickname}`
+              );
             }}
           >
             {t("partner_page.copy")}

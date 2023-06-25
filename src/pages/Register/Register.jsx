@@ -1,8 +1,7 @@
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 
-import { Form } from "pages/Login/components/Login-Form/Login-Form";
-import { setDoc, doc, collection, where, query, getDocs, updateDoc, arrayUnion, getDoc } from "firebase/firestore";
-import { useContext, useEffect } from "react";
+import { setDoc, doc, collection, where, query, getDocs, updateDoc, arrayUnion } from "firebase/firestore";
+import { useContext } from "react";
 import { FirebaseContext } from "../../index";
 import { RegisterForm } from "./components/Register-Form/Register-Form";
 import styles from "./Register.module.css";
@@ -19,7 +18,6 @@ const Register = () => {
   const { t } = useTranslation();
   const { firestore } = useContext(FirebaseContext);
   const navigate = useNavigate();
-  const auth = getAuth();
 
   const SignUpAnimation = useLottie({
     animationData: signUpAnimation,
@@ -41,8 +39,17 @@ const Register = () => {
     const nicknames = await getDocs(queryNickname);
     const nicknameIsExist = !!nicknames.docs[0]?.exists();
 
+    const queryEmail = query(collection(firestore, "users"), where("email", "==", user.email));
+    const emails = await getDocs(queryEmail);
+    const emailIsExist = !!emails.docs[0]?.exists();
+
     if (nicknameIsExist) {
       nicknameIsExistError();
+      return;
+    }
+
+    if (emailIsExist) {
+      emailIsExistError();
       return;
     }
 
@@ -91,6 +98,13 @@ const Register = () => {
     Modal.error({
       title: "Ошибка",
       content: "Такой никнейм уже существует",
+    });
+  };
+
+  const emailIsExistError = () => {
+    Modal.error({
+      title: "Ошибка",
+      content: "Такая электронная почта уже зарегистрирована",
     });
   };
 

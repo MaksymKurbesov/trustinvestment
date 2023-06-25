@@ -5,13 +5,17 @@ const Plan = ({ plan, index }) => {
   const { t, i18n } = useTranslation();
 
   return (
-    <div className={`${styles[`plan${index + 1}`]} ${styles["plan"]}`}>
+    <div className={`${styles["plan"]}`}>
       <div className={`${styles["plan-card"]}`}>
-        <p className={styles["plan-payment"]}>{plan.payout}</p>
         <div className={styles["plan-name"]}>
           <p>{t("tariffs.plan")}</p>
           <p>{plan.projectName}</p>
         </div>
+        <div className={styles["image-wrapper"]}>
+          <img className={styles["plan-image"]} src={plan.image} width={"100%"} height={300} />
+          <p className={styles["plan-payment"]}>{plan.payout}</p>
+        </div>
+
         <div className={styles["card-info-wrapper"]}>
           {!plan.individual ? (
             <>

