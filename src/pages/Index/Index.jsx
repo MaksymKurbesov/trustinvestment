@@ -12,7 +12,6 @@ const { Content } = Layout;
 const Index = () => {
   return (
     <>
-      <News />
       <Layout>
         <HeroBanner />
         <Content>

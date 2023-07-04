@@ -122,15 +122,24 @@ const PersonalArea = () => {
             nextAccrual = getNextAccrual(deposit);
           }
 
-          runTransaction(firestore, (transaction) => {
+          runTransaction(firestore, async (transaction) => {
             const timeNow = Math.round(Date.now() / 1000);
             const depositOpenTime = deposit.date.seconds;
             const planNumber = Number(deposit.planNumber.match(/\d+/)[0]);
+
+            const currentDeposit = await transaction.get(doc(firestore, "users", userData.email, "deposits", item.id));
+            await transaction.update(doc(firestore, "users", userData.email, "deposits", item.id), {
+              isCharging: true,
+            });
 
             let charges;
             let isLastCharge;
             let receivedByCharges;
             let chargesSubtract;
+
+            if (!currentDeposit.data().isCharging) {
+              return;
+            }
 
             if (planNumber <= 3) {
               charges = Math.floor((timeNow - depositOpenTime) / (3600 * 24));
@@ -138,6 +147,7 @@ const PersonalArea = () => {
               if (deposit.charges + chargesSubtract > deposit.days) {
                 chargesSubtract = Math.min(30, deposit.days - deposit.charges);
               }
+
               isLastCharge = charges >= deposit.days;
               receivedByCharges = ((deposit.willReceived / deposit.days) * chargesSubtract).toFixed(2);
             } else {
@@ -147,13 +157,13 @@ const PersonalArea = () => {
               receivedByCharges = deposit.willReceived.toFixed(2);
             }
 
-            if (isLastCharge && depositIsActive) {
+            if (isLastCharge && currentDeposit.data().status === "active") {
               transaction.update(doc(firestore, "users", userData.email), {
                 [`paymentMethods.${deposit.paymentMethod}.available`]: increment(deposit.amount),
               });
             }
 
-            if (chargesSubtract > 0 && depositIsActive) {
+            if (chargesSubtract > 0 && currentDeposit.data().status === "active") {
               addDoc(collection(firestore, "transactions"), {
                 account_id: userData.uid,
                 amount: +receivedByCharges,
@@ -176,7 +186,11 @@ const PersonalArea = () => {
               });
             }
 
-            return Promise.resolve();
+            return Promise.resolve().then(async () => {
+              await transaction.update(doc(firestore, "users", userData.email, "deposits", item.id), {
+                isCharging: false,
+              });
+            });
           });
 
           depositsArr.push({
