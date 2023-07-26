@@ -185,43 +185,6 @@ const Deposit = () => {
     title: item.title,
   }));
 
-  const addReferralReward = (referredBy, limit, amount) => {
-    if (!referredBy) return;
-
-    if (referredBy.trim() !== "" && --limit) {
-      const getReferral = async () => {
-        const q1 = query(collection(firestore, "users"), where("nickname", "==", referredBy));
-        await getDocs(q1).then(async (querySnap) => {
-          const referralLevel = querySnap.docs[0].data();
-          const referralAmount = (amount / 100) * PERCENTAGE_BY_LVL[REFERRALS_TOTAL_LEVELS - limit];
-
-          await updateDoc(doc(firestore, "users", referralLevel.email), {
-            referals: increment(referralAmount),
-            [`paymentMethods.${form.getFieldValue("payment-method")}.referrals`]: increment(referralAmount),
-            [`paymentMethods.${form.getFieldValue("payment-method")}.available`]: increment(referralAmount),
-          });
-
-          await addDoc(collection(firestore, "transactions"), {
-            account_id: referralLevel.uid,
-            amount: ((amount / 100) * PERCENTAGE_BY_LVL[REFERRALS_TOTAL_LEVELS - limit]).toFixed(2),
-            status: "Выполнено",
-            type: "Реферальные",
-            date: new Date(),
-            email: referralLevel.email,
-            paymentMethod: form.getFieldValue("payment-method"),
-            executor: userData.nickname,
-          });
-
-          return addReferralReward(referralLevel.referredBy, limit, amount);
-        });
-      };
-
-      getReferral();
-    } else {
-      return null;
-    }
-  };
-
   const onDone = async () => {
     form.validateFields().then(async (values) => {
       setLoading(true);
@@ -264,7 +227,6 @@ const Deposit = () => {
       }).then(() => {
         setLoading(false);
         setIsConfirmedModalOpen(true);
-        addReferralReward(userData.referredBy, REFERRALS_TOTAL_LEVELS, form.getFieldValue("amount"));
       });
     });
   };

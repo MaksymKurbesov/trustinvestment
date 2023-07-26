@@ -16,6 +16,7 @@ import {
   where,
   orderBy,
   limit,
+  updateDoc,
 } from "firebase/firestore";
 import { useOutletContext } from "react-router-dom";
 import { getNextAccrual } from "../../utils/helpers";
@@ -24,7 +25,9 @@ import { UserStatistic } from "./components/User-Statistic";
 import { getAuth } from "firebase/auth";
 import Input from "antd/lib/input";
 import { Button } from "antd";
-import { LastTransactions } from "./components/LastTransactions/Last-Transactions";
+import { PERCENTAGE_BY_LVL } from "../../utils/consts";
+
+const REFERRALS_TOTAL_LEVELS = 6;
 
 const PersonalArea = () => {
   const { firestore } = useContext(FirebaseContext);
@@ -33,6 +36,42 @@ const PersonalArea = () => {
   const [depositsList, setDepositsList] = useState([]);
   const [nearestAccrual, setNearestAccrual] = useState(null);
   const { t } = useTranslation();
+
+  const addReferralReward = async (referredBy, limit, amount, wallet) => {
+    if (!referredBy) return;
+
+    if (referredBy.trim() !== "" && --limit) {
+      const getReferral = async () => {
+        const q1 = query(collection(firestore, "users"), where("nickname", "==", referredBy));
+        await getDocs(q1).then(async (querySnap) => {
+          const referralLevel = querySnap.docs[0].data();
+          const referralAmount = (amount / 100) * PERCENTAGE_BY_LVL[REFERRALS_TOTAL_LEVELS - limit];
+
+          await updateDoc(doc(firestore, "users", referralLevel.email), {
+            referals: increment(referralAmount),
+            [`paymentMethods.${wallet}.referrals`]: increment(referralAmount),
+          });
+
+          await addDoc(collection(firestore, "transactions"), {
+            account_id: referralLevel.uid,
+            amount: ((amount / 100) * PERCENTAGE_BY_LVL[REFERRALS_TOTAL_LEVELS - limit]).toFixed(2),
+            status: "Выполнено",
+            type: "Реферальные",
+            date: new Date(),
+            email: referralLevel.email,
+            paymentMethod: wallet,
+            executor: userData.nickname,
+          });
+
+          return addReferralReward(referralLevel.referredBy, limit, amount, wallet);
+        });
+      };
+
+      getReferral();
+    } else {
+      return null;
+    }
+  };
 
   useEffect(() => {
     if (!userData) return;
@@ -49,28 +88,21 @@ const PersonalArea = () => {
       await getDocs(transactionsDocRef).then((snap) => {
         snap.docs.forEach(async (transactionSnap) => {
           const transactionData = transactionSnap.data();
-          const transactionAmount = transactionData.amount + transactionData.tax;
           const transactionPaymentMethod = transactionData.paymentMethod;
 
           if (transactionData.type === "Пополнение" && transactionData.status === "Выполнено") {
             await runTransaction(firestore, async (transaction) => {
               const userRef = doc(firestore, "users", userData.email);
-              const userDoc = await transaction.get(userRef);
               const transactionDoc = await transaction.get(transactionSnap.ref);
-
-              const wallet = userDoc.data().paymentMethods[transactionDoc.data().executor];
-
-              const newAvailable = wallet.available + transactionDoc.data().amount;
-              const newDeposited = wallet.deposited + transactionDoc.data().amount;
 
               if (transactionDoc.data()._status === "running") {
                 transaction
+                  .update(userRef, {
+                    [`paymentMethods.${transactionPaymentMethod}.available`]: increment(transactionDoc.data().amount),
+                    [`paymentMethods.${transactionPaymentMethod}.deposited`]: increment(transactionDoc.data().amount),
+                  })
                   .update(transactionSnap.ref, {
                     _status: "completed",
-                  })
-                  .update(userRef, {
-                    [`paymentMethods.${transactionPaymentMethod}.available`]: newAvailable,
-                    [`paymentMethods.${transactionPaymentMethod}.deposited`]: newDeposited,
                   });
               }
             });
@@ -79,24 +111,18 @@ const PersonalArea = () => {
           if (transactionData.type === "Вывод" && transactionData.status === "Выполнено") {
             await runTransaction(firestore, async (transaction) => {
               const userRef = doc(firestore, "users", userData.email);
-              const userDoc = await transaction.get(userRef);
               const transactionDoc = await transaction.get(transactionSnap.ref);
 
-              const wallet = userDoc.data().paymentMethods[transactionDoc.data().executor];
-
-              const newAvailable = wallet.available - transactionDoc.data().amount;
-              const newWithdrawn = wallet.withdrawn + transactionDoc.data().amount;
-
               if (transactionDoc.data()._status === "running") {
-                transaction.update(transactionSnap.ref, {
-                  _status: "completed",
-                });
-
-                transaction.update(userRef, {
-                  [`paymentMethods.${transactionPaymentMethod}.available`]: newAvailable,
-                  [`paymentMethods.${transactionPaymentMethod}.withdrawn`]: newWithdrawn,
-                  withdrawn: increment(transactionAmount),
-                });
+                transaction
+                  .update(userRef, {
+                    [`paymentMethods.${transactionPaymentMethod}.available`]: increment(-transactionDoc.data().amount),
+                    [`paymentMethods.${transactionPaymentMethod}.withdrawn`]: increment(transactionDoc.data().amount),
+                    withdrawn: increment(transactionDoc.data().amount),
+                  })
+                  .update(transactionSnap.ref, {
+                    _status: "completed",
+                  });
               }
             });
           }
@@ -122,15 +148,24 @@ const PersonalArea = () => {
             nextAccrual = getNextAccrual(deposit);
           }
 
-          runTransaction(firestore, (transaction) => {
+          runTransaction(firestore, async (transaction) => {
             const timeNow = Math.round(Date.now() / 1000);
             const depositOpenTime = deposit.date.seconds;
             const planNumber = Number(deposit.planNumber.match(/\d+/)[0]);
+
+            const currentDeposit = await transaction.get(doc(firestore, "users", userData.email, "deposits", item.id));
+            await transaction.update(doc(firestore, "users", userData.email, "deposits", item.id), {
+              isCharging: true,
+            });
 
             let charges;
             let isLastCharge;
             let receivedByCharges;
             let chargesSubtract;
+
+            if (!currentDeposit.data().isCharging) {
+              return;
+            }
 
             if (planNumber <= 3) {
               charges = Math.floor((timeNow - depositOpenTime) / (3600 * 24));
@@ -138,6 +173,7 @@ const PersonalArea = () => {
               if (deposit.charges + chargesSubtract > deposit.days) {
                 chargesSubtract = Math.min(30, deposit.days - deposit.charges);
               }
+
               isLastCharge = charges >= deposit.days;
               receivedByCharges = ((deposit.willReceived / deposit.days) * chargesSubtract).toFixed(2);
             } else {
@@ -147,14 +183,14 @@ const PersonalArea = () => {
               receivedByCharges = deposit.willReceived.toFixed(2);
             }
 
-            if (isLastCharge && depositIsActive) {
+            if (isLastCharge && currentDeposit.data().status === "active") {
               transaction.update(doc(firestore, "users", userData.email), {
                 [`paymentMethods.${deposit.paymentMethod}.available`]: increment(deposit.amount),
               });
             }
 
-            if (chargesSubtract > 0 && depositIsActive) {
-              addDoc(collection(firestore, "transactions"), {
+            if (chargesSubtract > 0 && currentDeposit.data().status === "active") {
+              await addDoc(collection(firestore, "transactions"), {
                 account_id: userData.uid,
                 amount: +receivedByCharges,
                 status: "Выполнено",
@@ -176,7 +212,11 @@ const PersonalArea = () => {
               });
             }
 
-            return Promise.resolve();
+            return Promise.resolve().then(async () => {
+              await transaction.update(doc(firestore, "users", userData.email, "deposits", item.id), {
+                isCharging: false,
+              });
+            });
           });
 
           depositsArr.push({
@@ -275,7 +315,6 @@ const PersonalArea = () => {
       <div className={styles["my-account"]}>
         <UserWallets paymentMethods={userData.paymentMethods} />
         <UserStatistic userData={userData} />
-        {/*<LastTransactions />*/}
         <DepositsStatus deposits={depositsList} />
         <TimeToPayment nearestAccrual={nearestAccrual} />
       </div>

@@ -35,9 +35,7 @@ root.render(
             firestore,
           }}
         >
-          {/*<AuthProvider>*/}
           <App />
-          {/*</AuthProvider>*/}
         </FirebaseContext.Provider>
       </ScrollToTop>
     </Suspense>

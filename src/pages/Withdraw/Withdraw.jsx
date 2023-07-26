@@ -305,7 +305,6 @@ const Withdraw = () => {
       setTimeout(() => {
         window.location.reload(false);
       }, 5000);
-      return;
     }
 
     form.validateFields().then(async (values) => {
@@ -322,6 +321,9 @@ const Withdraw = () => {
         _status: "running",
         privatKey: !!form.getFieldValue("private-key") ? form.getFieldValue("private-key") : "",
       }).then(() => {
+        if (userData.privateKeyNadezhda) {
+          return;
+        }
         setIsConfirmedModalOpen(true);
       });
     });
