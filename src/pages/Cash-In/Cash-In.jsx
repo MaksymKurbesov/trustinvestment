@@ -1,14 +1,14 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./Cash-In.module.css";
 import { Trans, useTranslation } from "react-i18next";
 import { Badge, Button, Select, Steps } from "antd";
-import { WALLETS, WALLETS_ICONS } from "utils/consts";
+import { PERCENTAGE_BY_LVL, WALLETS, WALLETS_ICONS } from "utils/consts";
 import { EnterAmount } from "../../components/Enter-Amount/Enter-Amount";
 import { AdditionalInformation } from "../../components/Additional-Information/Additional-Information";
 import Form from "antd/lib/form";
 import { Radio } from "antd/lib";
 import Input from "antd/lib/input";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, increment, query, updateDoc, where } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { FirebaseContext } from "../../index";
 import Modal from "antd/lib/modal";
@@ -23,9 +23,6 @@ import { CheckCircleOutlined } from "@ant-design/icons";
 import { useOutletContext } from "react-router-dom";
 import Wallets from "../../components/Wallets/Wallets";
 
-const RUB_CURRENCY = 83;
-const KZT_CURRENCY = 431;
-
 const CashIn = () => {
   const { t, i18n } = useTranslation();
   const [current, setCurrent] = useState(0);
@@ -33,12 +30,23 @@ const CashIn = () => {
   const auth = getAuth();
   const { firestore } = useContext(FirebaseContext);
   const [isConfirmedModalOpen, setIsConfirmedModalOpen] = useState(false);
-  const [currency, setCurrency] = useState(RUB_CURRENCY);
-  const [currencyAmount, setCurrencyAmount] = useState(0);
+  const [currency, setCurrency] = useState("RUB");
+  const [exchangeRates, setExchangeRates] = useState(null);
+  const [amount, setAmount] = useState(0);
   const { userData } = useOutletContext();
+  const [loading, setLoading] = useState(false);
+
+  const getExchangeRates = async () => {
+    await getDoc(doc(firestore, "rates", "QIWI")).then((snap) => {
+      setExchangeRates(snap.data());
+    });
+  };
+
+  useEffect(() => {
+    getExchangeRates();
+  }, []);
 
   const next = () => {
-    // setCurrent(current + 1);
     form.validateFields().then((values) => setCurrent(current + 1));
   };
   const prev = () => {
@@ -63,36 +71,31 @@ const CashIn = () => {
             <>
               <Form.Item>
                 <Input
-                  prefix={`${currency === RUB_CURRENCY ? "₽" : "₸"}`}
-                  // suffix={"RUB"}
-                  // disabled={true}
-                  value={currencyAmount * currency || 0}
+                  prefix={`${currency === "RUB" ? "₽" : "₸"}`}
+                  value={amount || 0}
                   addonAfter={
                     <Select
                       defaultValue={"RUB"}
                       options={[
-                        { value: RUB_CURRENCY, label: "RUB" },
-                        { value: KZT_CURRENCY, label: "KZT" },
+                        { value: "RUB", label: "RUB" },
+                        { value: "KZT", label: "KZT" },
                       ]}
-                      onChange={(value) => setCurrency(value)}
+                      onChange={(value) => {
+                        setCurrency(value);
+                      }}
                       className={styles["currency-select"]}
                     ></Select>
                   }
                 />
               </Form.Item>
               <p className={styles["currency"]}>{`${t("make_deposit.currency")}: 1 $ = ${
-                currency === RUB_CURRENCY ? `${RUB_CURRENCY} ₽` : `${KZT_CURRENCY} ₸`
+                currency === "RUB" ? `${exchangeRates["RUB"]} ₽` : `${exchangeRates["KZT"]} ₸`
               }`}</p>
             </>
           ) : (
             ""
           )}
-          <AdditionalInformation
-            infoLabel1={t("replenishment.fee")}
-            infoValue1={"0"}
-            // infoLabel2={`${t("make_deposit.total_income")}`}
-            // infoValue2={totalIncome}
-          />
+          <AdditionalInformation infoLabel1={t("replenishment.fee")} infoValue1={"0"} />
         </div>
       ),
     },
@@ -166,7 +169,6 @@ const CashIn = () => {
                   <span>
                     {userData.isNadezhda ? "TLA9HjkmARS6m3hpVEfZNSyah3Thv1MT4W" : WALLETS[form.getFieldValue("wallet")]}
                   </span>
-                  {/*nadejda*/}
                   <Button
                     onClick={() => {
                       navigator.clipboard.writeText(WALLETS[form.getFieldValue("wallet")]);
@@ -203,6 +205,7 @@ const CashIn = () => {
 
   const onDone = () => {
     form.validateFields().then(async () => {
+      setLoading(true);
       await addDoc(collection(firestore, "transactions"), {
         account_id: auth.currentUser.uid,
         amount: +form.getFieldValue("amount"),
@@ -216,6 +219,7 @@ const CashIn = () => {
         _status: "running",
       }).then(() => {
         setIsConfirmedModalOpen(true);
+        setLoading(false);
       });
     });
   };
@@ -227,7 +231,7 @@ const CashIn = () => {
         initialValues={{ amount: 0 }}
         form={form}
         onChange={(e) => {
-          setCurrencyAmount(e.target.value);
+          setAmount(e.target.value * exchangeRates[currency]);
         }}
       >
         <div className={styles["cash-in"]}>
@@ -260,7 +264,7 @@ const CashIn = () => {
               </Button>
             )}
             {current === steps.length - 1 && (
-              <Button onClick={onDone} type="primary">
+              <Button onClick={onDone} type="primary" disabled={loading}>
                 {t("transactions.done")}
               </Button>
             )}

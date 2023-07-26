@@ -24,14 +24,6 @@ const Register = () => {
     className: styles["signUpAnimation"],
   });
 
-  // useEffect(() => {
-  //   auth.onAuthStateChanged((currentUser) => {
-  //     if (currentUser) {
-  //       navigate("/my-account");
-  //     }
-  //   });
-  // }, []);
-
   const handleRegister = async (user) => {
     const auth = getAuth();
 
