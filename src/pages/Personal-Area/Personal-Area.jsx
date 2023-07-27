@@ -27,8 +27,6 @@ import Input from "antd/lib/input";
 import { Button } from "antd";
 import { PERCENTAGE_BY_LVL } from "../../utils/consts";
 
-const REFERRALS_TOTAL_LEVELS = 6;
-
 const PersonalArea = () => {
   const { firestore } = useContext(FirebaseContext);
 
@@ -37,100 +35,8 @@ const PersonalArea = () => {
   const [nearestAccrual, setNearestAccrual] = useState(null);
   const { t } = useTranslation();
 
-  const addReferralReward = async (referredBy, limit, amount, wallet) => {
-    if (!referredBy) return;
-
-    if (referredBy.trim() !== "" && --limit) {
-      const getReferral = async () => {
-        const q1 = query(collection(firestore, "users"), where("nickname", "==", referredBy));
-        await getDocs(q1).then(async (querySnap) => {
-          const referralLevel = querySnap.docs[0].data();
-          const referralAmount = (amount / 100) * PERCENTAGE_BY_LVL[REFERRALS_TOTAL_LEVELS - limit];
-
-          await updateDoc(doc(firestore, "users", referralLevel.email), {
-            referals: increment(referralAmount),
-            [`paymentMethods.${wallet}.referrals`]: increment(referralAmount),
-          });
-
-          await addDoc(collection(firestore, "transactions"), {
-            account_id: referralLevel.uid,
-            amount: ((amount / 100) * PERCENTAGE_BY_LVL[REFERRALS_TOTAL_LEVELS - limit]).toFixed(2),
-            status: "Выполнено",
-            type: "Реферальные",
-            date: new Date(),
-            email: referralLevel.email,
-            paymentMethod: wallet,
-            executor: userData.nickname,
-          });
-
-          return addReferralReward(referralLevel.referredBy, limit, amount, wallet);
-        });
-      };
-
-      getReferral();
-    } else {
-      return null;
-    }
-  };
-
   useEffect(() => {
     if (!userData) return;
-
-    const getUserTransactions = async () => {
-      const transactionsDocRef = query(
-        collection(firestore, "transactions"),
-        where("account_id", "==", getAuth().currentUser.uid),
-        where("_status", "==", "running"),
-        orderBy("date", "desc"),
-        limit(10)
-      );
-
-      await getDocs(transactionsDocRef).then((snap) => {
-        snap.docs.forEach(async (transactionSnap) => {
-          const transactionData = transactionSnap.data();
-          const transactionPaymentMethod = transactionData.paymentMethod;
-
-          if (transactionData.type === "Пополнение" && transactionData.status === "Выполнено") {
-            await runTransaction(firestore, async (transaction) => {
-              const userRef = doc(firestore, "users", userData.email);
-              const transactionDoc = await transaction.get(transactionSnap.ref);
-
-              if (transactionDoc.data()._status === "running") {
-                transaction
-                  .update(userRef, {
-                    [`paymentMethods.${transactionPaymentMethod}.available`]: increment(transactionDoc.data().amount),
-                    [`paymentMethods.${transactionPaymentMethod}.deposited`]: increment(transactionDoc.data().amount),
-                  })
-                  .update(transactionSnap.ref, {
-                    _status: "completed",
-                  });
-              }
-            });
-          }
-
-          if (transactionData.type === "Вывод" && transactionData.status === "Выполнено") {
-            await runTransaction(firestore, async (transaction) => {
-              const userRef = doc(firestore, "users", userData.email);
-              const transactionDoc = await transaction.get(transactionSnap.ref);
-
-              if (transactionDoc.data()._status === "running") {
-                transaction
-                  .update(userRef, {
-                    [`paymentMethods.${transactionPaymentMethod}.available`]: increment(-transactionDoc.data().amount),
-                    [`paymentMethods.${transactionPaymentMethod}.withdrawn`]: increment(transactionDoc.data().amount),
-                    withdrawn: increment(transactionDoc.data().amount),
-                  })
-                  .update(transactionSnap.ref, {
-                    _status: "completed",
-                  });
-              }
-            });
-          }
-        });
-      });
-    };
-
-    getUserTransactions();
 
     const getDeposits = async () => {
       const q = query(collection(firestore, "users", userData.email, "deposits"));

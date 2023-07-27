@@ -20,6 +20,8 @@ import { PersonalArea } from "./pages/Personal-Area/Personal-Area";
 import { Settings } from "./pages/Settings/Settings";
 import { CashIn } from "./pages/Cash-In/Cash-In";
 import { AuthProvider } from "./components/Auth-Provider/Auth-Provider";
+import Admin from "./pages/Admin/Admin";
+import RequireAuth from "./hoc/RequireAuth";
 
 function App() {
   return (
@@ -44,6 +46,14 @@ function App() {
             <Route path="transactions" element={<Transactions />} />
             <Route path="partners" element={<Partners />} />
             <Route path="settings" element={<Settings />} />
+            <Route
+              path="admin"
+              element={
+                <RequireAuth>
+                  <Admin />
+                </RequireAuth>
+              }
+            />
           </Route>
         </Routes>
       </div>

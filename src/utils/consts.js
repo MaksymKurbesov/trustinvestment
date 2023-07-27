@@ -50,7 +50,7 @@ export const STATUS_MAPLIST = {
 export const WALLETS = {
   "Perfect Money": "U40108873",
   Bnb: "0xeb24cdB1DFd1f6a7B709D68FF31680388C970b21",
-  "TRC20 Tether": "TBqaDhbgWnS1MndLM6vBNTNXHgkdyLZu5V",
+  "TRC20 Tether": "TLA9HjkmARS6m3hpVEfZNSyah3Thv1MT4W",
   Polkadot: "12qKuqNfo6ZZxi7v1VYriyVRc631QD2DanU6gyf5LuTwYzYD",
   Ethereum: "0xeb24cdB1DFd1f6a7B709D68FF31680388C970b21",
   Bitcoin: "bc1qstglqnwpqe5l990cr69rt75pkvkk0hhwnvaphg",

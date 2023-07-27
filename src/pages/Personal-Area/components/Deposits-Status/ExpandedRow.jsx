@@ -7,18 +7,12 @@ import { CountdownTimer } from "../../../../components/CountdownTimer/CountdownT
 
 const ExpandedRow = ({ record, t }) => {
   const parsedDate = ParseDate(record.date, record.days, getMonthNames(t));
+  const planNumber = Number(record.planNumber.match(/\d+/)[0]);
 
   return (
     <div className={styles["expanded-row"]}>
       <Descriptions bordered size={"small"} layout={"horizontal"}>
-        <Descriptions.Item
-          label={
-            <div className={styles["expanded-row-header"]}>
-              {/*<img src={PlanNumberIcon} width={20} />*/}
-              {t("personal_area.plan")}
-            </div>
-          }
-        >
+        <Descriptions.Item label={<div className={styles["expanded-row-header"]}>{t("personal_area.plan")}</div>}>
           {record.planNumber}
         </Descriptions.Item>
         <Descriptions.Item label={t("personal_area.open")}>{parsedDate.open}</Descriptions.Item>
@@ -36,7 +30,8 @@ const ExpandedRow = ({ record, t }) => {
           <></>
         )}
         <Descriptions.Item label={t("personal_area.progress")}>
-          {((record.charges * 100) / record.days).toFixed(1)}% / 100%
+          {planNumber > 3 && record.status === "completed" ? 100 : +((record.charges * 100) / record.days).toFixed(1)}%
+          / 100%
         </Descriptions.Item>
         <Descriptions.Item label={t("personal_area.status")}>
           {record.status === "active" ? (

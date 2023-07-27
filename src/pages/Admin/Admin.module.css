@@ -1,0 +1,12 @@
+.table {
+  width: 100%;
+  text-align: center;
+}
+
+.table th {
+  font-weight: 600;
+}
+
+.transaction p:not(:last-child) {
+  margin-right: 20px;
+}

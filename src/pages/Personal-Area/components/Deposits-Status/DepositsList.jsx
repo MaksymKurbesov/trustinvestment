@@ -111,7 +111,7 @@ const getColumns = (t) => {
 };
 
 const DepositsList = ({ deposits }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <Table
@@ -123,7 +123,6 @@ const DepositsList = ({ deposits }) => {
       }}
       locale={{ emptyText: <Empty description={`${t("personal_area.no_data")}`} /> }}
       size={window.innerWidth < 800 ? "small" : "middle"}
-      // scroll={{ x: window.innerWidth < 1500 && window.innerWidth > 600 ? 1200 : "max-content" }}
       expandable={{
         expandedRowRender: (record) => <ExpandedRow record={record} t={t} />,
         expandRowByClick: window.innerWidth < 1200,

@@ -186,8 +186,6 @@ const Withdraw = () => {
             ""
           )}
 
-          {/*-------------------------------------*/}
-
           {isPrivatKeyShowed ? (
             <div className={styles["disclaimer"]}>
               <p>
