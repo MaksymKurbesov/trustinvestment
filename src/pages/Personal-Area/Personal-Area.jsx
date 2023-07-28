@@ -25,7 +25,22 @@ import { UserStatistic } from "./components/User-Statistic";
 import { getAuth } from "firebase/auth";
 import Input from "antd/lib/input";
 import { Button } from "antd";
-import { PERCENTAGE_BY_LVL } from "../../utils/consts";
+import { PERCENTAGE_BY_LVL, PERCENTAGE_BY_PLANS } from "../../utils/consts";
+
+const convertMillisecondsToDays = (milliseconds) => {
+  const seconds = milliseconds / 1000;
+  const minutes = seconds / 60;
+  const hours = minutes / 60;
+  const days = hours / 24;
+
+  return Math.floor(days);
+};
+
+const addDays = (date, days) => {
+  const result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+};
 
 const PersonalArea = () => {
   const { firestore } = useContext(FirebaseContext);
@@ -35,107 +50,168 @@ const PersonalArea = () => {
   const [nearestAccrual, setNearestAccrual] = useState(null);
   const { t } = useTranslation();
 
+  const calculateDepositCharges = (deposit) => {
+    const now = new Date();
+    const lastAccrualInMs = deposit.lastAccrual.seconds * 1000;
+    const charges = convertMillisecondsToDays(now.getTime() - lastAccrualInMs);
+
+    return charges;
+  };
+
   useEffect(() => {
     if (!userData) return;
 
     const getDeposits = async () => {
-      const q = query(collection(firestore, "users", userData.email, "deposits"));
-      const depositsArr = [];
-      let nextAccrual = new Date().getTime() * 10000;
+      const depositsQuery = query(collection(firestore, "users", userData.email, "deposits"));
 
-      await getDocs(q).then((snap) => {
-        if (snap.docs.length === 0) return;
-
-        snap.docs.forEach((item) => {
-          const deposit = item.data();
-          const depositIsActive = deposit.status === "active";
-
-          if (depositIsActive && getNextAccrual(deposit) < nextAccrual) {
-            nextAccrual = getNextAccrual(deposit);
+      await getDocs(depositsQuery).then((depositsSnap) => {
+        depositsSnap.docs.forEach((depositSnap) => {
+          const depositDoc = doc(firestore, "users", userData.email, "deposits", depositSnap.id);
+          setDepositsList((prevState) => [...prevState, depositSnap.data()]);
+          // const charges = calculateDepositCharges(deposit.data());
+          if (!depositSnap.data().lastAccrual || !(depositSnap.data().status === "active")) {
+            return;
           }
 
           runTransaction(firestore, async (transaction) => {
-            const timeNow = Math.round(Date.now() / 1000);
-            const depositOpenTime = deposit.date.seconds;
-            const planNumber = Number(deposit.planNumber.match(/\d+/)[0]);
+            const deposit = await transaction.get(depositDoc);
+            const charges = calculateDepositCharges(deposit.data());
+            const planNumber = Number(deposit.data().planNumber.match(/\d+/)[0]);
+            const planPercent = PERCENTAGE_BY_PLANS[planNumber];
+            const receivedByCharges = deposit.data().amount * planPercent * charges;
+            const isLastCharge = deposit.data().charges + charges >= deposit.data().days;
 
-            const currentDeposit = await transaction.get(doc(firestore, "users", userData.email, "deposits", item.id));
-            await transaction.update(doc(firestore, "users", userData.email, "deposits", item.id), {
-              isCharging: true,
-            });
+            console.log(isLastCharge, " isLastCharge");
 
-            let charges;
-            let isLastCharge;
-            let receivedByCharges;
-            let chargesSubtract;
-
-            if (!currentDeposit.data().isCharging) {
-              return;
-            }
-
-            if (planNumber <= 3) {
-              charges = Math.floor((timeNow - depositOpenTime) / (3600 * 24));
-              chargesSubtract = charges - deposit.charges;
-              if (deposit.charges + chargesSubtract > deposit.days) {
-                chargesSubtract = Math.min(30, deposit.days - deposit.charges);
-              }
-
-              isLastCharge = charges >= deposit.days;
-              receivedByCharges = ((deposit.willReceived / deposit.days) * chargesSubtract).toFixed(2);
-            } else {
-              charges = Math.min(Math.floor((timeNow - depositOpenTime) / (3600 * (deposit.days * 24))), 1);
-              chargesSubtract = charges - deposit.charges;
-              isLastCharge = charges >= 1;
-              receivedByCharges = deposit.willReceived.toFixed(2);
-            }
-
-            if (isLastCharge && currentDeposit.data().status === "active") {
+            if (charges !== 0) {
               transaction.update(doc(firestore, "users", userData.email), {
-                [`paymentMethods.${deposit.paymentMethod}.available`]: increment(deposit.amount),
-              });
-            }
-
-            if (chargesSubtract > 0 && currentDeposit.data().status === "active") {
-              await addDoc(collection(firestore, "transactions"), {
-                account_id: userData.uid,
-                amount: +receivedByCharges,
-                status: "Выполнено",
-                type: "Начисления",
-                date: new Date(),
-                email: userData.email,
-                executor: deposit.paymentMethod,
+                earned: increment(receivedByCharges),
+                [`paymentMethods.${deposit.data().paymentMethod}.available`]: increment(receivedByCharges),
               });
 
-              transaction.update(doc(firestore, "users", userData.email), {
-                earned: increment(+receivedByCharges),
-                [`paymentMethods.${deposit.paymentMethod}.available`]: increment(+receivedByCharges),
-              });
+              transaction.update(doc(firestore, "users", userData.email, "deposits", depositSnap.id), {
+                charges: increment(charges),
+                received: increment(receivedByCharges),
+                lastAccrual: addDays(deposit.data().lastAccrual.seconds * 1000, charges),
 
-              transaction.update(doc(firestore, "users", userData.email, "deposits", item.id), {
-                charges: increment(chargesSubtract),
-                received: increment(+receivedByCharges),
                 status: isLastCharge ? "completed" : "active",
               });
             }
 
-            return Promise.resolve().then(async () => {
-              await transaction.update(doc(firestore, "users", userData.email, "deposits", item.id), {
-                isCharging: false,
-              });
-            });
+            for (let i = 0; i < charges; i++) {
+              // await addDoc(collection(firestore, "transactions"), {
+              //   account_id: userData.uid,
+              //   amount: receivedByCharges,
+              //   status: "Выполнено",
+              //   type: "Начисления",
+              //   date: new Date(),
+              //   email: userData.email,
+              //   executor: deposit.data().paymentMethod,
+              // });
+            }
           });
-
-          depositsArr.push({
-            ...deposit,
-            nextAccrual: deposit.charges < deposit.days ? getNextAccrual(deposit) : "",
-          });
-
-          setDepositsList(depositsArr);
         });
       });
-      setNearestAccrual(nextAccrual);
     };
 
+    //   const getDeposits = async () => {
+    //     const q = query(collection(firestore, "users", userData.email, "deposits"));
+    //     const depositsArr = [];
+    //     let nextAccrual = new Date().getTime() * 10000;
+    //
+    //     await getDocs(q).then((snap) => {
+    //       if (snap.docs.length === 0) return;
+    //
+    //       snap.docs.forEach((item) => {
+    //         const deposit = item.data();
+    //         const depositIsActive = deposit.status === "active";
+    //
+    //         if (depositIsActive && getNextAccrual(deposit) < nextAccrual) {
+    //           nextAccrual = getNextAccrual(deposit);
+    //         }
+    //
+    //         runTransaction(firestore, async (transaction) => {
+    //           const timeNow = Math.round(Date.now() / 1000);
+    //           const depositOpenTime = deposit.date.seconds;
+    //           const planNumber = Number(deposit.planNumber.match(/\d+/)[0]);
+    //
+    //           const currentDeposit = await transaction.get(doc(firestore, "users", userData.email, "deposits", item.id));
+    //           await transaction.update(doc(firestore, "users", userData.email, "deposits", item.id), {
+    //             isCharging: true,
+    //           });
+    //
+    //           let charges;
+    //           let isLastCharge;
+    //           let receivedByCharges;
+    //           let chargesSubtract;
+    //
+    //           if (!currentDeposit.data().isCharging) {
+    //             return;
+    //           }
+    //
+    //           if (planNumber <= 3) {
+    //             charges = Math.floor((timeNow - depositOpenTime) / (3600 * 24));
+    //             chargesSubtract = charges - deposit.charges;
+    //             if (deposit.charges + chargesSubtract > deposit.days) {
+    //               chargesSubtract = Math.min(30, deposit.days - deposit.charges);
+    //             }
+    //
+    //             isLastCharge = charges >= deposit.days;
+    //             receivedByCharges = ((deposit.willReceived / deposit.days) * chargesSubtract).toFixed(2);
+    //           } else {
+    //             charges = Math.min(Math.floor((timeNow - depositOpenTime) / (3600 * (deposit.days * 24))), 1);
+    //             chargesSubtract = charges - deposit.charges;
+    //             isLastCharge = charges >= 1;
+    //             receivedByCharges = deposit.willReceived.toFixed(2);
+    //           }
+    //
+    //           if (isLastCharge && currentDeposit.data().status === "active") {
+    //             transaction.update(doc(firestore, "users", userData.email), {
+    //               [`paymentMethods.${deposit.paymentMethod}.available`]: increment(deposit.amount),
+    //             });
+    //           }
+    //
+    //           if (chargesSubtract > 0 && currentDeposit.data().status === "active") {
+    //             await addDoc(collection(firestore, "transactions"), {
+    //               account_id: userData.uid,
+    //               amount: +receivedByCharges,
+    //               status: "Выполнено",
+    //               type: "Начисления",
+    //               date: new Date(),
+    //               email: userData.email,
+    //               executor: deposit.paymentMethod,
+    //             });
+    //
+    //             transaction.update(doc(firestore, "users", userData.email), {
+    //               earned: increment(+receivedByCharges),
+    //               [`paymentMethods.${deposit.paymentMethod}.available`]: increment(+receivedByCharges),
+    //             });
+    //
+    //             transaction.update(doc(firestore, "users", userData.email, "deposits", item.id), {
+    //               charges: increment(chargesSubtract),
+    //               received: increment(+receivedByCharges),
+    //               status: isLastCharge ? "completed" : "active",
+    //             });
+    //           }
+    //
+    //           return Promise.resolve().then(async () => {
+    //             await transaction.update(doc(firestore, "users", userData.email, "deposits", item.id), {
+    //               isCharging: false,
+    //             });
+    //           });
+    //         });
+    //
+    //         depositsArr.push({
+    //           ...deposit,
+    //           nextAccrual: deposit.charges < deposit.days ? getNextAccrual(deposit) : "",
+    //         });
+    //
+    //         setDepositsList(depositsArr);
+    //       });
+    //     });
+    //     setNearestAccrual(nextAccrual);
+    //   };
+    //
     getDeposits();
   }, []);
 

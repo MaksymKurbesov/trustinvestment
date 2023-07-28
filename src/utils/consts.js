@@ -220,6 +220,14 @@ export const PERCENTAGE_BY_LVL = {
   5: 1,
 };
 
+export const PERCENTAGE_BY_PLANS = {
+  1: 0.015,
+  2: 0.023,
+  3: 0.035,
+  4: 0.56,
+  5: 0.45,
+};
+
 export const PERFECT_MONEY = "Perfect Money";
 export const BITCOIN = "Bitcoin";
 export const ETHEREUM = "Ethereum";

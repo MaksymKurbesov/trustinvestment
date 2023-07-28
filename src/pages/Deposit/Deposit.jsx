@@ -219,6 +219,7 @@ const Deposit = () => {
         amount: +depositAmount,
         willReceived: totalIncome,
         date: new Date(),
+        lastAccrual: new Date(),
         charges: 0,
         received: 0,
         status: "active",
