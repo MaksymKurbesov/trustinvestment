@@ -54,11 +54,11 @@ const getColumns = (t) => {
     },
     {
       title: t("personal_area.next_accrual"),
-      dataIndex: "nextAccrual",
-      key: "nextAccrual",
+      dataIndex: "lastAccrual",
+      key: "lastAccrual",
       responsive: ["sm"],
       render: (text) => {
-        return <CountdownTimer targetDate={text} />;
+        return <CountdownTimer targetDate={text.seconds * 1000 + 86400000} />;
       },
       width: "20%",
     },

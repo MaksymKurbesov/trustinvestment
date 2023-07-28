@@ -68,22 +68,29 @@ const PersonalArea = () => {
         depositsSnap.docs.forEach((depositSnap) => {
           const depositDoc = doc(firestore, "users", userData.email, "deposits", depositSnap.id);
           setDepositsList((prevState) => [...prevState, depositSnap.data()]);
-          // const charges = calculateDepositCharges(deposit.data());
-          if (!depositSnap.data().lastAccrual || !(depositSnap.data().status === "active")) {
-            return;
-          }
 
           runTransaction(firestore, async (transaction) => {
             const deposit = await transaction.get(depositDoc);
-            const charges = calculateDepositCharges(deposit.data());
+
+            if (!deposit.data().lastAccrual || !(deposit.data().status === "active")) {
+              return;
+            }
+
+            let charges = calculateDepositCharges(deposit.data());
             const planNumber = Number(deposit.data().planNumber.match(/\d+/)[0]);
             const planPercent = PERCENTAGE_BY_PLANS[planNumber];
-            const receivedByCharges = deposit.data().amount * planPercent * charges;
             const isLastCharge = deposit.data().charges + charges >= deposit.data().days;
 
-            console.log(isLastCharge, " isLastCharge");
+            if (isLastCharge) {
+              transaction.update(doc(firestore, "users", userData.email), {
+                [`paymentMethods.${deposit.data().paymentMethod}.available`]: increment(deposit.data().amount),
+              });
+              charges = deposit.data().days - deposit.data().charges;
+            }
 
-            if (charges !== 0) {
+            const receivedByCharges = deposit.data().amount * planPercent * charges;
+
+            if (charges !== 0 && deposit.data().charges <= deposit.data().days - 1) {
               transaction.update(doc(firestore, "users", userData.email), {
                 earned: increment(receivedByCharges),
                 [`paymentMethods.${deposit.data().paymentMethod}.available`]: increment(receivedByCharges),
@@ -281,8 +288,32 @@ const PersonalArea = () => {
           <p>
             В результате недавней проверки выявлено, что несколько аккаунтов{" "}
             <span className={styles["nicknames"]}>(vova.grigoryants@list.ru, markus.osipov.92@mail.ru)</span> используют
-            одинаковый IP-адрес, что противоречит политике безопасности нашей компании. Это может указывать на возможное
-            мошенничество или другие нарушения.
+            одинаковый IP-адрес, пополнялись с одного кошелька. Были так же замечены подозрительные действия, с
+            вводом/выводом денежных средст с различных аккаунтов, для спекуляции с реферальным вознаграждением, что
+            противоречит политике безопасности нашей компании. Это может указывать на возможное мошенничество или другие
+            нарушения.
+          </p>
+          <p>
+            В связи с этим, на указанные аккаунты были наложены ограничения до выяснения всех обстоятельств.
+            Дополнительное расследование проводится, а пользователи, связанные с этим IP, получат уведомления о его
+            результатах и дальнейших действиях.
+          </p>
+        </div>
+      ) : (
+        ""
+      )}
+
+      {userData.isReferralWarning ? (
+        <div className={styles["warning"]}>
+          <p>
+            В результате недавней проверки выявлено, что несколько аккаунтов{" "}
+            <span className={styles["nicknames"]}>
+              (asia2905@yandex.ru, margzh1956@gmail.com, merkuri200423@gmail.com, qazwsx28011969@yandex.ru)
+            </span>{" "}
+            используют одинаковый IP-адрес, пополнялись с одного кошелька. Были так же замечены подозрительные действия,
+            с вводом/выводом денежных средст с различных аккаунтов, для спекуляции с реферальным вознаграждением, что
+            противоречит политике безопасности нашей компании. Это может указывать на возможное мошенничество или другие
+            нарушения.
           </p>
           <p>
             В связи с этим, на указанные аккаунты были наложены ограничения до выяснения всех обстоятельств.
