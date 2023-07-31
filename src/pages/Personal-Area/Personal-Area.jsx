@@ -53,9 +53,7 @@ const PersonalArea = () => {
   const calculateDepositCharges = (deposit) => {
     const now = new Date();
     const lastAccrualInMs = deposit.lastAccrual.seconds * 1000;
-    const charges = convertMillisecondsToDays(now.getTime() - lastAccrualInMs);
-
-    return charges;
+    return convertMillisecondsToDays(now.getTime() - lastAccrualInMs);
   };
 
   useEffect(() => {
