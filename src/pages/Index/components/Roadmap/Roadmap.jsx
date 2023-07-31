@@ -55,7 +55,7 @@ const Roadmap = () => {
         </li>
         <li data-aos="fade-right" data-aos-offset={200} data-aos-delay={window.innerWidth < 800 ? 0 : 600}>
           <div className={styles["text"]}>
-            <span>{t("roadmap.july")} 2023</span>
+            <span>{t("roadmap.october")} 2023</span>
             <p>{t("roadmap.6")}</p>
           </div>
           <DashedLine cn={"dashed-line2"} />
