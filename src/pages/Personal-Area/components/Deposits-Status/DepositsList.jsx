@@ -1,7 +1,7 @@
 import Table from "antd/lib/table";
 import Progress from "antd/lib/progress";
 import Empty from "antd/lib/empty";
-import { getMonthNames, ParseDate } from "../../../../utils/helpers";
+import { addDays, getMonthNames, ParseDate } from "../../../../utils/helpers";
 import styles from "./Deposits-Status.module.css";
 import { CountdownTimer } from "../../../../components/CountdownTimer/CountdownTimer";
 import { useTranslation } from "react-i18next";
@@ -57,8 +57,21 @@ const getColumns = (t) => {
       dataIndex: "lastAccrual",
       key: "lastAccrual",
       responsive: ["sm"],
-      render: (text) => {
-        return <CountdownTimer targetDate={text.seconds * 1000 + 86400000} />;
+      render: (text, record) => {
+        const planNumber = Number(record.planNumber.match(/\d+/)[0]);
+        let time;
+
+        if (planNumber > 3) {
+          time = addDays(text.seconds * 1000, record.days);
+        } else {
+          time = addDays(text.seconds * 1000, 1);
+        }
+
+        if (record.status !== "active") {
+          time = 0;
+        }
+
+        return <CountdownTimer targetDate={new Date(time).getTime()} />;
       },
       width: "20%",
     },

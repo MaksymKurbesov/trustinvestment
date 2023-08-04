@@ -9,7 +9,6 @@ i18n
   .use(HttpApi)
   .init({
     // fallbackLng: "ru",
-    debug: true,
     // resources,
     detection: {
       order: ["querystring", "cookie"],

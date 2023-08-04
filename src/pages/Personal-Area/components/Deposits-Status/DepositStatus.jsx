@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 const DepositsStatus = ({ deposits }) => {
   const [activeDeposits, setActiveDeposits] = useState([]);
   const [completedDeposits, setCompletedDeposits] = useState([]);
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const activeArr = [];

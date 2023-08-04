@@ -36,10 +36,6 @@ const Plans = () => {
           {t("tariffs.title")}
         </h2>
         <ul className={styles["plans-list"]}>
-          {/*{getPlans(t).map((plan, i) => {*/}
-          {/*  return <Plan plan={plan} key={i} index={i} />;*/}
-          {/*})}*/}
-
           {window.innerWidth < 750 ? (
             <Slider {...settings}>
               {getPlans(t).map((plan, i) => {

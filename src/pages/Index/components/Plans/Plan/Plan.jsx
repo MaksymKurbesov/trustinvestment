@@ -1,8 +1,8 @@
 import styles from "./Plan.module.css";
 import { useTranslation } from "react-i18next";
 
-const Plan = ({ plan, index }) => {
-  const { t, i18n } = useTranslation();
+const Plan = ({ plan }) => {
+  const { t } = useTranslation();
 
   return (
     <div className={`${styles["plan"]}`}>

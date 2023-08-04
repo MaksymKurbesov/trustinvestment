@@ -9,7 +9,7 @@ const HeroBanner = () => {
   const lottieAnimation = useLottie({
     animationData: LineWaves,
   });
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <section className={`${styles["hero-banner-wrapper"]} devtools`}>
@@ -18,7 +18,6 @@ const HeroBanner = () => {
       </div>
       <div className={styles["texts"]}>
         <h1 data-aos="fade-up" data-aos-delay={500}>
-          {/*TRUST INVESTMENT*/}
           {t("app_name")}
         </h1>
 

@@ -8,7 +8,7 @@ const AffilateProgram = () => {
   const PartnerAnimation = useLottie({
     animationData: partnerAnimation,
   });
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <section className={styles["affilate-program"]}>
@@ -30,11 +30,6 @@ const AffilateProgram = () => {
               {t("partners.subtitle")}
             </p>
             <div className={styles["percentage-levels"]} data-aos="fade-right">
-              {/*<span>Level 1</span>*/}
-              {/*<span>Level 2</span>*/}
-              {/*<span>Level 3</span>*/}
-              {/*<span>Level 4</span>*/}
-              {/*<span>Level 5</span>*/}
               <img src={Coins} width={"100%"} className={styles["coins"]} />
               <p>{t("partners.levels_title")}</p>
             </div>

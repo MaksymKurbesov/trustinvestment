@@ -10,12 +10,6 @@ export function getRandomArbitrary() {
   return Math.floor(Math.random() * 90000) + 10000;
 }
 
-export const hideDigitsInWallet = (text) => {
-  if (!text) return "";
-
-  return text.replace(/^.{2}/g, "U**").substring(0, text.length - 1) + "**";
-};
-
 export const calculateUserBalance = (user) => {
   if (!user) return;
 
@@ -24,13 +18,28 @@ export const calculateUserBalance = (user) => {
   }, 0);
 };
 
-export const normalizeDate = (date) => {
-  return date.map((item) => {
-    return {
-      ...item,
-      date: secondsToStringDays(item.date),
-    };
-  });
+export const convertMillisecondsToDays = (milliseconds) => {
+  const seconds = milliseconds / 1000;
+  const minutes = seconds / 60;
+  const hours = minutes / 60;
+  const days = hours / 24;
+
+  return Math.floor(days);
+};
+
+export const calculateDepositCharges = (deposit) => {
+  const now = new Date();
+  const lastAccrualInMs = deposit.lastAccrual.seconds * 1000;
+
+  const planNumber = Number(deposit.planNumber.match(/\d+/)[0]);
+
+  return convertMillisecondsToDays(now.getTime() - lastAccrualInMs);
+};
+
+export const addDays = (date, days) => {
+  const result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
 };
 
 export const getMonthNames = (t) => {
@@ -106,6 +115,24 @@ export const getNextAccrual = (deposit) => {
   }
 
   return nearestDate.getTime();
+};
+
+export const getNearestAccrual = (deposits) => {
+  const now = new Date().getTime();
+  let nearestAccrual = deposits[0]?.lastAccrual.seconds * 1000 + 86400000 - now;
+
+  deposits.forEach((deposit) => {
+    if (deposit.status !== "active") {
+      return;
+    }
+
+    const timeDifferent = deposit.lastAccrual.seconds * 1000 + 86400000 - now;
+    if (nearestAccrual > timeDifferent) {
+      nearestAccrual = timeDifferent;
+    }
+  });
+
+  return new Date(now + Math.abs(nearestAccrual)).getTime();
 };
 
 export const declensionNum = (num, words) => {

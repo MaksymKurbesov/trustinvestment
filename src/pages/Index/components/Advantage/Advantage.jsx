@@ -1,5 +1,5 @@
 import styles from "./Advantage.module.css";
-import CountUp, { useCountUp } from "react-countup";
+import CountUp from "react-countup";
 import { useTranslation } from "react-i18next";
 import Advantage1 from "../../../../assets/images/advantages/Asset 1.svg";
 import Advantage2 from "../../../../assets/images/advantages/Asset 2.svg";
@@ -9,7 +9,7 @@ import Advantage5 from "../../../../assets/images/advantages/Asset 6.svg";
 import Advantage6 from "../../../../assets/images/advantages/Asset 5.svg";
 
 const Advantage = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const ADVANTAGES_LIST = [
     {
       icon: Advantage1,
@@ -43,6 +43,33 @@ const Advantage = () => {
     },
   ];
 
+  const STATISTIC_COUNTS = [
+    {
+      end: 50,
+      prefix: "",
+      suffix: "",
+      title: t("statistic.companies"),
+    },
+    {
+      end: 200,
+      prefix: "",
+      suffix: "",
+      title: t("statistic.team_members"),
+    },
+    {
+      end: 250,
+      prefix: "$",
+      suffix: "M",
+      title: t("statistic.capital"),
+    },
+    {
+      end: 10,
+      prefix: "",
+      suffix: "",
+      title: t("statistic.year_of_experience"),
+    },
+  ];
+
   return (
     <section className={styles["advantage"]}>
       <div className={`${styles["advantage-container"]}`}>
@@ -70,38 +97,20 @@ const Advantage = () => {
           </ul>
           <div className={styles["statistic"]}>
             <ul className={styles["statistic-list"]}>
-              <li>
-                <CountUp end={50} enableScrollSpy scrollSpyDelay={1000}>
-                  {({ countUpRef }) => {
-                    return <span ref={countUpRef} />;
-                  }}
-                </CountUp>
-                <p>{t("statistic.companies")}</p>
-              </li>
-              <li>
-                <CountUp end={200} enableScrollSpy={true} scrollSpyDelay={1000}>
-                  {({ countUpRef }) => {
-                    return <span ref={countUpRef} />;
-                  }}
-                </CountUp>
-                <p>{t("statistic.team_members")}</p>
-              </li>
-              <li>
-                <CountUp end={250} prefix={"$"} suffix={"M"} enableScrollSpy={true} scrollSpyDelay={1000}>
-                  {({ countUpRef }) => {
-                    return <span ref={countUpRef} />;
-                  }}
-                </CountUp>
-                <p>{t("statistic.capital")}</p>
-              </li>
-              <li>
-                <CountUp end={10} enableScrollSpy={true} scrollSpyDelay={1000}>
-                  {({ countUpRef }) => {
-                    return <span ref={countUpRef} />;
-                  }}
-                </CountUp>
-                <p>{t("statistic.year_of_experience")}</p>
-              </li>
+              {STATISTIC_COUNTS.map((item) => {
+                const { end, prefix, suffix, title } = item;
+
+                return (
+                  <li>
+                    <CountUp end={end} prefix={prefix} suffix={suffix} enableScrollSpy scrollSpyDelay={1000}>
+                      {({ countUpRef }) => {
+                        return <span ref={countUpRef} />;
+                      }}
+                    </CountUp>
+                    <p>{title}</p>
+                  </li>
+                );
+              })}
             </ul>
             <div className={styles["video-presentation"]}>
               <h2 data-aos="fade-left" className={`${styles["presentation-title"]} section-title`}>

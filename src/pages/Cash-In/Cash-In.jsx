@@ -111,28 +111,28 @@ const CashIn = () => {
                 <p>
                   <img src={PaymentMethodIcon} width={20} alt={""} />
                   {t("make_deposit.payment_method")}:
-                </p>{" "}
+                </p>
                 {form.getFieldValue("wallet")}
               </li>
               <li>
                 <p>
                   <img src={AmountIcon} width={20} alt={""} />
                   {t("transactions.amount")}:
-                </p>{" "}
+                </p>
                 {form.getFieldValue("amount")}$
               </li>
               <li>
                 <p>
                   <img src={CommissionIcon} width={20} alt={""} />
                   {t("transactions.fee")}:
-                </p>{" "}
+                </p>
                 0$
               </li>
               <li className={styles["date"]}>
                 <p>
                   <img src={DateIcon} width={20} alt={""} />
                   {t("transactions.date")}:
-                </p>{" "}
+                </p>
                 {new Date().toLocaleDateString(i18n.language === "en" ? "en-US" : "ru", {
                   year: "numeric",
                   month: "long",

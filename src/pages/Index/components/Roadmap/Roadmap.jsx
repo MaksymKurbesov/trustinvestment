@@ -15,7 +15,6 @@ const Roadmap = () => {
             <span>{t("roadmap.may")} 2013</span>
             <p>{t("roadmap.1")}</p>
           </div>
-
           <DashedLine cn={"dashed-line"} />
         </li>
         <li data-aos="fade-right" data-aos-offset={200} data-aos-delay={window.innerWidth < 800 ? 0 : 200}>
