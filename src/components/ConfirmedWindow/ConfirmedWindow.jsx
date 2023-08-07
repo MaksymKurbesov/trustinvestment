@@ -15,7 +15,8 @@ const ConfirmedWindow = () => {
       extra={[
         <Button
           onClick={() => {
-            navigate("/my-account");
+            // navigate("/my-account");
+            window.location = "/my-account";
           }}
           key="my-account"
           type="primary"
@@ -24,7 +25,8 @@ const ConfirmedWindow = () => {
         </Button>,
         <Button
           onClick={() => {
-            navigate("/my-account/transactions");
+            // navigate("/my-account/transactions");
+            window.location = "/my-account/transactions";
           }}
           key="transactions"
         >

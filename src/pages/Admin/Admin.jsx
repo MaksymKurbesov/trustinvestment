@@ -44,6 +44,7 @@ const Admin = () => {
           await updateDoc(doc(firestore, "users", referral.email), {
             referals: increment(referralAmount),
             [`paymentMethods.${paymentMethod}.referrals`]: increment(referralAmount),
+            [`paymentMethods.${paymentMethod}.available`]: increment(referralAmount),
           });
 
           await addDoc(collection(firestore, "transactions"), {

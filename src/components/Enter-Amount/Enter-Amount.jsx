@@ -58,7 +58,15 @@ const EnterAmount = ({ form, tax = 0, cashInOperation, withdrawnOperation }) => 
             }),
           ]}
         >
-          <Input prefix={"$"} suffix={"USD"} />
+          <Input
+            onKeyPress={(event) => {
+              if (!/^[0-9.\b]+$/.test(event.key)) {
+                event.preventDefault();
+              }
+            }}
+            prefix={"$"}
+            suffix={"USD"}
+          />
         </Form.Item>
       </div>
     </div>
