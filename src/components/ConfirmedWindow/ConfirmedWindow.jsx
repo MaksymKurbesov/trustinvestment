@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 const ConfirmedWindow = () => {
-  const navigate = useNavigate();
   const { t } = useTranslation();
   return (
     <Result
@@ -15,7 +14,8 @@ const ConfirmedWindow = () => {
       extra={[
         <Button
           onClick={() => {
-            navigate("/my-account");
+            // navigate("/my-account");
+            window.location = "/my-account";
           }}
           key="my-account"
           type="primary"
@@ -24,7 +24,8 @@ const ConfirmedWindow = () => {
         </Button>,
         <Button
           onClick={() => {
-            navigate("/my-account/transactions");
+            // navigate("/my-account/transactions");
+            window.location = "/my-account/transactions";
           }}
           key="transactions"
         >
