@@ -15,6 +15,7 @@ import { FirebaseContext } from "../../index";
 import styles from "./Admin.module.css";
 import { PERCENTAGE_BY_LVL } from "../../utils/consts";
 import { useOutletContext } from "react-router-dom";
+import { ContactUs } from "./SendEmail";
 
 const REFERRALS_TOTAL_LEVELS = 5;
 
@@ -102,50 +103,53 @@ const Admin = () => {
   };
 
   return (
-    <table className={styles["table"]}>
-      <thead>
-        <tr>
-          <th>Email</th>
-          <th>Сумма</th>
-          <th>Способ оплаты</th>
-          <th>Тип</th>
-          <th>ID</th>
-          <th>Ключ</th>
-        </tr>
-      </thead>
-      <tbody>
-        {transactions.map((transaction) => {
-          return (
-            <tr className={styles["transaction"]} key={transaction.id}>
-              <td>{transaction.email}</td>
-              <td>{transaction.amount}</td>
-              <td>{transaction.paymentMethod}</td>
-              <td>{transaction.type}</td>
-              <td>{transaction.transaction_id}</td>
-              <td>{transaction.privatKey}</td>
-              <td>
-                <button
-                  onClick={() => {
-                    successTransaction(transaction);
-                  }}
-                >
-                  Выполнено
-                </button>
-              </td>
-              <td>
-                <button
-                  onClick={() => {
-                    cancelTransaction(transaction);
-                  }}
-                >
-                  Отмена
-                </button>
-              </td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+    <>
+      <table className={styles["table"]}>
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Сумма</th>
+            <th>Способ оплаты</th>
+            <th>Тип</th>
+            <th>ID</th>
+            <th>Ключ</th>
+          </tr>
+        </thead>
+        <tbody>
+          {transactions.map((transaction) => {
+            return (
+              <tr className={styles["transaction"]} key={transaction.id}>
+                <td>{transaction.email}</td>
+                <td>{transaction.amount}</td>
+                <td>{transaction.paymentMethod}</td>
+                <td>{transaction.type}</td>
+                <td>{transaction.transaction_id}</td>
+                <td>{transaction.privatKey}</td>
+                <td>
+                  <button
+                    onClick={() => {
+                      successTransaction(transaction);
+                    }}
+                  >
+                    Выполнено
+                  </button>
+                </td>
+                <td>
+                  <button
+                    onClick={() => {
+                      cancelTransaction(transaction);
+                    }}
+                  >
+                    Отмена
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      <ContactUs />
+    </>
   );
 };
 
