@@ -8,6 +8,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { ScrollToTop } from "./components/Scroll-To-Top/Scroll-To-Top";
 import "./i18n.js";
+import { io } from "socket.io-client";
 
 const firebaseApp = initializeApp({
   apiKey: process.env.REACT_APP_API_KEY,
@@ -23,20 +24,25 @@ AOS.init();
 const firestore = getFirestore(firebaseApp);
 
 export const FirebaseContext = createContext(null);
+export const SocketContext = createContext(null);
+
+const socket = io("http://localhost:5000/");
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <Suspense fallback={<div>Загрузка...</div>}>
       <ScrollToTop>
-        <FirebaseContext.Provider
-          value={{
-            firebaseApp,
-            firestore,
-          }}
-        >
-          <App />
-        </FirebaseContext.Provider>
+        <SocketContext.Provider value={{ socket }}>
+          <FirebaseContext.Provider
+            value={{
+              firebaseApp,
+              firestore,
+            }}
+          >
+            <App />
+          </FirebaseContext.Provider>
+        </SocketContext.Provider>
       </ScrollToTop>
     </Suspense>
   </BrowserRouter>

@@ -7,7 +7,7 @@ import { ConfirmedWindow } from "../../components/ConfirmedWindow/ConfirmedWindo
 import { calculateIncomeInDay, calculateTotalIncome, getRandomArbitrary } from "../../utils/helpers";
 import React, { useContext, useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
-import { FirebaseContext } from "../../index";
+import { FirebaseContext, SocketContext } from "../../index";
 import { useOutletContext } from "react-router-dom";
 import { Plans } from "./components/Plans/Plans";
 import Wallets from "../../components/Wallets/Wallets";
@@ -31,11 +31,7 @@ import {
   query,
   setDoc,
   updateDoc,
-  where,
 } from "firebase/firestore";
-import { PERCENTAGE_BY_LVL } from "../../utils/consts";
-
-const REFERRALS_TOTAL_LEVELS = 6;
 
 const Deposit = () => {
   const [isConfirmedModalOpen, setIsConfirmedModalOpen] = useState(false);
@@ -43,6 +39,7 @@ const Deposit = () => {
   const [current, setCurrent] = useState(0);
   const auth = getAuth();
   const { firestore } = useContext(FirebaseContext);
+  const { socket } = useContext(SocketContext);
   const { userData } = useOutletContext();
   const [incomeInDay, setIncomeInDay] = useState(0);
   const [totalIncome, setTotalIncome] = useState(0);
@@ -53,6 +50,8 @@ const Deposit = () => {
   const [openedDeposits, setOpenedDeposits] = useState([]);
 
   useEffect(() => {
+    socket.emit("newUser", userData.nickname);
+
     getDocs(q).then((snap) => {
       snap.docs.forEach((item) => {
         const deposit = item.data();
@@ -188,6 +187,13 @@ const Deposit = () => {
   const onDone = async () => {
     form.validateFields().then(async (values) => {
       setLoading(true);
+
+      socket.emit("sendNotification", {
+        senderName: userData.nickname,
+        receiverName: userData.referredBy,
+        type: "deposit",
+        amount: form.getFieldValue("amount"),
+      });
 
       const q = query(collection(firestore, "users", auth.currentUser.email, "deposits"));
       const queryCount = await getCountFromServer(q);

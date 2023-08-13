@@ -27,7 +27,15 @@ export const convertMillisecondsToDays = (milliseconds) => {
   return Math.floor(days);
 };
 
+const convertDaysToMilliseconds = (days) => {
+  return days * 24 * 60 * 60 * 1000;
+};
+
 export const calculateDepositCharges = (deposit) => {
+  if (!deposit.lastAccrual) {
+    return;
+  }
+
   const now = new Date();
   const lastAccrualInMs = deposit.lastAccrual.seconds * 1000;
 
@@ -122,13 +130,20 @@ export const getNearestAccrual = (deposits) => {
   let nearestAccrual = deposits[0]?.lastAccrual.seconds * 1000 + 86400000 - now;
 
   deposits.forEach((deposit) => {
+    const planNumber = Number(deposit.planNumber.match(/\d+/)[0]);
     if (deposit.status !== "active") {
       return;
     }
 
-    const timeDifferent = deposit.lastAccrual.seconds * 1000 + 86400000 - now;
-    if (nearestAccrual > timeDifferent) {
-      nearestAccrual = timeDifferent;
+    if (planNumber > 3 && deposit.status === "active") {
+      nearestAccrual = deposit.lastAccrual.seconds * 1000 + convertDaysToMilliseconds(deposit.days) - now;
+    }
+
+    if (planNumber <= 3) {
+      const timeDifferent = deposit.lastAccrual.seconds * 1000 + 86400000 - now;
+      if (nearestAccrual > timeDifferent) {
+        nearestAccrual = timeDifferent;
+      }
     }
   });
 
@@ -137,13 +152,6 @@ export const getNearestAccrual = (deposits) => {
 
 export const declensionNum = (num, words) => {
   return words[num % 100 > 4 && num % 100 < 20 ? 2 : [2, 0, 1, 1, 1, 2][num % 10 < 5 ? num % 10 : 5]];
-};
-
-export const getClosingDate = (openDate, offsetDays, language, settings) => {
-  const t = new Date(openDate);
-  t.setDate(t.getDate() + offsetDays);
-
-  return new Date(t).toLocaleDateString(language, settings);
 };
 
 export const calculateIncomeInDay = (form) => {

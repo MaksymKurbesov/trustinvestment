@@ -3,7 +3,7 @@ import { DepositsStatus } from "pages/Personal-Area/components/Deposits-Status/D
 import { TimeToPayment } from "pages/Personal-Area/components/Time-To-Payment/Time-To-Payment";
 import { UserWallets } from "pages/Personal-Area/components/UserWallets/Userwallets";
 import { useContext, useEffect, useState } from "react";
-import { FirebaseContext } from "../../index";
+import { FirebaseContext, SocketContext } from "../../index";
 import { collection, query, getDocs, doc, increment, runTransaction } from "firebase/firestore";
 import { useOutletContext } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -14,6 +14,7 @@ import PersonalAreaWarning from "./components/PersonalAreaWarning/PersonalAreaWa
 import WrongPrivateKeyWarning from "./components/WrongPrivateKeyWarning/WrongPrivateKeyWarning";
 import MultiaccWarning from "./components/MultiaccWarning/MultiaccWarning";
 import ReferralWarning from "./components/ReferralWarning/ReferralWarning";
+import { io } from "socket.io-client";
 
 const PersonalArea = () => {
   const { firestore } = useContext(FirebaseContext);
@@ -33,6 +34,10 @@ const PersonalArea = () => {
         depositsSnap.docs.forEach(async (depositSnap) => {
           const depositDoc = doc(firestore, "users", userData.email, "deposits", depositSnap.id);
           setDepositsList((prevState) => [...prevState, depositSnap.data()]);
+
+          if (!depositSnap.data().lastAccrual) {
+            return;
+          }
 
           await runTransaction(firestore, async (transaction) => {
             const deposit = await transaction.get(depositDoc);
@@ -57,18 +62,15 @@ const PersonalArea = () => {
             }
 
             if (planNumber > 3 && accruals >= days) {
-              accruals = 1;
-              isLastCharge = true;
-
               transaction.update(doc(firestore, "users", userData.email), {
                 earned: increment(willReceived),
                 [`paymentMethods.${paymentMethod}.available`]: increment(willReceived),
               });
 
               transaction.update(doc(firestore, "users", userData.email, "deposits", depositSnap.id), {
-                charges: increment(accruals),
+                charges: increment(1),
                 received: increment(willReceived),
-                lastAccrual: addDays(lastAccrual.seconds * 1000, accruals),
+                lastAccrual: addDays(lastAccrual.seconds * 1000, 1),
                 status: "completed",
               });
             }
@@ -77,6 +79,11 @@ const PersonalArea = () => {
               accruals = calculateDepositCharges(deposit.data());
               isLastCharge = charges + accruals >= days;
               receivedByCharges = amount * planPercent * accruals;
+
+              if (isLastCharge) {
+                accruals = days - charges;
+                receivedByCharges = amount * planPercent * accruals;
+              }
 
               transaction.update(doc(firestore, "users", userData.email), {
                 earned: increment(receivedByCharges),
@@ -118,7 +125,8 @@ const PersonalArea = () => {
   }, []);
 
   useEffect(() => {
-    setNearestAccrual(getNearestAccrual(depositsList));
+    const activeDeposits = depositsList.filter((deposit) => deposit.status === "active");
+    setNearestAccrual(getNearestAccrual(activeDeposits));
   }, [depositsList]);
 
   if (!userData) {

@@ -73,7 +73,7 @@ const Plans = ({ deposits }) => {
             {getPlans(t).map((plan, index) => {
               return (
                 <Radio.Button
-                  className={`${styles[`plan${index + 1}`]} ${styles["plan"]}`}
+                  className={`${styles["plan"]}`}
                   key={index}
                   value={getPlans(t)[index]}
                   disabled={openedDeposits[index] === index + 1 && !userData.canOpenAnyDeposit}
