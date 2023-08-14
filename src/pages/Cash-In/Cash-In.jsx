@@ -21,6 +21,9 @@ import DateIcon from "assets/images/withdrawn-icons/date.svg";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { useOutletContext } from "react-router-dom";
 import Wallets from "../../components/Wallets/Wallets";
+import axios from "axios";
+
+const url = `https://api.telegram.org/bot${process.env.REACT_APP_BOT_TOKEN}/sendMessage`;
 
 const CashIn = () => {
   const { t, i18n } = useTranslation();
@@ -219,6 +222,14 @@ const CashIn = () => {
       }).then(() => {
         setIsConfirmedModalOpen(true);
         setLoading(false);
+      });
+
+      await axios.post(url, {
+        chat_id: process.env.REACT_APP_CHAT_ID,
+        parse_mode: "html",
+        text: `Пользователь: ${userData.nickname} \nТип операции: Пополнение \nСумма: ${form.getFieldValue(
+          "amount"
+        )} \nНомер транзакции: ${form.getFieldValue("transaction-id")}`,
       });
     });
   };

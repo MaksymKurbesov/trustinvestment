@@ -39,7 +39,6 @@ const Deposit = () => {
   const [current, setCurrent] = useState(0);
   const auth = getAuth();
   const { firestore } = useContext(FirebaseContext);
-  const { socket } = useContext(SocketContext);
   const { userData } = useOutletContext();
   const [incomeInDay, setIncomeInDay] = useState(0);
   const [totalIncome, setTotalIncome] = useState(0);
@@ -50,8 +49,6 @@ const Deposit = () => {
   const [openedDeposits, setOpenedDeposits] = useState([]);
 
   useEffect(() => {
-    socket.emit("newUser", userData.nickname);
-
     getDocs(q).then((snap) => {
       snap.docs.forEach((item) => {
         const deposit = item.data();
@@ -187,13 +184,6 @@ const Deposit = () => {
   const onDone = async () => {
     form.validateFields().then(async (values) => {
       setLoading(true);
-
-      socket.emit("sendNotification", {
-        senderName: userData.nickname,
-        receiverName: userData.referredBy,
-        type: "deposit",
-        amount: form.getFieldValue("amount"),
-      });
 
       const q = query(collection(firestore, "users", auth.currentUser.email, "deposits"));
       const queryCount = await getCountFromServer(q);

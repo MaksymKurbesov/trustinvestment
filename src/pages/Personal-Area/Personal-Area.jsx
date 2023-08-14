@@ -83,6 +83,9 @@ const PersonalArea = () => {
               if (isLastCharge) {
                 accruals = days - charges;
                 receivedByCharges = amount * planPercent * accruals;
+                transaction.update(doc(firestore, "users", userData.email), {
+                  [`paymentMethods.${paymentMethod}.available`]: increment(amount),
+                });
               }
 
               transaction.update(doc(firestore, "users", userData.email), {
@@ -96,13 +99,6 @@ const PersonalArea = () => {
                 lastAccrual: addDays(lastAccrual.seconds * 1000, accruals),
                 status: isLastCharge ? "completed" : "active",
               });
-            }
-
-            if (isLastCharge) {
-              transaction.update(doc(firestore, "users", userData.email), {
-                [`paymentMethods.${paymentMethod}.available`]: increment(amount),
-              });
-              accruals = days - charges;
             }
 
             for (let i = 0; i < accruals; i++) {

@@ -26,23 +26,21 @@ const firestore = getFirestore(firebaseApp);
 export const FirebaseContext = createContext(null);
 export const SocketContext = createContext(null);
 
-const socket = io("http://localhost:5000/");
+// const socket = io("http://localhost:5000/");
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <Suspense fallback={<div>Загрузка...</div>}>
       <ScrollToTop>
-        <SocketContext.Provider value={{ socket }}>
-          <FirebaseContext.Provider
-            value={{
-              firebaseApp,
-              firestore,
-            }}
-          >
-            <App />
-          </FirebaseContext.Provider>
-        </SocketContext.Provider>
+        <FirebaseContext.Provider
+          value={{
+            firebaseApp,
+            firestore,
+          }}
+        >
+          <App />
+        </FirebaseContext.Provider>
       </ScrollToTop>
     </Suspense>
   </BrowserRouter>

@@ -103,7 +103,7 @@ const Admin = () => {
 
   return (
     <>
-      <Notifications />
+      {/*<Notifications />*/}
       <table className={styles["table"]}>
         <thead>
           <tr>

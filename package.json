@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^13.5.0",
     "antd": "^5.1.4",
     "aos": "^3.0.0-beta.6",
+    "axios": "^1.4.0",
     "chart.js": "^4.3.0",
     "dotenv": "^16.0.3",
     "faker": "^6.6.6",
