@@ -17,9 +17,19 @@ import CompanyImage2 from "assets/images/company-photos/company2.webp";
 import CompanyImage3 from "assets/images/company-photos/company3.webp";
 import CompanyImage4 from "assets/images/company-photos/company4.webp";
 import { useTranslation } from "react-i18next";
+import { useForm } from "@formspree/react";
+import Row from "antd/lib/row";
+import Col from "antd/lib/col";
 
 const Contacts = () => {
+  const [form] = Form.useForm();
   const { t, i18n } = useTranslation();
+  const [state, handleSubmit] = useForm("moqoeklj");
+
+  const onFinish = (e) => {
+    console.log(e, "e");
+    handleSubmit(e);
+  };
 
   return (
     <div className={styles["contacts"]}>
@@ -37,45 +47,107 @@ const Contacts = () => {
               </div>
             </div>
 
-            <Form className={styles["contact-form"]}>
-              <Form.Item
-                label={t("fill_form.name")}
-                labelCol={{ span: 24 }}
-                data-aos={"fade-left"}
-                data-aos-delay={200}
-              >
-                <Input />
+            <Form layout={"vertical"} form={form} data-aos="fade-left" onFinish={onFinish}>
+              <Row>
+                <Col span={24} xs={{ span: 24 }} xl={{ span: 18 }} lg={{ span: 18 }} md={{ span: 22 }}>
+                  <Form.Item
+                    label={t("fill_form.name")}
+                    name={"name"}
+                    rules={[
+                      {
+                        required: true,
+                        message: t("fill_form.enter_name_error"),
+                      },
+                    ]}
+                  >
+                    <Input placeholder={t("fill_form.enter_name")} />
+                  </Form.Item>
+                  <Form.Item
+                    name="email-account"
+                    label={"Email"}
+                    labelCol={{ span: 24 }}
+                    data-aos={"fade-right"}
+                    data-aos-delay={300}
+                  >
+                    <Input />
+                  </Form.Item>
+                </Col>
+              </Row>
+
+              <Row>
+                <Col span={24} xs={{ span: 24 }} xl={{ span: 18 }} lg={{ span: 18 }} md={{ span: 22 }}></Col>
+              </Row>
+              <Row>
+                <Col span={24} xs={{ span: 24 }} xl={{ span: 18 }} lg={{ span: 18 }} md={{ span: 22 }}>
+                  <Form.Item
+                    name={"phone-number"}
+                    label={t("fill_form.phone_number")}
+                    labelCol={{ span: 24 }}
+                    data-aos={"fade-right"}
+                    data-aos-delay={400}
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    label={t("fill_form.message")}
+                    labelCol={{ span: 24 }}
+                    data-aos={"fade-right"}
+                    data-aos-delay={500}
+                    name="message"
+                  >
+                    <TextArea />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Form.Item>
+                <Button htmlType="submit" type="primary">
+                  {t("fill_form.Send")}
+                </Button>
               </Form.Item>
-              <Form.Item label={"Email"} labelCol={{ span: 24 }} data-aos={"fade-right"} data-aos-delay={300}>
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label={t("fill_form.phone_number")}
-                labelCol={{ span: 24 }}
-                data-aos={"fade-right"}
-                data-aos-delay={400}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label={t("fill_form.message")}
-                labelCol={{ span: 24 }}
-                data-aos={"fade-right"}
-                data-aos-delay={500}
-              >
-                <TextArea />
-              </Form.Item>
-              <Button
-                htmlType={"submit"}
-                type={"primary"}
-                className={styles["submit-button"]}
-                data-aos={"fade-right"}
-                data-aos-delay={600}
-              >
-                {t("fill_form.Send")}
-              </Button>
-              <Checkbox>{t("contact_us.policy")}</Checkbox>
             </Form>
+
+            {/*<Form form={form} className={styles["contact-form"]} onFinish={onFinish}>*/}
+            {/*  <Form.Item*/}
+            {/*    label={t("fill_form.name")}*/}
+            {/*    labelCol={{ span: 24 }}*/}
+            {/*    data-aos={"fade-left"}*/}
+            {/*    data-aos-delay={200}*/}
+            {/*  >*/}
+            {/*    <Input />*/}
+            {/*  </Form.Item>*/}
+            {/*  <Form.Item label={"Email"} labelCol={{ span: 24 }} data-aos={"fade-right"} data-aos-delay={300}>*/}
+            {/*    <Input />*/}
+            {/*  </Form.Item>*/}
+            {/*  <Form.Item*/}
+            {/*    label={t("fill_form.phone_number")}*/}
+            {/*    labelCol={{ span: 24 }}*/}
+            {/*    data-aos={"fade-right"}*/}
+            {/*    data-aos-delay={400}*/}
+            {/*  >*/}
+            {/*    <Input />*/}
+            {/*  </Form.Item>*/}
+            {/*  <Form.Item*/}
+            {/*    label={t("fill_form.message")}*/}
+            {/*    labelCol={{ span: 24 }}*/}
+            {/*    data-aos={"fade-right"}*/}
+            {/*    data-aos-delay={500}*/}
+            {/*  >*/}
+            {/*    <TextArea />*/}
+            {/*  </Form.Item>*/}
+            {/*  <Form.Item>*/}
+            {/*    <Button*/}
+            {/*      htmlType={"submit"}*/}
+            {/*      type={"primary"}*/}
+            {/*      className={styles["submit-button"]}*/}
+            {/*      data-aos={"fade-right"}*/}
+            {/*      data-aos-delay={600}*/}
+            {/*    >*/}
+            {/*      {t("fill_form.Send")}*/}
+            {/*    </Button>*/}
+            {/*  </Form.Item>*/}
+
+            {/*  <Checkbox>{t("contact_us.policy")}</Checkbox>*/}
+            {/*</Form>*/}
           </div>
           <div className={styles["company-photos"]}>
             <ul className={styles["company-photos-list"]}>
@@ -121,7 +193,7 @@ const Contacts = () => {
         </div>
         <div className={styles["contacts-list"]}>
           <h3>{t("contact_us.contacts")}</h3>
-          <a href={"mailto:support@dubaitrustinvestment.net"}>
+          <a href={"mailto:support@dubaitrustinvestment.com"}>
             <img src={EmailIcon} width={40} />
           </a>
 

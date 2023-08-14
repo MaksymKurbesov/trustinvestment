@@ -15,7 +15,6 @@ import { FirebaseContext } from "../../index";
 import styles from "./Admin.module.css";
 import { PERCENTAGE_BY_LVL } from "../../utils/consts";
 import { useOutletContext } from "react-router-dom";
-import { ContactUs } from "./SendEmail";
 
 const REFERRALS_TOTAL_LEVELS = 5;
 
@@ -148,7 +147,6 @@ const Admin = () => {
           })}
         </tbody>
       </table>
-      <ContactUs />
     </>
   );
 };
