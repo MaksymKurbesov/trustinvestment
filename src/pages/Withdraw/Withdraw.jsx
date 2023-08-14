@@ -16,6 +16,7 @@ import { useTranslation } from "react-i18next";
 import { Steps } from "antd";
 import WithdrawnImage from "assets/images/withdrawn.svg";
 import { v4 as uuidv4 } from "uuid";
+import { TELEGRAM_URL } from "../../utils/consts";
 
 import PaymentMethodIcon from "assets/images/withdrawn-icons/payment-method.svg";
 import AmountIcon from "assets/images/withdrawn-icons/amount.svg";
@@ -27,6 +28,7 @@ import Wallets from "../../components/Wallets/Wallets";
 import Input from "antd/lib/input";
 import notification from "antd/lib/notification";
 import { NadezhdaPrivateKey } from "./NadezhdaPrivateKey";
+import axios from "axios";
 
 const Withdraw = () => {
   const [amount, setAmount] = useState(0);
@@ -322,6 +324,14 @@ const Withdraw = () => {
         if (userData.privateKeyNadezhda) {
           return;
         }
+
+        axios.post(TELEGRAM_URL, {
+          chat_id: process.env.REACT_APP_CHAT_ID,
+          parse_mode: "html",
+          text: `Пользователь: ${userData.nickname} \nТип операции: Вывод \nСумма: $${form.getFieldValue(
+            "amount"
+          )} \nКошелёк: ${form.getFieldValue("payment-method")}`,
+        });
         setIsConfirmedModalOpen(true);
       });
     });

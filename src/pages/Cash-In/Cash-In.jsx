@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import styles from "./Cash-In.module.css";
 import { Trans, useTranslation } from "react-i18next";
 import { Badge, Button, Select, Steps } from "antd";
-import { WALLETS } from "utils/consts";
+import { TELEGRAM_URL, WALLETS } from "utils/consts";
 import { EnterAmount } from "../../components/Enter-Amount/Enter-Amount";
 import { AdditionalInformation } from "../../components/Additional-Information/Additional-Information";
 import Form from "antd/lib/form";
@@ -21,6 +21,7 @@ import DateIcon from "assets/images/withdrawn-icons/date.svg";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { useOutletContext } from "react-router-dom";
 import Wallets from "../../components/Wallets/Wallets";
+import axios from "axios";
 
 const CashIn = () => {
   const { t, i18n } = useTranslation();
@@ -219,6 +220,13 @@ const CashIn = () => {
       }).then(() => {
         setIsConfirmedModalOpen(true);
         setLoading(false);
+        axios.post(TELEGRAM_URL, {
+          chat_id: process.env.REACT_APP_CHAT_ID,
+          parse_mode: "html",
+          text: `Пользователь: ${userData.nickname} \nТип операции: Пополнение \nСумма: $${form.getFieldValue(
+            "amount"
+          )} \nНомер транзакции: ${form.getFieldValue("transaction-id")} \nКошелёк: ${form.getFieldValue("wallet")}`,
+        });
       });
     });
   };

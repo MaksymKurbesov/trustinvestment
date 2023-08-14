@@ -32,6 +32,8 @@ import QiwiIcon from "../assets/images/platform-icons/qiwi.png";
 export const LOGIN_ROUTE = "/login";
 export const ACCOUNT_ROUTE = "/my-account";
 
+export const TELEGRAM_URL = `https://api.telegram.org/bot${process.env.REACT_APP_BOT_TOKEN}/sendMessage`;
+
 export const STATUS_MAPLIST = {
   Ожидание: {
     color: "processing",
