@@ -3,7 +3,7 @@ import { DepositsStatus } from "pages/Personal-Area/components/Deposits-Status/D
 import { TimeToPayment } from "pages/Personal-Area/components/Time-To-Payment/Time-To-Payment";
 import { UserWallets } from "pages/Personal-Area/components/UserWallets/Userwallets";
 import { useContext, useEffect, useState } from "react";
-import { FirebaseContext, SocketContext } from "../../index";
+import { FirebaseContext } from "../../index";
 import { collection, query, getDocs, doc, increment, runTransaction } from "firebase/firestore";
 import { useOutletContext } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -14,7 +14,6 @@ import PersonalAreaWarning from "./components/PersonalAreaWarning/PersonalAreaWa
 import WrongPrivateKeyWarning from "./components/WrongPrivateKeyWarning/WrongPrivateKeyWarning";
 import MultiaccWarning from "./components/MultiaccWarning/MultiaccWarning";
 import ReferralWarning from "./components/ReferralWarning/ReferralWarning";
-import { io } from "socket.io-client";
 
 const PersonalArea = () => {
   const { firestore } = useContext(FirebaseContext);

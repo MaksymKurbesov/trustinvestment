@@ -22,6 +22,7 @@ import { CashIn } from "./pages/Cash-In/Cash-In";
 import { AuthProvider } from "./components/Auth-Provider/Auth-Provider";
 import Admin from "./pages/Admin/Admin";
 import RequireAuth from "./hoc/RequireAuth";
+import Notifications from "./pages/Notifications/Notifications";
 
 function App() {
   return (
@@ -46,6 +47,14 @@ function App() {
             <Route path="transactions" element={<Transactions />} />
             <Route path="partners" element={<Partners />} />
             <Route path="settings" element={<Settings />} />
+            <Route
+              path="notifications"
+              element={
+                <RequireAuth>
+                  <Notifications />
+                </RequireAuth>
+              }
+            />
             <Route
               path="admin"
               element={

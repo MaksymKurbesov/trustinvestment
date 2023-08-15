@@ -6,7 +6,7 @@ import Layout from "antd/lib/layout";
 import Menu from "antd/lib/menu";
 import { SideMenuList } from "./SideMenuList";
 import { getAuth, signOut } from "firebase/auth";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import Button from "antd/lib/button";
 import RusLangIcon from "../../assets/images/rus-lang.svg";
@@ -16,7 +16,7 @@ import { Select } from "antd";
 
 const { Sider } = Layout;
 
-const MainSider = ({ setCollapsed, collapsed }) => {
+const MainSider = ({ setCollapsed, collapsed, userData }) => {
   const windowSize = useWindowSize();
   const auth = getAuth();
   const navigate = useNavigate();
@@ -51,7 +51,7 @@ const MainSider = ({ setCollapsed, collapsed }) => {
         theme="dark"
         defaultSelectedKeys={["1"]}
         selectedKeys={[location.pathname]}
-        items={SideMenuList(location)}
+        items={SideMenuList(location, userData)}
         onClick={(e) => {
           setCollapsed(true);
           if (e.key === "8") {

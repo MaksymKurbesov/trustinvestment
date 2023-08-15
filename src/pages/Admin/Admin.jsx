@@ -14,8 +14,6 @@ import {
 import { FirebaseContext } from "../../index";
 import styles from "./Admin.module.css";
 import { PERCENTAGE_BY_LVL } from "../../utils/consts";
-import { useOutletContext } from "react-router-dom";
-import Notifications from "./Notifications";
 
 const REFERRALS_TOTAL_LEVELS = 5;
 
@@ -103,7 +101,6 @@ const Admin = () => {
 
   return (
     <>
-      {/*<Notifications />*/}
       <table className={styles["table"]}>
         <thead>
           <tr>

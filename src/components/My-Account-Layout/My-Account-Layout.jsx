@@ -44,7 +44,7 @@ const MyAccountLayout = () => {
         />
 
         <Layout className="site-layout" hasSider>
-          <MainSider setCollapsed={setCollapsed} collapsed={collapsed} />
+          <MainSider setCollapsed={setCollapsed} collapsed={collapsed} userData={userData} />
           <Content className={styles["my-account-wrapper"]}>
             <Outlet context={{ userData }} />
           </Content>

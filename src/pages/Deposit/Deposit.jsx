@@ -23,14 +23,17 @@ import { v4 as uuidv4 } from "uuid";
 import { Waves } from "../../components/Waves/Waves";
 import {
   addDoc,
+  arrayUnion,
   collection,
   doc,
   getCountFromServer,
+  getDoc,
   getDocs,
   increment,
   query,
   setDoc,
   updateDoc,
+  where,
 } from "firebase/firestore";
 
 const Deposit = () => {
@@ -170,7 +173,7 @@ const Deposit = () => {
   };
 
   const next = () => {
-    form.validateFields().then((values) => setCurrent(current + 1));
+    form.validateFields().then(() => setCurrent(current + 1));
   };
   const prev = () => {
     setCurrent(current - 1);
@@ -182,7 +185,7 @@ const Deposit = () => {
   }));
 
   const onDone = async () => {
-    form.validateFields().then(async (values) => {
+    form.validateFields().then(async () => {
       setLoading(true);
 
       const q = query(collection(firestore, "users", auth.currentUser.email, "deposits"));
@@ -192,6 +195,24 @@ const Deposit = () => {
       const depositPaymentMethod = form.getFieldValue("payment-method");
       const depositID =
         queryCount.data().count >= 9 ? `90${queryCount.data().count + 1}` : `900${queryCount.data().count + 1}`;
+
+      const notificationUsers = async () => {
+        for (let i = 0; i < 5; i++) {}
+
+        const referredByQuery = query(collection(firestore, "users"), where("nickname", "==", userData.referredBy));
+        await getDocs(referredByQuery).then(async (snap) => {
+          const referredByEmail = snap.docs[0].data().email;
+
+          await updateDoc(doc(firestore, "users", referredByEmail), {
+            notifications: arrayUnion({
+              isRead: false,
+              text: `Пользователь ${userData.nickname} открыл план номер ${depositPlan.plan} на сумму $${depositAmount}`,
+            }),
+          });
+        });
+      };
+
+      notificationUsers();
 
       await addDoc(collection(firestore, "transactions"), {
         account_id: auth.currentUser.uid,
