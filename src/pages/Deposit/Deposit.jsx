@@ -36,6 +36,8 @@ import {
   where,
 } from "firebase/firestore";
 
+const REFERRALS_TOTAL_LEVELS = 5;
+
 const Deposit = () => {
   const [isConfirmedModalOpen, setIsConfirmedModalOpen] = useState(false);
   const { t, i18n } = useTranslation();
@@ -196,23 +198,37 @@ const Deposit = () => {
       const depositID =
         queryCount.data().count >= 9 ? `90${queryCount.data().count + 1}` : `900${queryCount.data().count + 1}`;
 
-      const notificationUsers = async () => {
-        for (let i = 0; i < 5; i++) {}
+      const notificationUsers = (userEmail, limit) => {
+        if (!userEmail) return;
 
-        const referredByQuery = query(collection(firestore, "users"), where("nickname", "==", userData.referredBy));
-        await getDocs(referredByQuery).then(async (snap) => {
-          const referredByEmail = snap.docs[0].data().email;
+        if (userEmail !== "" && --limit) {
+          const getReferral = async () => {
+            const userRef = doc(firestore, "users", userEmail);
+            await getDoc(userRef).then(async (user) => {
+              const referralQuery = query(
+                collection(firestore, "users"),
+                where("nickname", "==", user.data().referredBy)
+              );
+              const referralSnapshot = await getDocs(referralQuery);
+              const referral = referralSnapshot.docs[0].data();
 
-          await updateDoc(doc(firestore, "users", referredByEmail), {
-            notifications: arrayUnion({
-              isRead: false,
-              text: `Пользователь ${userData.nickname} открыл план номер ${depositPlan.plan} на сумму $${depositAmount}`,
-            }),
-          });
-        });
+              await updateDoc(doc(firestore, "users", referral.email), {
+                notifications: arrayUnion({
+                  isRead: false,
+                  text: `Пользователь ${userData.nickname} открыл план №${depositPlan.plan} на сумму $${depositAmount}`,
+                }),
+              });
+
+              return notificationUsers(referral.email, limit);
+            });
+          };
+          getReferral();
+        } else {
+          return null;
+        }
       };
 
-      notificationUsers();
+      notificationUsers(userData.email, REFERRALS_TOTAL_LEVELS);
 
       await addDoc(collection(firestore, "transactions"), {
         account_id: auth.currentUser.uid,

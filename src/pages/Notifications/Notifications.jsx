@@ -9,7 +9,7 @@ const Notifications = () => {
   return (
     <div>
       <ul>
-        {userData.notifications.map((notification, index) => {
+        {userData.notifications?.map((notification, index) => {
           return <li key={index}>{notification.text}</li>;
         })}
       </ul>
