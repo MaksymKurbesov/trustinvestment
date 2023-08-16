@@ -16,11 +16,12 @@ import styles from "./Admin.module.css";
 import { PERCENTAGE_BY_LVL } from "../../utils/consts";
 import { useOutletContext } from "react-router-dom";
 
-const REFERRALS_TOTAL_LEVELS = 5;
+const REFERRALS_TOTAL_LEVELS = 6;
 
 const Admin = () => {
   const { firestore } = useContext(FirebaseContext);
   const [transactions, setTransactions] = useState([]);
+  const { userData } = useOutletContext();
 
   useEffect(() => {
     const transactionsDocRef = query(collection(firestore, "transactions"), where("status", "==", "Ожидание"));
@@ -29,38 +30,37 @@ const Admin = () => {
     });
   }, []);
 
-  const addReferralReward = (userEmail, amount, paymentMethod, limit) => {
-    if (!userEmail) return;
+  const addReferralReward = (referredBy, amount, paymentMethod, limit) => {
+    if (!referredBy) return;
 
-    if (userEmail !== "" && --limit) {
+    if (referredBy.trim() !== "" && --limit) {
       const getReferral = async () => {
-        const userRef = doc(firestore, "users", userEmail);
-        await getDoc(userRef).then(async (user) => {
-          const referralQuery = query(collection(firestore, "users"), where("nickname", "==", user.data().referredBy));
+        const q1 = query(collection(firestore, "users"), where("nickname", "==", referredBy));
+        await getDocs(q1).then(async (querySnap) => {
+          const referralLevel = querySnap.docs[0].data();
           const referralAmount = (amount / 100) * PERCENTAGE_BY_LVL[REFERRALS_TOTAL_LEVELS - limit];
-          const referralSnapshot = await getDocs(referralQuery);
-          const referral = referralSnapshot.docs[0].data();
 
-          await updateDoc(doc(firestore, "users", referral.email), {
+          await updateDoc(doc(firestore, "users", referralLevel.email), {
             referals: increment(referralAmount),
             [`paymentMethods.${paymentMethod}.referrals`]: increment(referralAmount),
             [`paymentMethods.${paymentMethod}.available`]: increment(referralAmount),
           });
 
           await addDoc(collection(firestore, "transactions"), {
-            account_id: referral.uid,
+            account_id: referralLevel.uid,
             amount: referralAmount,
             status: "Выполнено",
             type: "Реферальные",
             date: new Date(),
-            email: referral.email,
+            email: referralLevel.email,
             paymentMethod: paymentMethod,
-            executor: user.data().nickname,
+            executor: userData.nickname,
           });
 
-          return addReferralReward(referral.email, amount, paymentMethod, limit);
+          return addReferralReward(referralLevel.referredBy, amount, paymentMethod, limit);
         });
       };
+
       getReferral();
     } else {
       return null;
@@ -77,7 +77,7 @@ const Admin = () => {
         [`paymentMethods.${paymentMethod}.deposited`]: increment(amount),
       });
 
-      await addReferralReward(email, amount, paymentMethod, REFERRALS_TOTAL_LEVELS);
+      addReferralReward(userData.referredBy, amount, paymentMethod, REFERRALS_TOTAL_LEVELS);
     }
 
     if (type === "Вывод") {

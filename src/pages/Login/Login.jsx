@@ -1,10 +1,4 @@
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  sendPasswordResetEmail,
-  onAuthStateChanged,
-  sendEmailVerification,
-} from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
@@ -84,16 +78,6 @@ const Login = () => {
 
         sessionStorage.setItem("Auth Token", userCredential._tokenResponse.refreshToken);
         navigate("/my-account");
-
-        // if (!userCredential.user.emailVerified) {
-        //   confirmEmailNotification();
-        //   sendEmailVerification(userCredential.user);
-        //   auth.signOut();
-        //   return;
-        // } else {
-        //   sessionStorage.setItem("Auth Token", userCredential._tokenResponse.refreshToken);
-        //   navigate("/my-account");
-        // }
       })
       .catch((e) => {
         errorNotification();

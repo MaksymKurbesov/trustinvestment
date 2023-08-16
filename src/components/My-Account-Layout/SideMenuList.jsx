@@ -9,10 +9,11 @@ import {
   SettingOutlined,
   UsergroupAddOutlined,
   WalletOutlined,
+  EyeOutlined,
 } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 
-export const SideMenuList = (location) => {
+export const SideMenuList = (location, userData) => {
   const { t } = useTranslation();
 
   const MENU_LIST = [
@@ -57,6 +58,14 @@ export const SideMenuList = (location) => {
       icon: <ImportOutlined />,
     },
   ];
+
+  if (userData.role === "ADMIN") {
+    MENU_LIST.splice(1, 0, {
+      title: "Уведомления",
+      link: "/my-account/notifications",
+      icon: <EyeOutlined />,
+    });
+  }
 
   return MENU_LIST.map((item, index) => ({
     key: String(index + 1),

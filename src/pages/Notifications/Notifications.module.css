@@ -1,0 +1,27 @@
+.notifications li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--blue);
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  max-width: 700px;
+}
+
+.notifications li.isRead {
+  background: var(--alpha-blue);
+}
+
+.notifications li p {
+  margin-right: 15px;
+}
+
+.notifications li button span {
+  /*color: var(--blue);*/
+  font-weight: 700;
+}
+
+.notifications li:not(:last-child) {
+  margin-bottom: 15px;
+}

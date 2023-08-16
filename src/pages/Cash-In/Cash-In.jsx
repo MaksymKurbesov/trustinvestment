@@ -223,9 +223,11 @@ const CashIn = () => {
         axios.post(TELEGRAM_URL, {
           chat_id: process.env.REACT_APP_CHAT_ID,
           parse_mode: "html",
-          text: `Пользователь: ${userData.nickname} \nТип операции: Пополнение \nСумма: $${form.getFieldValue(
+          text: `Пользователь: ${userData.email} \nНикнейм: ${
+            userData.nickname
+          } \nТип операции: Пополнение \nСумма: $${form.getFieldValue(
             "amount"
-          )} \nНомер транзакции: ${form.getFieldValue("transaction-id")} \nКошелёк: ${form.getFieldValue("wallet")}`,
+          )} \nНомер транзакции: ${form.getFieldValue("transaction-id")} \nКошелёк: ${form.getFieldValue("wallet")} `,
         });
       });
     });

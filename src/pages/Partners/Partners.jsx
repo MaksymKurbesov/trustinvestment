@@ -84,8 +84,6 @@ const Partners = () => {
     });
   };
 
-  console.log(new URL(window.location.href).hostname, "window.location.href");
-
   return (
     <div>
       <h3 className={"my-account-title"}> {t("partner_page.title")}</h3>

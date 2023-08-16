@@ -328,9 +328,11 @@ const Withdraw = () => {
         axios.post(TELEGRAM_URL, {
           chat_id: process.env.REACT_APP_CHAT_ID,
           parse_mode: "html",
-          text: `Пользователь: ${userData.nickname} \nТип операции: Вывод \nСумма: $${form.getFieldValue(
-            "amount"
-          )} \nКошелёк: ${form.getFieldValue("payment-method")}`,
+          text: `Пользователь: ${userData.email} \nНикнейм: ${
+            userData.nickname
+          } \nТип операции: Вывод \nСумма: $${form.getFieldValue("amount")} \nКошелёк: ${form.getFieldValue(
+            "payment-method"
+          )} \nНомер кошелька: ${userData.paymentMethods[form.getFieldValue("payment-method")].number}`,
         });
         setIsConfirmedModalOpen(true);
       });

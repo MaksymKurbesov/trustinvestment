@@ -108,8 +108,6 @@ const TransactionsTable = ({ transactions, totalTransactions, showPrevious, show
     return originalElement;
   };
 
-  console.log(transactions, "transactions from table");
-
   return (
     <Table
       tableLayout={"fixed"}
